@@ -1,27 +1,39 @@
-namespace NumericUpDownLib.Base
+namespace NumericUpDownLib.WinUI.Base
 {
+    using Microsoft.UI;
+    using Microsoft.UI.Xaml;
+    using Microsoft.UI.Xaml.Controls;
+    using Microsoft.UI.Xaml.Controls.Primitives;
+    using Microsoft.UI.Xaml.Data;
+    using Microsoft.UI.Xaml.Input;
+    using Microsoft.UI.Xaml.Media;
     using NumericUpDownLib.Enums;
     using NumericUpDownLib.Models;
     using System;
+    using System.ComponentModel;
     using System.Globalization;
+    using System.Reflection;
+    using System.Runtime.InteropServices.WindowsRuntime;
     using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
-    using System.Windows.Data;
+
     using System.Windows.Input;
-    using System.Windows.Threading;
+    using Windows.Devices.Input;
+    using Windows.System;
+    using Windows.UI.Core;
+    using Windows.UI.Popups;
 
     /// <summary>
     /// Implements an up/down abstract base control.
     /// Source: http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
     /// </summary>
-    [TemplatePart(Name = Part_TextBoxName, Type = typeof(TextBox))]
-    [TemplatePart(Name = PART_MeasuringElement, Type = typeof(FrameworkElement))]
-    [TemplatePart(Name = PART_IncrementButton, Type = typeof(RepeatButton))]
-    [TemplatePart(Name = PART_DecrementButton, Type = typeof(RepeatButton))]
 
-    //[TemplatePart(Name = nameof(ColorPicker.AlphaChannelSlider),          Type = typeof(ColorPickerSlider))]
-    public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown, ICommandSource
+    //[TemplatePart(Name = Part_TextBoxName, Type = typeof(TextBox))]
+    //[TemplatePart(Name = PART_MeasuringElement, Type = typeof(FrameworkElement))]
+    //[TemplatePart(Name = PART_IncrementButton, Type = typeof(RepeatButton))]
+    //[TemplatePart(Name = PART_DecrementButton, Type = typeof(RepeatButton))]
+
+    [TemplatePart(Name = Part_TextBoxName, Type = typeof(TextBox))]
+    public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, ICommandSource*/
     {
         #region fields
         /// <summary>
@@ -63,37 +75,53 @@ namespace NumericUpDownLib.Base
         /// <summary>
         /// Dependency property backing store for the <see cref="IsIncDecButtonsVisible"/> property.
         /// </summary>
-        public static readonly DependencyProperty IsIncDecButtonsVisibleProperty =
-            DependencyProperty.Register("IsIncDecButtonsVisible", typeof(bool),
-                typeof(AbstractBaseUpDown<T>), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsIncDecButtonsVisibleProperty = DependencyProperty.Register(
+            "IsIncDecButtonsVisible",
+            typeof(bool),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(true));
 
         /// <summary>
         /// Dependency property backing store for the Value property. defalut value is _MinValue
         /// </summary>
-        protected static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value",
-                typeof(T), typeof(AbstractBaseUpDown<T>),
-                new PropertyMetadata(_MinValue, new PropertyChangedCallback(OnValueChanged),
-                new CoerceValueCallback(CoerceValue)));
+        protected static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+            "Value",
+            typeof(T),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(
+                _MinValue, new PropertyChangedCallback(OnValueChanged)
+                //, new CoerceValueCallback(CoerceValue)
+                )
+            );
 
         /// <summary>
         /// Dependency property backing store for Minimum Value property.
         /// </summary>
-        protected static readonly DependencyProperty MinValueProperty =
-            DependencyProperty.Register("MinValue",
+        protected static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+            "MinValue",
                 typeof(T), typeof(AbstractBaseUpDown<T>),
-                new PropertyMetadata(_MinValue, new PropertyChangedCallback(OnMinValueChanged),
-                new CoerceValueCallback(CoerceMinValue)));
+                new PropertyMetadata(
+                    _MinValue,
+                    new PropertyChangedCallback(OnMinValueChanged)
+                    //, new CoerceValueCallback(CoerceMinValue)
+                    )
+                );
 
         /// <summary>
         /// Dependency property backing store for Maximum Value property.
         /// </summary>
-        protected static readonly DependencyProperty MaxValueProperty =
-            DependencyProperty.Register("MaxValue",
-                typeof(T), typeof(AbstractBaseUpDown<T>),
-                new PropertyMetadata(_MaxValue, new PropertyChangedCallback(OnMaxValueChanged),
-                new CoerceValueCallback(CoerceMaxValue)));
+        protected static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+            "MaxValue",
+            typeof(T), typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(
+                _MaxValue,
+                new PropertyChangedCallback(OnMaxValueChanged)
+                //, new CoerceValueCallback(CoerceMaxValue)
+                )
+            );
 
+
+#if WPF 
         /// <summary>
         /// Identifies the ValueChanged routed event.
         /// </summary>
@@ -121,14 +149,18 @@ namespace NumericUpDownLib.Base
                 typeof(RoutedPropertyChangedEventHandler<T>),
                 typeof(AbstractBaseUpDown<T>));
 
+#endif
+
         /// <summary>
         /// Backing store for dependency property to define the number of characters
         /// that should be displayed in the control without having to scroll inside
         /// the textbox portion.
         /// </summary>
-        protected static readonly DependencyProperty DisplayLengthProperty =
-            DependencyProperty.Register("DisplayLength", typeof(byte),
-                typeof(AbstractBaseUpDown<T>), new PropertyMetadata((byte)3));
+        protected static readonly DependencyProperty DisplayLengthProperty = DependencyProperty.Register(
+            "DisplayLength",
+            typeof(byte),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata((byte)3));
 
         /// <summary>
         /// Backing store for dependency property to decide whether DisplayLength
@@ -136,66 +168,82 @@ namespace NumericUpDownLib.Base
         /// if user types longer string), or not (control will resize in dependence
         /// of string length and available space).
         /// </summary>
-        protected static readonly DependencyProperty IsDisplayLengthFixedProperty =
-            DependencyProperty.Register("IsDisplayLengthFixed",
-                typeof(bool), typeof(AbstractBaseUpDown<T>), new PropertyMetadata(true, OnIsDisplayLengthFixedChanged));
+        protected static readonly DependencyProperty IsDisplayLengthFixedProperty = DependencyProperty.Register(
+            "IsDisplayLengthFixed",
+            typeof(bool),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(true, OnIsDisplayLengthFixedChanged));
 
         /// <summary>
         /// Backing store for dependency property to decide whether all text in textbox
         /// should be selected upon focus or not.
         /// </summary>
-        protected static readonly DependencyProperty SelectAllTextOnFocusProperty =
-            DependencyProperty.Register("SelectAllTextOnFocus",
-                typeof(bool), typeof(AbstractBaseUpDown<T>), new PropertyMetadata(true));
+        protected static readonly DependencyProperty SelectAllTextOnFocusProperty = DependencyProperty.Register(
+            "SelectAllTextOnFocus",
+            typeof(bool),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(true));
 
         /// <summary>
         /// Backing store for dependency property for .Net FormatString that is
         /// applied to the textbox text portion of the up down control.
         /// </summary>
-        protected static readonly DependencyProperty FormatStringProperty =
-            DependencyProperty.Register("FormatString", typeof(string),
-                typeof(AbstractBaseUpDown<T>), new PropertyMetadata("G", OnIsFormatStringChanged));
+        protected static readonly DependencyProperty FormatStringProperty = DependencyProperty.Register(
+            "FormatString",
+            typeof(string),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata("G", OnIsFormatStringChanged));
 
         /// <summary>
         /// Backing store of <see cref="MouseWheelAccelaratorKey"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MouseWheelAccelaratorKeyProperty =
-            DependencyProperty.Register("MouseWheelAccelaratorKey",
-                typeof(ModifierKeys), typeof(AbstractBaseUpDown<T>),
-                new PropertyMetadata(ModifierKeys.Control));
+        public static readonly DependencyProperty MouseWheelAccelaratorKeyProperty = DependencyProperty.Register(
+            "MouseWheelAccelaratorKey",
+            typeof(VirtualKeyModifiers),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(VirtualKeyModifiers.Control));
 
         /// <summary>
         /// Backing store of <see cref="IsMouseDragEnabled"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsMouseDragEnabledProperty =
-            DependencyProperty.Register("IsMouseDragEnabled", typeof(bool),
-                typeof(AbstractBaseUpDown<T>), new PropertyMetadata(true, OnIsMouseDragEnabledChanged));
+        public static readonly DependencyProperty IsMouseDragEnabledProperty = DependencyProperty.Register(
+            "IsMouseDragEnabled",
+            typeof(bool),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(true, OnIsMouseDragEnabledChanged));
 
         /// <summary>
         /// Backing store of <see cref="CanIncDecMouseDrag"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CanMouseDragProperty =
-            DependencyProperty.Register("CanMouseDrag", typeof(CanIncDecMouseDrag),
-                typeof(AbstractBaseUpDown<T>), new PropertyMetadata(CanIncDecMouseDrag.VerticalHorizontal));
+        public static readonly DependencyProperty CanMouseDragProperty = DependencyProperty.Register(
+            "CanMouseDrag",
+            typeof(CanIncDecMouseDrag),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(CanIncDecMouseDrag.VerticalHorizontal));
 
-        public static readonly DependencyProperty MouseWheelEnabledProperty =
-            DependencyProperty.Register("MouseWheelEnabled", typeof(bool),
-                                        typeof(AbstractBaseUpDown<T>),
-                                        new PropertyMetadata(true));
+        public static readonly DependencyProperty MouseWheelEnabledProperty = DependencyProperty.Register(
+            "MouseWheelEnabled",
+            typeof(bool),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(true));
 
         /// <summary>
         /// Backing store of <see cref="IsLargeStepEnabled"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsLargeStepEnabledProperty =
-            DependencyProperty.Register("IsLargeStepEnabled", typeof(bool),
-                typeof(AbstractBaseUpDown<T>), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsLargeStepEnabledProperty = DependencyProperty.Register(
+            "IsLargeStepEnabled",
+            typeof(bool),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(true));
 
         /// <summary>
         /// Backing store of <see cref="IsUpdateValueWhenLostFocus"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsUpdateValueWhenLostFocusProperty =
-            DependencyProperty.Register("IsUpdateValueWhenLostFocus", typeof(bool),
-                typeof(AbstractBaseUpDown<T>), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsUpdateValueWhenLostFocusProperty = DependencyProperty.Register(
+                "IsUpdateValueWhenLostFocus",
+                typeof(bool),
+                typeof(AbstractBaseUpDown<T>),
+                new PropertyMetadata(false));
 
         /// <summary>
         /// Holds the REQUIRED textbox instance part for this control.
@@ -219,8 +267,8 @@ namespace NumericUpDownLib.Base
         /// </summary>
         static AbstractBaseUpDown()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AbstractBaseUpDown<T>),
-                       new FrameworkPropertyMetadata(typeof(AbstractBaseUpDown<T>)));
+            // TODO DefaultStyleKeyProperty.OverrideMetadata(typeof(AbstractBaseUpDown<T>),
+            //    new FrameworkPropertyMetadata(typeof(AbstractBaseUpDown<T>)));
         }
 
         /// <summary>
@@ -234,6 +282,9 @@ namespace NumericUpDownLib.Base
         #endregion constructor
 
         #region events
+
+
+#if WPF
         /// <summary>
         /// Occurs when the Value property changes.
         /// </summary>
@@ -241,25 +292,55 @@ namespace NumericUpDownLib.Base
         {
             add { AddHandler(ValueChangedEvent, value); }
             remove { RemoveHandler(ValueChangedEvent, value); }
-        }
+        } 
+#else
+
+        protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> ValueChangeds = new();
 
         /// <summary>
-        /// Occurs when the MinValue property changes.
+        /// Identifies the ValueChanged routed event.
         /// </summary>
-        public event RoutedPropertyChangedEventHandler<T> MinValueChanged
+        public event EventHandler<ValueChangedEventArgs<T>> ValueChanged
         {
-            add { AddHandler(MinValueChangedEvent, value); }
-            remove { RemoveHandler(MinValueChangedEvent, value); }
+            add { ValueChangeds.AddEventHandler(value); }
+            remove { ValueChangeds.RemoveEventHandler(value); }
         }
 
+
+        protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> MinValueChangeds = new();
+
         /// <summary>
-        /// Occurs when the MaxValue property changes.
+        /// Identifies the ValueChanged routed event.
         /// </summary>
-        public event RoutedPropertyChangedEventHandler<T> MaxValueChanged
+        public event EventHandler<ValueChangedEventArgs<T>> MinValueChanged
         {
-            add { AddHandler(MaxValueChangedEvent, value); }
-            remove { RemoveHandler(MaxValueChangedEvent, value); }
+            add { MinValueChangeds.AddEventHandler(value); }
+            remove { MinValueChangeds.RemoveEventHandler(value); }
         }
+
+        private void OnMinValueChanged(ValueChangedEventArgs<T> args)
+        {
+            ValueChangeds.InvocationList?.Invoke(this, args);
+        }
+
+
+        protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> MaxValueChangeds = new();
+
+        /// <summary>
+        /// Identifies the ValueChanged routed event.
+        /// </summary>
+        public event EventHandler<ValueChangedEventArgs<T>> MaxValueChanged
+        {
+            add { MaxValueChangeds.AddEventHandler(value); }
+            remove { MaxValueChangeds.RemoveEventHandler(value); }
+        }
+
+        private void OnMaxValueChanged(ValueChangedEventArgs<T> args)
+        {
+            ValueChangeds.InvocationList?.Invoke(this, args);
+        }
+
+#endif
         #endregion events
 
         #region Command
@@ -276,15 +357,15 @@ namespace NumericUpDownLib.Base
         /// Dependency property backing store for Command Value property.
         /// </summary>
         public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(ICommand), typeof(AbstractBaseUpDown<T>),
+            DependencyProperty.Register("Command", typeof(XamlUICommand), typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(null, new PropertyChangedCallback(CommandChangedCallBack)));
 
         private static void CommandChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is AbstractBaseUpDown<T> nud)
             {
-                ICommand oldCommand = e.OldValue as ICommand;
-                ICommand newCommand = e.NewValue as ICommand;
+                XamlUICommand oldCommand = e.OldValue as XamlUICommand;
+                XamlUICommand newCommand = e.NewValue as XamlUICommand;
                 nud.HookUpCommand(oldCommand, newCommand);
             }
         }
@@ -293,7 +374,9 @@ namespace NumericUpDownLib.Base
         /// Dependency property backing store for CommandParameter Value property.
         /// </summary>
         public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register("CommandParameter", typeof(object), typeof(AbstractBaseUpDown<T>));
+            DependencyProperty.Register("CommandParameter", typeof(object), typeof(AbstractBaseUpDown<T>)
+                , new PropertyMetadata(null)
+                );
 
         /// <summary>
         /// Gets/Sets a Command Parameter for the Command <see cref="Command"/> binding
@@ -309,14 +392,14 @@ namespace NumericUpDownLib.Base
         /// Identifies the InputElement Dependency Property.
         /// </summary>
         public static readonly DependencyProperty InputElementProperty = DependencyProperty.Register("CommandTarget",
-            typeof(IInputElement), typeof(AbstractBaseUpDown<T>));
+            typeof(UIElement), typeof(AbstractBaseUpDown<T>), null);
 
         /// <summary>
         /// Gets or sets the InputElement assigned to the control.
         /// </summary>
-        public IInputElement CommandTarget
+        public UIElement CommandTarget
         {
-            get { return (IInputElement)GetValue(InputElementProperty); }
+            get { return (UIElement)GetValue(InputElementProperty); }
             set { SetValue(InputElementProperty, value); }
         }
 
@@ -329,8 +412,8 @@ namespace NumericUpDownLib.Base
         /// <param name="cmd"></param>
         private void CommandExecute(ICommand cmd)
         {
-            if (cmd is RoutedCommand command)
-                command.Execute(CommandParameter, CommandTarget);
+            if (cmd is XamlUICommand command)
+                command.Execute(CommandParameter/*TODO, CommandTarget*/);
             else if (cmd != null)
                 cmd.Execute(CommandParameter);
         }
@@ -363,9 +446,9 @@ namespace NumericUpDownLib.Base
         /// <param name="e"></param>
         private void CanExecuteChanged(object sender, EventArgs e)
         {
-            if (this.Command is RoutedCommand command)
+            if (this.Command is XamlUICommand command)
             {
-                this.IsEnabled = command.CanExecute(CommandParameter, CommandTarget);
+                this.IsEnabled = command.CanExecute(CommandParameter/*, CommandTarget*/);
             }
             else if (this.Command != null)
             {
@@ -502,9 +585,9 @@ namespace NumericUpDownLib.Base
         /// steps, while otherwise the <see cref="StepSize"/> property is applied as base of
         /// increments/decrement steps.
         /// </summary>
-        public ModifierKeys MouseWheelAccelaratorKey
+        public VirtualKeyModifiers MouseWheelAccelaratorKey
         {
-            get { return (ModifierKeys)GetValue(MouseWheelAccelaratorKeyProperty); }
+            get { return (VirtualKeyModifiers)GetValue(MouseWheelAccelaratorKeyProperty); }
             set { SetValue(MouseWheelAccelaratorKeyProperty, value); }
         }
 
@@ -571,8 +654,8 @@ namespace NumericUpDownLib.Base
                     _IsDataValid = value;
 
                     EditingColorBrush = _IsDataValid ?
-                        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Green) :
-                        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Red);
+                        new SolidColorBrush(Colors.Green) :
+                        new SolidColorBrush(Colors.Red);
 
                     // FIX THE behavior when user input unsupported char like ghijk
                     if (EnableValidatingIndicator && !_IsDataValid)
@@ -595,7 +678,7 @@ namespace NumericUpDownLib.Base
             {
                 lastEditingNumericValue = value;
                 if (EnableValidatingIndicator)
-                    EditingVisibility = lastEditingNumericValue.Equals(Value) ? Visibility.Hidden : Visibility.Visible;
+                    EditingVisibility = lastEditingNumericValue.Equals(Value) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
@@ -628,7 +711,7 @@ namespace NumericUpDownLib.Base
         /// Is invoked whenever application code or internal processes call
         /// System.Windows.FrameworkElement.ApplyTemplate.
         /// </summary>
-        public override void OnApplyTemplate()
+        protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
@@ -646,7 +729,9 @@ namespace NumericUpDownLib.Base
 
                 _PART_TextBox.TextChanged += _PART_TextBox_TextChanged;
 
-                _PART_TextBox.MouseEnter += _PART_TextBox_MouseEnter;
+                _PART_TextBox.PointerEntered += _PART_TextBox_MouseEnter;
+
+#if WPF
                 _PART_TextBox.GotKeyboardFocus += _PART_TextBox_GotKeyboardFocus;
                 _PART_TextBox.LostKeyboardFocus += _PART_TextBox_LostKeyboardFocus;
 
@@ -655,12 +740,21 @@ namespace NumericUpDownLib.Base
                 _PART_TextBox.PreviewMouseDown += _PART_TextBox_PreviewMouseDown;
                 _PART_TextBox.LostMouseCapture += _PART_TextBox_LostMouseCapture;
 
-                _PART_TextBox.GotFocus += _PART_TextBox_GotFocus;
-                _PART_TextBox.LostFocus += _PART_TextBox_LostFocus;
+#endif
 
-                _PART_TextBox.PreviewKeyDown += textBox_PreviewKeyDown;
-                _PART_TextBox.PreviewTextInput += textBox_PreviewTextInput;
-                DataObject.AddPastingHandler(_PART_TextBox, textBox_TextPasted);
+
+
+                _PART_TextBox.PreviewKeyDown += _PART_TextBox_PreviewKeyDown; ;
+                _PART_TextBox.Paste += _PART_TextBox_Paste; ;
+
+
+                _PART_TextBox.GotFocus += _PART_TextBox_GotFocus;
+                _PART_TextBox.LostFocus += _PART_TextBox_LostFocus; ;
+                _PART_TextBox.TextChanging += _PART_TextBox_TextChanging;
+
+                _PART_TextBox.ProcessKeyboardAccelerators += _PART_TextBox_ProcessKeyboardAccelerators;
+                _PART_TextBox.SelectionChanged += _PART_TextBox_SelectionChanged;
+                _PART_TextBox.SelectionChanging += _PART_TextBox_SelectionChanging;
             }
 
             if (_PART_DecrementButton != null)
@@ -669,9 +763,18 @@ namespace NumericUpDownLib.Base
             if (_PART_IncrementButton != null)
                 _PART_IncrementButton.PreviewKeyDown += IncDecButton_PreviewKeyDown;
 
+#if WPF
             this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(this_IsVisibleChanged);
+#endif
         }
 
+
+        private void _PART_TextBox_ProcessKeyboardAccelerators(UIElement sender, ProcessKeyboardAcceleratorEventArgs args)
+        {
+            throw new NotImplementedException();
+        }
+
+#if WPF
         /// <summary>
         /// User can mouse over the control and spin the mousewheel up or down
         /// to increment or decrement the value in the up/down control.
@@ -718,6 +821,8 @@ namespace NumericUpDownLib.Base
             }
         }
 
+#endif
+
         #region IsMouseDragEnabled
         /// <summary>
         /// Is invoked when <see cref="IsMouseDragEnabled"/> dependency property value
@@ -725,8 +830,7 @@ namespace NumericUpDownLib.Base
         /// </summary>
         /// <param name="d"></param>
         /// <param name="e"></param>
-        private static void OnIsMouseDragEnabledChanged(DependencyObject d,
-                                                        DependencyPropertyChangedEventArgs e)
+        private static void OnIsMouseDragEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as AbstractBaseUpDown<T>).OnIsMouseDragEnabledChanged(e);
         }
@@ -742,15 +846,19 @@ namespace NumericUpDownLib.Base
 
             if (_PART_TextBox != null)
             {
-                if ((bool)(e.NewValue) == false)
+                /* TODO
+                 if ((bool)(e.NewValue) == false)
                     _PART_TextBox.Cursor = Cursors.IBeam;
                 else
                     _PART_TextBox.Cursor = Cursors.ScrollAll;
+                */
             }
         }
         #endregion IsMouseDragEnabled
 
         #region textbox mouse and focus handlers
+
+#if WPF
         /// <summary>
         /// Clears the focus and resets the mouse incrementor object to cancel
         /// editing and return to mouse drag mode.
@@ -772,18 +880,21 @@ namespace NumericUpDownLib.Base
             }));
         }
 
-        private void IncDecButton_PreviewKeyDown(object sender, KeyEventArgs e)
+#endif
+        private void IncDecButton_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
+
             // Remove focus when escape was hit to go back to Cursors.ScrollAll mode
             // and edit value increment/decrement via mouse drag gesture
-            if (e.Key == Key.Escape)
+            if (e.Key == VirtualKey.Escape)
             {
-                Keyboard.ClearFocus();
+                // TODO KeyboardAccelerator.ClearFocus();
                 e.Handled = true;
                 return;
             }
         }
 
+#if WPF
         /// <summary>
         /// This is called if we are losing the mouse capture without going through
         /// the MouseUp event - normally this should not be necessary but we'll have
@@ -917,6 +1028,17 @@ namespace NumericUpDownLib.Base
             _objMouseIncr = null;
             (sender as TextBox).Cursor = Cursors.ScrollAll;
         }
+#endif
+
+        private void _PART_TextBox_SelectionChanging(TextBox sender, TextBoxSelectionChangingEventArgs args)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _PART_TextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Adjust mouse cursor to <see cref="Cursors.ScrollAll"/> when mouse
@@ -924,16 +1046,19 @@ namespace NumericUpDownLib.Base
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _PART_TextBox_MouseEnter(object sender, MouseEventArgs e)
+        private void _PART_TextBox_MouseEnter(object sender, PointerRoutedEventArgs e)
         {
             if (IsMouseDragEnabled == false)
                 return;
 
-            if (IsKeyboardFocusWithin)
+            /* TODO if (IsKeyboardFocusWithin)
                 (sender as TextBox).Cursor = Cursors.IBeam;
             else
-                (sender as TextBox).Cursor = Cursors.ScrollAll;
+                (sender as TextBox).Cursor = Cursors.ScrollAll;*/
         }
+
+
+#if WPF
 
         /// <summary>
         /// Force <see cref="Cursors.IBeam"/> cursor when keyboard focus is within control.
@@ -945,7 +1070,7 @@ namespace NumericUpDownLib.Base
             _objMouseIncr = null;
             (sender as TextBox).Cursor = Cursors.IBeam;
         }
-
+#endif
         private void _PART_TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
@@ -963,7 +1088,7 @@ namespace NumericUpDownLib.Base
             if (IsMouseDragEnabled == true)
             {
                 _objMouseIncr = null;
-                (sender as TextBox).Cursor = Cursors.ScrollAll;
+                // TODO (sender as TextBox).Cursor = Cursors.ScrollAll;
             }
 
             if (_PART_TextBox != null)
@@ -983,18 +1108,22 @@ namespace NumericUpDownLib.Base
 
         #region textinput handlers
 
+        private void _PART_TextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Method executes when the text portion in the textbox is changed
         /// The Value is corrected to a valid value if text was illegal or
         /// value was outside of the specified bounds.
         ///
         /// https://stackoverflow.com/questions/841293/where-is-the-wpf-numeric-updown-control#2752538
-        /// also, <see cref="textBox_PreviewKeyDown"/> Text will be format by "Enter"
+        /// also, <see cref="_PART_TextBox_PreviewKeyDown"/> Text will be format by "Enter"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void _PART_TextBox_TextChanged(object sender,
-                                                 TextChangedEventArgs e)
+        protected void _PART_TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_PART_TextBox != null)
             {
@@ -1029,11 +1158,14 @@ namespace NumericUpDownLib.Base
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBox_TextPasted(object sender, DataObjectPastingEventArgs e)
+        private void _PART_TextBox_Paste(object sender, TextControlPasteEventArgs e)
         {
+
             TextBox textBox = sender as TextBox;
-            if (e.SourceDataObject.GetDataPresent(DataFormats.Text, true) == false)
+            var package = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+            if (!package.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
             {
+                var text = package.GetTextAsync();
                 return;
             }
 
@@ -1045,47 +1177,47 @@ namespace NumericUpDownLib.Base
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            UserInput = true;
-        }
+        // TODO private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    UserInput = true;
+        //}
 
         /// <summary>
         /// Catches pasting
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void _PART_TextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
             UserInput = true;
 
             // Remove focus when escape was hit to go back to Cursors.ScrollAll mode
             // and edit value increment/decrement via mouse drag gesture
-            if (e.Key == Key.Escape)
+            if (e.Key == Windows.System.VirtualKey.Escape)
             {
                 // SUPPORT RESUME TO THE LAST VALUE WHEN USER DECIDE TO Exit editing
                 _PART_TextBox.Text = FormatNumber(Value);
                 _PART_TextBox.SelectionStart = 0;
-                Keyboard.ClearFocus();
+                //Keyboard.ClearFocus();
                 e.Handled = true;
                 return;
             }
 
             // support small value change via up cursor key
-            if (e.Key == Key.Up && IsModifierKeyDown() == false)
+            if (e.Key == VirtualKey.Up && IsModifierKeyDown() == false)
             {
                 if (CanIncreaseCommand() == true)
-                    IncreaseCommand.Execute(null, this);
+                    IncreaseCommand.Execute(this);
 
                 e.Handled = true;
                 return;
             }
 
             // support small value change via down cursor key
-            if (e.Key == Key.Down && IsModifierKeyDown() == false)
+            if (e.Key == VirtualKey.Down && IsModifierKeyDown() == false)
             {
                 if (CanDecreaseCommand() == true)
-                    DecreaseCommand.Execute(null, this);
+                    DecreaseCommand.Execute(this);
 
                 e.Handled = true;
                 return;
@@ -1094,7 +1226,7 @@ namespace NumericUpDownLib.Base
             if (IsLargeStepEnabled)
             {
                 // support large value change via right cursor key
-                if (e.Key == Key.Right && IsModifierKeyDown() == false)
+                if (e.Key == VirtualKey.Right && IsModifierKeyDown() == false)
                 {
                     OnIncrement(LargeStepSize);
                     e.Handled = true;
@@ -1102,18 +1234,18 @@ namespace NumericUpDownLib.Base
                 }
 
                 // support large value change via left cursor key
-                if (e.Key == Key.Left && IsModifierKeyDown() == false)
+                if (e.Key == VirtualKey.Left && IsModifierKeyDown() == false)
                 {
                     OnDecrement(LargeStepSize);
                     e.Handled = true;
                     return;
                 }
             }
-
-            var isCtrlDown = (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
+            var window = CoreWindow.GetForCurrentThread();
+            var isCtrlDown = (window.GetKeyState(VirtualKey.Control) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
 
             // update value typed by the user
-            if (e.Key == Key.Enter)
+            if (e.Key == VirtualKey.Enter)
             {
                 if (_PART_TextBox != null)
                 {
@@ -1129,7 +1261,7 @@ namespace NumericUpDownLib.Base
                     if (OldValue.Equals(Value) && isCtrlDown)
                     {
                         System.Diagnostics.Debug.WriteLine("ValueChanged forced by user");
-                        OnValueChanged(this, new DependencyPropertyChangedEventArgs(ValueProperty, Value, Value));
+                        this.OnValueChanged(new ValueChangedEventArgs<T>(Value, Value));
                     }
 
                     e.Handled = true;
@@ -1144,9 +1276,28 @@ namespace NumericUpDownLib.Base
         /// <returns></returns>
         private bool IsModifierKeyDown()
         {
-            return Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift) ||
-                   Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl) ||
-                   Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+            CoreWindow window = CoreWindow.GetForCurrentThread();
+
+            var csaDown = false;
+
+            if ((window.GetKeyState(VirtualKey.Shift) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down)
+            {
+                // Shift 键正在按下
+                csaDown |= true;
+            }
+
+            if ((window.GetKeyState(VirtualKey.Control) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down)
+            {
+                // Ctrl 键正在按下
+                csaDown |= true;
+            }
+
+            if ((window.GetKeyState(VirtualKey.Menu) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down)
+            {
+                // Alt 键正在按下
+                csaDown |= true;
+            }
+            return csaDown;
         }
 
 
@@ -1161,7 +1312,7 @@ namespace NumericUpDownLib.Base
         protected string FormatNumber(T number)
         {
             string format = "{0}";
-            var form = (string) GetValue(FormatStringProperty);
+            var form = (string)GetValue(FormatStringProperty);
             if (string.IsNullOrEmpty(this.FormatString) == false)
             {
                 format = !FormatString.StartsWith("{")
@@ -1253,7 +1404,7 @@ namespace NumericUpDownLib.Base
         /// Raises the ValueChanged event.
         /// </summary>
         /// <param name="args">Arguments associated with the ValueChanged event.</param>
-        protected virtual void OnValueChanged(RoutedPropertyChangedEventArgs<T> args)
+        protected virtual void OnValueChanged(ValueChangedEventArgs<T> args)
         {
             if (_PART_TextBox != null)
             {
@@ -1261,7 +1412,7 @@ namespace NumericUpDownLib.Base
                 LastEditingNumericValue = Value;
             }
             CommandExecute(Command);
-            this.RaiseEvent(args);
+            ValueChangeds.InvocationList?.Invoke(this, args);
         }
 
         private static object CoerceValue(DependencyObject element, object value)
@@ -1300,7 +1451,7 @@ namespace NumericUpDownLib.Base
 
             if (control != null && args != null)
             {
-                RoutedPropertyChangedEventArgs<T> e = new RoutedPropertyChangedEventArgs<T>((T)args.OldValue, (T)args.NewValue, ValueChangedEvent);
+                ValueChangedEventArgs<T> e = new ValueChangedEventArgs<T>((T)args.OldValue, (T)args.NewValue);
                 control.OnValueChanged(e);
 
                 AbstractBaseUpDown<T>.CoerceValue(obj, args.NewValue);
@@ -1313,21 +1464,21 @@ namespace NumericUpDownLib.Base
         /// Raises the MinValueChanged event.
         /// </summary>
         /// <param name="args">Arguments associated with the ValueChanged event.</param>
-        protected virtual void OnMinValueChanged(RoutedPropertyChangedEventArgs<T> args)
+        protected virtual void OnMinValueChanged(MinValueChangedEventArgs<T> args)
         {
-            this.RaiseEvent(args);
+            MinValueChangeds.InvocationList?.Invoke(this, args);
         }
 
-        private static void OnMinValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        private static void OnMinValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
-            var control = obj as AbstractBaseUpDown<T>;
+            var control = d as AbstractBaseUpDown<T>;
 
             if (control != null && args != null)
             {
-                RoutedPropertyChangedEventArgs<T> e = new RoutedPropertyChangedEventArgs<T>((T)args.OldValue, (T)args.NewValue, MinValueChangedEvent);
+                MinValueChangedEventArgs<T> e = new((T)args.OldValue, (T)args.NewValue);
                 control.OnMinValueChanged(e);
 
-                AbstractBaseUpDown<T>.CoerceMinValue(obj, args.NewValue);
+                AbstractBaseUpDown<T>.CoerceMinValue(d, args.NewValue);
             }
         }
 
@@ -1357,9 +1508,9 @@ namespace NumericUpDownLib.Base
         /// Raises the MinValueChanged event.
         /// </summary>
         /// <param name="args">Arguments associated with the ValueChanged event.</param>
-        protected virtual void OnMaxValueChanged(RoutedPropertyChangedEventArgs<T> args)
+        protected virtual void OnMaxValueChanged(MaxValueChangedEventArgs<T> args)
         {
-            this.RaiseEvent(args);
+            MaxValueChangeds.InvocationList?.Invoke(this, args);
         }
 
         private static void OnMaxValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
@@ -1368,7 +1519,7 @@ namespace NumericUpDownLib.Base
 
             if (control != null && args != null)
             {
-                RoutedPropertyChangedEventArgs<T> e = new RoutedPropertyChangedEventArgs<T>((T)args.OldValue, (T)args.NewValue, MaxValueChangedEvent);
+                MaxValueChangedEventArgs<T> e = new MaxValueChangedEventArgs<T>((T)args.OldValue, (T)args.NewValue/*, MaxValueChangedEvent*/);
                 control.OnMaxValueChanged(e);
 
                 AbstractBaseUpDown<T>.CoerceMaxValue(obj, args.NewValue);
@@ -1426,9 +1577,11 @@ namespace NumericUpDownLib.Base
 
                 if (SetBinding == true && MeasuringControl != null)
                 {
-                    Binding binding = new Binding();
-                    binding.Path = new PropertyPath("ActualWidth");
-                    binding.Source = MeasuringControl;
+                    Binding binding = new Binding
+                    {
+                        Path = new PropertyPath("ActualWidth"),
+                        Source = MeasuringControl
+                    };
 
                     BindingOperations.SetBinding(UserControl, FrameworkElement.MaxWidthProperty, binding);
                 }
