@@ -15,7 +15,6 @@
 
         <Button SizeChanged="myButton_SizeChanged" x:Name="myButton" Click="myButton_Click">Click Me</Button>
         <NumberBox ValueChanged="NumberBox_ValueChanged"></NumberBox>
-        <nud:UserControl1></nud:UserControl1>
         <!--<nud:ByteUpDown></nud:ByteUpDown>-->
     </StackPanel>
 </Window>
