@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "NumericUpDownLib.WinUI.Demo (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "NumericUpDownLib.WinUI.Demo (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
