@@ -11,6 +11,7 @@ namespace NumericUpDownLib.WinUI.Base
     using NumericUpDownLib.Models;
     using System;
     using System.ComponentModel;
+    //using System.Diagnostics;
     using System.Globalization;
     using System.Reflection;
     using System.Runtime.InteropServices.WindowsRuntime;
@@ -317,9 +318,7 @@ namespace NumericUpDownLib.WinUI.Base
 
 
                 _PART_TextBox.PreviewKeyDown += _PART_TextBox_PreviewKeyDown; ;
-                _PART_TextBox.Paste += _PART_TextBox_Paste; ;
-
-
+                _PART_TextBox.Paste += _PART_TextBox_Paste;
                 _PART_TextBox.GotFocus += _PART_TextBox_GotFocus;
                 _PART_TextBox.LostFocus += _PART_TextBox_LostFocus; ;
 
@@ -1032,11 +1031,8 @@ namespace NumericUpDownLib.WinUI.Base
 
         private void _PART_Measuring_Element_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _PART_Measuring_Element.Visibility = Visibility.Visible;
-            _PART_Measuring_Element.UpdateLayout();
             _PART_TextBox.MinWidth = _PART_Measuring_Element.ActualWidth;
             _PART_TextBox.Width = _PART_Measuring_Element.ActualWidth;
-            _PART_Measuring_Element.Visibility = Visibility.Collapsed;
             _PART_TextBox.UpdateLayout();
         }
 
@@ -1084,6 +1080,11 @@ namespace NumericUpDownLib.WinUI.Base
         private void _PART_TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
+            spMode = SpinButtonPlacementMode;
+            doubleActualWidth = _PART_IncrementButton.ActualWidth;
+            SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden;
+            _PART_TextBox.Width = _PART_TextBox.ActualWidth + doubleActualWidth;
+            System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
 
             _objMouseIncr = null;
             if (SelectAllTextOnFocus == true)
@@ -1093,8 +1094,15 @@ namespace NumericUpDownLib.WinUI.Base
             }
         }
 
+        NumberBoxSpinButtonPlacementMode spMode = NumberBoxSpinButtonPlacementMode.Compact;
+        double doubleActualWidth = 0;
         private void _PART_TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
+            var tb = sender as TextBox;
+            SpinButtonPlacementMode = spMode;
+            _PART_TextBox.Width = _PART_TextBox.ActualWidth - doubleActualWidth;
+
+            System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
             if (IsMouseDragEnabled == true)
             {
                 _objMouseIncr = null;
@@ -1290,6 +1298,7 @@ namespace NumericUpDownLib.WinUI.Base
         private bool IsModifierKeyDown()
         {
             CoreWindow window = CoreWindow.GetForCurrentThread();
+            if (window == null) return false;
 
             var csaDown = false;
 

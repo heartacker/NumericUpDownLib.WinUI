@@ -31,7 +31,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="base:InputBaseUpDown">
                             <Border MinHeight="34" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                <Grid VerticalAlignment="Center">
+                                <Grid Height="{TemplateBinding Height}" VerticalAlignment="Top">
                                     <Grid.Resources>
                                         <conv:ByteToPlaceHolderStringConverter x:Key="ByteToPlaceHolderStringConverter" />
                                         <conv:BoolToVisibilityPropConverter x:Key="BoolToVisibilityConverter" />
@@ -46,6 +46,57 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
+                                    <Grid Grid.RowSpan="2" Grid.Column="0">
+                                        <!--
+                                            Hidden measuring textbox ensure reservation of enough UI space
+                                            according to DisplayLength dependency property
+                                        -->
+                                        <TextBox
+                                            x:Name="PART_Measuring_Element"
+                                            MinWidth="0"
+                                            Margin="0,0,0,0"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalContentAlignment="Left"
+                                            VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
+                                            AcceptsReturn="False"
+                                            Background="#00000000"
+                                            FontFamily="Consolas"
+                                            Foreground="#00000000"
+                                            IsColorFontEnabled="False"
+                                            IsEnabled="False"
+                                            PlaceholderText="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
+                                            Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
+                                            TextAlignment="Right"
+                                            TextWrapping="NoWrap"
+                                            Visibility="Visible" />
+
+                                        <TextBox
+                                            x:Name="PART_TextBox"
+                                            Margin="0,0,0,0"
+                                            HorizontalAlignment="Right"
+                                            VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
+                                            AcceptsReturn="False"
+                                            Background="{TemplateBinding Background}"
+                                            FontFamily="Consolas"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            IsReadOnly="{TemplateBinding IsReadOnly}"
+                                            ManipulationMode="Scale"
+                                            TextAlignment="Left"
+                                            TextWrapping="NoWrap" />
+                                        <!--  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"  -->
+                                        <!--  Background="{TemplateBinding Background}"  -->
+                                        <!--  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value,Mode=OneWay}"  -->
+
+                                        <TextBlock
+                                            Width="5"
+                                            Margin="1,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Foreground="{TemplateBinding EditingColorBrush}"
+                                            Text="*"
+                                            Visibility="{TemplateBinding EditingVisibility}" />
+                                    </Grid>
                                     <!--  ArrowUp Increase value button  -->
                                     <RepeatButton
                                         x:Name="PART_IncrementButton"
@@ -54,6 +105,7 @@
                                         Height="15"
                                         Margin="0"
                                         Padding="0"
+                                        HorizontalAlignment="Right"
                                         VerticalAlignment="Bottom"
                                         HorizontalContentAlignment="Left"
                                         BorderBrush="{TemplateBinding BorderBrush}"
@@ -71,6 +123,7 @@
                                         Height="16"
                                         Margin="0"
                                         Padding="0"
+                                        HorizontalAlignment="Right"
                                         VerticalAlignment="Top"
                                         HorizontalContentAlignment="Left"
                                         BorderBrush="{TemplateBinding BorderBrush}"
@@ -79,55 +132,6 @@
                                         Visibility="{Binding Path=SpinButtonPlacementMode, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SpPM2Visibility}}">
                                         <FontIcon Glyph="&#xE972;" />
                                     </RepeatButton>
-
-                                    <Grid Grid.RowSpan="2" Grid.Column="0">
-                                        <!--
-                                            Hidden measuring textbox ensure reservation of enough UI space
-                                            according to DisplayLength dependency property
-                                        -->
-                                        <TextBox
-                                            x:Name="PART_Measuring_Element"
-                                            MinWidth="0"
-                                            Margin="0"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch"
-                                            HorizontalContentAlignment="Left"
-                                            VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
-                                            AcceptsReturn="False"
-                                            Background="#00000000"
-                                            Foreground="#00000000"
-                                            IsColorFontEnabled="False"
-                                            IsEnabled="False"
-                                            PlaceholderText="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
-                                            Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
-                                            TextAlignment="Left"
-                                            TextWrapping="NoWrap"
-                                            Visibility="Visible" />
-
-                                        <TextBox
-                                            x:Name="PART_TextBox"
-                                            Margin="0"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
-                                            AcceptsReturn="False"
-                                            Background="{TemplateBinding Background}"
-                                            Foreground="{TemplateBinding Foreground}"
-                                            IsReadOnly="{TemplateBinding IsReadOnly}"
-                                            TextAlignment="Left"
-                                            TextWrapping="NoWrap" />
-                                        <!--  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"  -->
-                                        <!--  Background="{TemplateBinding Background}"  -->
-                                        <!--  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value,Mode=OneWay}"  -->
-
-                                        <TextBlock
-                                            Width="5"
-                                            Margin="1,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Top"
-                                            Foreground="{TemplateBinding EditingColorBrush}"
-                                            Text="*"
-                                            Visibility="{TemplateBinding EditingVisibility}" />
-                                    </Grid>
 
                                 </Grid>
                             </Border>
