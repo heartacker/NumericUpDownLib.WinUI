@@ -1,12 +1,13 @@
-namespace NumericUpDownLib
+namespace NumericUpDownLib.WinUI
 {
+    using Microsoft.UI.Xaml;
     using NumericUpDownLib.WinUI.Base;
     using System;
     using System.Globalization;
     using System.Windows;
 
     /// <summary>
-    /// Implements a <see cref="Double"/> based Numeric Up/Down control.
+    /// Implements a Byte based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
@@ -18,56 +19,57 @@ namespace NumericUpDownLib
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize",
-                                        typeof(double), typeof(DoubleUpDown),
-                                        new FrameworkPropertyMetadata(1d),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
+            nameof(SmallChange),
+            typeof(double),
+            typeof(ByteUpDown),
+            new PropertyMetadata((double)1)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
 
         /// <summary>
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty LargeStepSizeProperty =
-            DependencyProperty.Register("LargeStepSize",
-                                        typeof(double), typeof(DoubleUpDown),
-                                        new FrameworkPropertyMetadata(10d),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
+            nameof(LargeChange),
+            typeof(double),
+            typeof(ByteUpDown),
+            new PropertyMetadata((double)10)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
 
         #region constructor
         /// <summary>
-        /// Static class constructor
+        /// TODO Static class constructor
         /// </summary>
         static DoubleUpDown()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleUpDown),
-                       new FrameworkPropertyMetadata(typeof(DoubleUpDown)));
+#if false
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ByteUpDown),
+               new FrameworkPropertyMetadata(typeof(ByteUpDown)));
 
-            // overide default values inherited dependency properties
-            FormatStringProperty.OverrideMetadata(typeof(DoubleUpDown),
-                                                  new PropertyMetadata("F2"));
+            MaxValueProperty.OverrideMetadata(typeof(ByteUpDown),
+                                                  new PropertyMetadata(byte.MaxValue));
 
-            MaxValueProperty.OverrideMetadata(typeof(DoubleUpDown),
-                                                  new PropertyMetadata(double.MaxValue));
-
-            MinValueProperty.OverrideMetadata(typeof(DoubleUpDown),
-                                                  new PropertyMetadata(double.MinValue));
+            MinValueProperty.OverrideMetadata(typeof(ByteUpDown),
+                                                  new PropertyMetadata(byte.MinValue)); 
+#endif
 
             // Override Min/Max default values
-            ////            AbstractBaseUpDown<double>.MinValueProperty.OverrideMetadata(
-            ////                typeof(DoubleUpDown), new PropertyMetadata(double.MinValue));
+            ////		AbstractBaseUpDown<double>.MinValueProperty.OverrideMetadata(
+            ////		    typeof(ByteUpDown), new PropertyMetadata(double.MinValue));
             ////
-            ////            AbstractBaseUpDown<double>.MaxValueProperty.OverrideMetadata(
-            ////                typeof(DoubleUpDown), new PropertyMetadata(double.MaxValue));
+            ////		AbstractBaseUpDown<double>.MaxValueProperty.OverrideMetadata(
+            ////		    typeof(ByteUpDown), new PropertyMetadata(double.MaxValue));
         }
 
         /// <summary>
         /// Initializes a new instance of the AbstractBaseUpDown Control.
         /// </summary>
-        public DoubleUpDown()
-            : base()
+        public DoubleUpDown() : base()
         {
+            this.DefaultStyleKey = typeof(DoubleUpDown);
+            this.MaxValue = double.MaxValue;
         }
         #endregion constructor
 
@@ -76,7 +78,7 @@ namespace NumericUpDownLib
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override double StepSize
+        public override double SmallChange
         {
             get { return (double)GetValue(StepSizeProperty); }
             set { SetValue(StepSizeProperty, value); }
@@ -86,7 +88,7 @@ namespace NumericUpDownLib
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override double LargeStepSize
+        public override double LargeChange
         {
             get { return (double)GetValue(LargeStepSizeProperty); }
             set { SetValue(LargeStepSizeProperty, value); }
@@ -118,9 +120,9 @@ namespace NumericUpDownLib
         protected override void OnIncrease()
         {
             // Increment if possible
-            if (this.Value + this.StepSize <= this.MaxValue)
+            if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = this.Value + this.StepSize;
+                this.Value = (byte)(this.Value + this.SmallChange);
             }
             else
             {
@@ -141,9 +143,9 @@ namespace NumericUpDownLib
         protected override void OnDecrease()
         {
             // Decrement if possible
-            if (this.Value - this.StepSize > this.MinValue)
+            if (this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = this.Value - this.StepSize;
+                this.Value = (byte)(this.Value - this.SmallChange);
             }
             else
             {
@@ -174,7 +176,7 @@ namespace NumericUpDownLib
                     if (Value == MaxValue)
                         return false;
 
-                    var result = (double)(Value + stepValue);
+                    var result = (byte)(Value + stepValue);
 
                     if (result >= MaxValue)
                     {
@@ -215,7 +217,7 @@ namespace NumericUpDownLib
                     if (Value == MinValue)
                         return false;
 
-                    var result = (double)(Value - stepValue);
+                    var result = (byte)(Value - stepValue);
 
                     if (result <= MinValue)
                     {
@@ -338,7 +340,7 @@ namespace NumericUpDownLib
         /// <returns></returns>
         private static bool IsValidStepSizeReading(object value)
         {
-            double v = (double)value;
+            var v = (double)value;
             return (v > 0);
         }
         #endregion methods

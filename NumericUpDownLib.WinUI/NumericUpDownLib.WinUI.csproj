@@ -11,13 +11,10 @@
   <ItemGroup>
     <Compile Remove="Base\InputBaseUpDown1.xaml.cs" />
     <Compile Remove="DecimalUpDown.cs" />
-    <Compile Remove="DoubleUpDown.cs" />
     <Compile Remove="FloatUpDown.cs" />
     <Compile Remove="LongUpDown.cs" />
-    <Compile Remove="NumericUpDown.cs" />
     <Compile Remove="SByteUpDown.cs" />
     <Compile Remove="ShortUpDown.cs" />
-    <Compile Remove="ULongUpDown.cs" />
     <Compile Remove="UShortUpDown.cs" />
   </ItemGroup>
   <ItemGroup>
