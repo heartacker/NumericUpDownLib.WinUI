@@ -13,20 +13,20 @@
     xmlns:nudb="using:NumericUpDownLib.WinUI.Base"
     mc:Ignorable="d">
 
-    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-        <StackPanel Width="200" Orientation="Vertical">
+    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+        <StackPanel Width="400" Orientation="Vertical">
 
             <nud:ByteUpDown
-                Name="bbb"
+                Name="bbb" HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
                 BorderThickness="1"
-                DisplayLength="{Binding ElementName=abcd, Path=Value, Mode=OneWay}"
+                
                 FontWeight="Bold"
                 FormatString="X2"
                 IsDisplayLengthFixed="False"
                 IsLargeChangeEnabled="False"
                 NumberStyle="HexNumber"
                 SpinButtonPlacementMode="Compact" />
-            <TextBox Text="{Binding ElementName=bbb, Path=FocusState}" />
             <nud:UIntegerUpDown
                 HorizontalContentAlignment="Center"
                 DisplayLength="10"
@@ -35,11 +35,17 @@
                 SpinButtonPlacementMode="Compact" />
             <nud:ULongUpDown HorizontalContentAlignment="Center" DisplayLength="10" SpinButtonPlacementMode="Compact" />
             <nud:NumericUpDown DisplayLength="15" />
-            <nud:DoubleUpDown DisplayLength="15" FormatString="f3" SmallChange="0.1" />
+            <nud:DoubleUpDown
+                HorizontalContentAlignment="Left"
+                DisplayLength="15"
+                FormatString="f4"                
+                SmallChange="0.1" />
+            <TextBox Text="{Binding ElementName=bbb, Path=FocusState}" />
         </StackPanel>
         <Button x:Name="myButton" Click="myButton_Click" SizeChanged="myButton_SizeChanged">
             Click Me
         </Button>
+        <NumberBox Header="Enter an expression:" Value="NaN" PlaceholderText="1 + 2^2" AcceptsExpression="True" />
         <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
         <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
         <CheckBox Name="abc" IsChecked="True" />
