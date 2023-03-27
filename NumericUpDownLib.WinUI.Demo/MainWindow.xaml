@@ -14,38 +14,38 @@
     mc:Ignorable="d">
 
     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
-        <StackPanel Width="400" Orientation="Vertical">
+        <StackPanel Width="auto" Orientation="Vertical">
 
             <nud:ByteUpDown
-                Name="bbb" HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
+                Name="bbb"
+                HorizontalAlignment="Right"
+                HorizontalContentAlignment="Right"
                 BorderThickness="1"
-                
-                FontWeight="Bold"
+                FontWeight="SemiBold"
                 FormatString="X2"
+                Header="Byte"
                 IsDisplayLengthFixed="False"
                 IsLargeChangeEnabled="False"
                 NumberStyle="HexNumber"
+                Orientation="Vertical"
                 SpinButtonPlacementMode="Compact" />
             <nud:UIntegerUpDown
+                Header="Center"
                 HorizontalContentAlignment="Center"
                 DisplayLength="10"
                 FormatString="X8"
                 NumberStyle="HexNumber"
                 SpinButtonPlacementMode="Compact" />
-            <nud:ULongUpDown HorizontalContentAlignment="Center" DisplayLength="10" SpinButtonPlacementMode="Compact" />
+            <nud:ULongUpDown HorizontalContentAlignment="Center" DisplayLength="10" SpinButtonPlacementMode="Inline"  Header="Inline ULongUpDown"/>
             <nud:NumericUpDown DisplayLength="15" />
-            <nud:DoubleUpDown
-                HorizontalContentAlignment="Left"
-                DisplayLength="15"
-                FormatString="f4"                
-                SmallChange="0.1" />
+            <nud:UIntegerUpDown DisplayLength="15"  Header="Uint"/>
+            <nud:DoubleUpDown HorizontalContentAlignment="Left" DisplayLength="15" FormatString="f4" SmallChange="0.1" />
             <TextBox Text="{Binding ElementName=bbb, Path=FocusState}" />
         </StackPanel>
         <Button x:Name="myButton" Click="myButton_Click" SizeChanged="myButton_SizeChanged">
             Click Me
         </Button>
-        <NumberBox Header="Enter an expression:" Value="NaN" PlaceholderText="1 + 2^2" AcceptsExpression="True" />
+        <NumberBox AcceptsExpression="True" Header="Enter an expression:" PlaceholderText="1 + 2^2" Value="NaN" />
         <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
         <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
         <CheckBox Name="abc" IsChecked="True" />
