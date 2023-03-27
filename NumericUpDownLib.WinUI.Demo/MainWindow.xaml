@@ -13,35 +13,30 @@
     xmlns:nudb="using:NumericUpDownLib.WinUI.Base"
     mc:Ignorable="d">
 
-    <StackPanel
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Orientation="Horizontal">
-        <StackPanel Orientation="Horizontal">
+    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+        <StackPanel Width="500" Orientation="Horizontal">
 
-            <Button
-                x:Name="myButton"
-                Click="myButton_Click"
-                SizeChanged="myButton_SizeChanged">
-                Click Me
-            </Button>
-            <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
-            <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
-            <CheckBox Name="abc" IsChecked="True" />
-            <NumberBox
-                Name="abcd"
-                SpinButtonPlacementMode="Inline"
-                Value="10" />
-            <CheckBox Content="visa" IsChecked="{Binding ElementName=bbb, Mode=TwoWay, Path=EnableValidatingIndicator}" />
+            <nud:ByteUpDown
+                Name="bbb"
+                BorderThickness="1"
+                DisplayLength="{Binding ElementName=abcd, Path=Value, Mode=OneWay}"
+                FontWeight="Bold"
+                NumberStyle="HexNumber"
+                FormatString="X8"
+                IsDisplayLengthFixed="False"
+                IsIncDecButtonsVisible="{Binding ElementName=abc, Path=IsChecked, Mode=OneWay}" />
+            <TextBox Text="abcdd" />
         </StackPanel>
+        <Button x:Name="myButton" Click="myButton_Click" SizeChanged="myButton_SizeChanged">
+            Click Me
+        </Button>
+        <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
+        <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
+        <CheckBox Name="abc" IsChecked="True" />
+        <NumberBox Name="abcd" Minimum="1" SpinButtonPlacementMode="Inline" Value="8" />
+        <CheckBox Content="visa" IsChecked="{Binding ElementName=bbb, Mode=TwoWay, Path=EnableValidatingIndicator}" />
 
-        <nud:ByteUpDown
-            Name="bbb"
-            Background="Pink"
-            BorderBrush="Yellow"
-            BorderThickness="1"
-            DisplayLength="{Binding ElementName=abcd, Path=Value, Mode=OneWay}"
-            Foreground="Blue"
-            IsIncDecButtonsVisible="{Binding ElementName=abc, Path=IsChecked, Mode=OneWay}" />
+
+        <TextBox Text="{Binding ElementName=bbb, Path=Value, Mode=OneWay}" />
     </StackPanel>
 </Window>

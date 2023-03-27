@@ -160,6 +160,7 @@ namespace NumericUpDownLib.WinUI.Base
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata((double)3));
 
+
         /// <summary>
         /// Backing store for dependency property to decide whether DisplayLength
         /// definition leads to a fixed control size (textbox control will scroll
@@ -278,6 +279,78 @@ namespace NumericUpDownLib.WinUI.Base
             this.DefaultStyleKey = typeof(AbstractBaseUpDown<T>);
             UserInput = false;
         }
+
+        /// <summary>
+        /// Is invoked whenever application code or internal processes call
+        /// System.Windows.FrameworkElement.ApplyTemplate.
+        /// </summary>
+
+
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            _PART_TextBox = this.GetTemplateChild(Part_TextBoxName) as TextBox;
+            _PART_Measuring_Element = this.GetTemplateChild(PART_MeasuringElement) as TextBox;
+            if (_PART_Measuring_Element != null)
+            {
+                _PART_Measuring_Element.TextChanged += _PART_Measuring_Element_TextChanged;
+            }
+
+            _PART_DecrementButton = this.GetTemplateChild(PART_DecrementButton) as RepeatButton;
+            _PART_IncrementButton = this.GetTemplateChild(PART_IncrementButton) as RepeatButton;
+
+
+            if (_PART_TextBox != null)
+            {
+                BindMeasuringObject(IsDisplayLengthFixed);
+
+                FormatText(_PART_TextBox.Text);  // Ensure initial text is according to format
+
+                _PART_TextBox.TextChanging += _PART_TextBox_TextChanging;
+                _PART_TextBox.TextChanged += _PART_TextBox_TextChanged;
+
+                _PART_TextBox.PointerEntered += _PART_TextBox_MouseEnter;
+
+#if WPF
+                _PART_TextBox.GotKeyboardFocus += _PART_TextBox_GotKeyboardFocus;
+                _PART_TextBox.LostKeyboardFocus += _PART_TextBox_LostKeyboardFocus;
+
+                _PART_TextBox.MouseMove += _PART_TextBox_MouseMove;
+                _PART_TextBox.MouseUp += _PART_TextBox_MouseUp;
+                _PART_TextBox.PreviewMouseDown += _PART_TextBox_PreviewMouseDown;
+                _PART_TextBox.LostMouseCapture += _PART_TextBox_LostMouseCapture;
+
+#endif
+
+
+
+                _PART_TextBox.PreviewKeyDown += _PART_TextBox_PreviewKeyDown; ;
+                _PART_TextBox.Paste += _PART_TextBox_Paste; ;
+
+
+                _PART_TextBox.GotFocus += _PART_TextBox_GotFocus;
+                _PART_TextBox.LostFocus += _PART_TextBox_LostFocus; ;
+
+
+                _PART_TextBox.ProcessKeyboardAccelerators += _PART_TextBox_ProcessKeyboardAccelerators;
+                _PART_TextBox.SelectionChanged += _PART_TextBox_SelectionChanged;
+                _PART_TextBox.SelectionChanging += _PART_TextBox_SelectionChanging;
+            }
+
+            if (_PART_DecrementButton != null)
+                _PART_DecrementButton.PreviewKeyDown += IncDecButton_PreviewKeyDown;
+
+            if (_PART_IncrementButton != null)
+                _PART_IncrementButton.PreviewKeyDown += IncDecButton_PreviewKeyDown;
+
+#if WPF
+            this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(this_IsVisibleChanged);
+#endif
+        }
+
+
+
         #endregion constructor
 
         #region events
@@ -712,79 +785,6 @@ namespace NumericUpDownLib.WinUI.Base
         /// <returns></returns>
         abstract protected bool OnDecrement(T stepValue);
 
-        /// <summary>
-        /// Is invoked whenever application code or internal processes call
-        /// System.Windows.FrameworkElement.ApplyTemplate.
-        /// </summary>
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            _PART_TextBox = this.GetTemplateChild(Part_TextBoxName) as TextBox;
-            _PART_Measuring_Element = this.GetTemplateChild(PART_MeasuringElement) as TextBox;
-            if (_PART_Measuring_Element != null)
-            {
-                _PART_Measuring_Element.TextChanged += _PART_Measuring_Element_TextChanged;
-            }
-
-            _PART_DecrementButton = this.GetTemplateChild(PART_DecrementButton) as RepeatButton;
-            _PART_IncrementButton = this.GetTemplateChild(PART_IncrementButton) as RepeatButton;
-
-
-            if (_PART_TextBox != null)
-            {
-                BindMeasuringObject(IsDisplayLengthFixed);
-
-                FormatText(_PART_TextBox.Text);  // Ensure initial text is according to format
-
-                _PART_TextBox.TextChanged += _PART_TextBox_TextChanged;
-
-                _PART_TextBox.PointerEntered += _PART_TextBox_MouseEnter;
-
-#if WPF
-                _PART_TextBox.GotKeyboardFocus += _PART_TextBox_GotKeyboardFocus;
-                _PART_TextBox.LostKeyboardFocus += _PART_TextBox_LostKeyboardFocus;
-
-                _PART_TextBox.MouseMove += _PART_TextBox_MouseMove;
-                _PART_TextBox.MouseUp += _PART_TextBox_MouseUp;
-                _PART_TextBox.PreviewMouseDown += _PART_TextBox_PreviewMouseDown;
-                _PART_TextBox.LostMouseCapture += _PART_TextBox_LostMouseCapture;
-
-#endif
-
-
-
-                _PART_TextBox.PreviewKeyDown += _PART_TextBox_PreviewKeyDown; ;
-                _PART_TextBox.Paste += _PART_TextBox_Paste; ;
-
-
-                _PART_TextBox.GotFocus += _PART_TextBox_GotFocus;
-                _PART_TextBox.LostFocus += _PART_TextBox_LostFocus; ;
-                _PART_TextBox.TextChanging += _PART_TextBox_TextChanging;
-
-                _PART_TextBox.ProcessKeyboardAccelerators += _PART_TextBox_ProcessKeyboardAccelerators;
-                _PART_TextBox.SelectionChanged += _PART_TextBox_SelectionChanged;
-                _PART_TextBox.SelectionChanging += _PART_TextBox_SelectionChanging;
-            }
-
-            if (_PART_DecrementButton != null)
-                _PART_DecrementButton.PreviewKeyDown += IncDecButton_PreviewKeyDown;
-
-            if (_PART_IncrementButton != null)
-                _PART_IncrementButton.PreviewKeyDown += IncDecButton_PreviewKeyDown;
-
-#if WPF
-            this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(this_IsVisibleChanged);
-#endif
-        }
-
-        private void _PART_Measuring_Element_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_PART_TextBox != null)
-            {
-                _PART_TextBox.Width = _PART_Measuring_Element.ActualWidth;
-            }
-        }
 
         private void _PART_TextBox_ProcessKeyboardAccelerators(UIElement sender, ProcessKeyboardAcceleratorEventArgs args)
         {
@@ -1047,14 +1047,24 @@ namespace NumericUpDownLib.WinUI.Base
         }
 #endif
 
+        private void _PART_Measuring_Element_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _PART_Measuring_Element.Visibility = Visibility.Visible;
+            _PART_Measuring_Element.UpdateLayout();
+            _PART_TextBox.MinWidth = _PART_Measuring_Element.ActualWidth;
+            _PART_TextBox.Width = _PART_Measuring_Element.ActualWidth;
+            _PART_Measuring_Element.Visibility = Visibility.Collapsed;
+            _PART_TextBox.UpdateLayout();
+        }
+
         private void _PART_TextBox_SelectionChanging(TextBox sender, TextBoxSelectionChangingEventArgs args)
         {
-            throw new NotImplementedException();
+            //todo throw new NotImplementedException();
         }
 
         private void _PART_TextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            //todo throw new NotImplementedException();
         }
 
         /// <summary>
