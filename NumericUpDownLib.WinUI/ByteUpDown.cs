@@ -20,7 +20,7 @@ namespace NumericUpDownLib.WinUI
         /// when using the up/down of the up/down numeric control.
         /// </summary>
         protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
-            nameof(StepSize),
+            nameof(SmallChange),
             typeof(byte),
             typeof(ByteUpDown),
             new PropertyMetadata((byte)1)/*,
@@ -31,7 +31,7 @@ namespace NumericUpDownLib.WinUI
         /// when using the up/down of the up/down numeric control.
         /// </summary>
         protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
-            nameof(LargeStepSize),
+            nameof(LargeChange),
             typeof(byte),
             typeof(ByteUpDown),
             new PropertyMetadata((byte)10)/*,
@@ -78,7 +78,7 @@ namespace NumericUpDownLib.WinUI
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override byte StepSize
+        public override byte SmallChange
         {
             get { return (byte)GetValue(StepSizeProperty); }
             set { SetValue(StepSizeProperty, value); }
@@ -88,7 +88,7 @@ namespace NumericUpDownLib.WinUI
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override byte LargeStepSize
+        public override byte LargeChange
         {
             get { return (byte)GetValue(LargeStepSizeProperty); }
             set { SetValue(LargeStepSizeProperty, value); }
@@ -120,9 +120,9 @@ namespace NumericUpDownLib.WinUI
         protected override void OnIncrease()
         {
             // Increment if possible
-            if (this.Value + this.StepSize <= this.MaxValue)
+            if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = (byte)(this.Value + this.StepSize);
+                this.Value = (byte)(this.Value + this.SmallChange);
             }
             else
             {
@@ -143,9 +143,9 @@ namespace NumericUpDownLib.WinUI
         protected override void OnDecrease()
         {
             // Decrement if possible
-            if (this.Value - this.StepSize > this.MinValue)
+            if (this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = (byte)(this.Value - this.StepSize);
+                this.Value = (byte)(this.Value - this.SmallChange);
             }
             else
             {

@@ -78,6 +78,41 @@ namespace NumericUpDownLib.WinUI.Base
             new PropertyMetadata(new SolidColorBrush(Colors.Green)));
 
         /// <summary>
+        /// Backing store of <see cref="SpinButtonPlacementMode"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SpinButtonPlacementModeProperty = DependencyProperty.Register(
+            nameof(SpinButtonPlacementMode),
+            typeof(NumberBoxSpinButtonPlacementMode),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(NumberBoxSpinButtonPlacementMode.Compact));
+
+        public NumberBoxSpinButtonPlacementMode SpinButtonPlacementMode
+        {
+            get { return (NumberBoxSpinButtonPlacementMode)GetValue(SpinButtonPlacementModeProperty); }
+            set { SetValue(SpinButtonPlacementModeProperty, value); }
+        }
+
+#if false
+        /// <summary>
+        /// Dependency property backing store for the <see cref="IsIncDecButtonsVisible"/> property.
+        /// </summary>
+        public static readonly DependencyProperty IsIncDecButtonsVisibleProperty = DependencyProperty.Register(
+            nameof(IsIncDecButtonsVisible),
+            typeof(bool),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Gets/sets whether the Increment or Decrement button is currently visible or not.
+        /// </summary>
+        public bool IsIncDecButtonsVisible
+        {
+            get { return (bool)GetValue(IsIncDecButtonsVisibleProperty); }
+            set { SetValue(IsIncDecButtonsVisibleProperty, value); }
+        } 
+#endif
+
+        /// <summary>
         /// identify that the inputing data is valid or not.,
         /// </summary>
         /// <value></value>

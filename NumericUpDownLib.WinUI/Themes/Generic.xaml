@@ -35,6 +35,7 @@
                                     <Grid.Resources>
                                         <conv:ByteToPlaceHolderStringConverter x:Key="ByteToPlaceHolderStringConverter" />
                                         <conv:BoolToVisibilityPropConverter x:Key="BoolToVisibilityConverter" />
+                                        <conv:SpinButtonPlacementModeToVisibilityPropConverter x:Key="SpPM2Visibility" />
                                     </Grid.Resources>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -58,7 +59,7 @@
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="0,1,1,1"
                                         Command="{Binding Path=IncreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Visibility="{Binding Path=SpinButtonPlacementMode, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SpPM2Visibility}}">
                                         <FontIcon Glyph="&#xE971;" />
                                     </RepeatButton>
 
@@ -75,7 +76,7 @@
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="0,1,1,1"
                                         Command="{Binding Path=DecreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Visibility="{Binding Path=SpinButtonPlacementMode, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SpPM2Visibility}}">
                                         <FontIcon Glyph="&#xE972;" />
                                     </RepeatButton>
 
@@ -88,7 +89,6 @@
                                             x:Name="PART_Measuring_Element"
                                             MinWidth="0"
                                             Margin="0"
-                                            Visibility="Visible"
                                             HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch"
                                             HorizontalContentAlignment="Left"
@@ -101,7 +101,8 @@
                                             PlaceholderText="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
                                             Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
                                             TextAlignment="Left"
-                                            TextWrapping="NoWrap" />
+                                            TextWrapping="NoWrap"
+                                            Visibility="Visible" />
 
                                         <TextBox
                                             x:Name="PART_TextBox"

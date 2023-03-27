@@ -71,15 +71,6 @@ namespace NumericUpDownLib.WinUI.Base
         protected static T _MaxValue = default(T);
 
         /// <summary>
-        /// Dependency property backing store for the <see cref="IsIncDecButtonsVisible"/> property.
-        /// </summary>
-        public static readonly DependencyProperty IsIncDecButtonsVisibleProperty = DependencyProperty.Register(
-            nameof(IsIncDecButtonsVisible),
-            typeof(bool),
-            typeof(AbstractBaseUpDown<T>),
-            new PropertyMetadata(true));
-
-        /// <summary>
         /// Dependency property backing store for the Value property. defalut value is _MinValue
         /// </summary>
         protected static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
@@ -227,10 +218,10 @@ namespace NumericUpDownLib.WinUI.Base
             new PropertyMetadata(true));
 
         /// <summary>
-        /// Backing store of <see cref="IsLargeStepEnabled"/> dependency property.
+        /// Backing store of <see cref="IsLargeChangeEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsLargeStepEnabledProperty = DependencyProperty.Register(
-            nameof(IsLargeStepEnabled),
+            nameof(IsLargeChangeEnabled),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(true));
@@ -539,14 +530,6 @@ namespace NumericUpDownLib.WinUI.Base
         #endregion
 
         #region properties
-        /// <summary>
-        /// Gets/sets whether the Increment or Decrement button is currently visible or not.
-        /// </summary>
-        public bool IsIncDecButtonsVisible
-        {
-            get { return (bool)GetValue(IsIncDecButtonsVisibleProperty); }
-            set { SetValue(IsIncDecButtonsVisibleProperty, value); }
-        }
 
         /// <summary>
         /// Gets or sets the value assigned to the control.
@@ -583,7 +566,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public abstract T StepSize { get; set; }
+        public abstract T SmallChange { get; set; }
 
         /// <summary>
         /// Implements an abstract place holder for a dependency property that should
@@ -593,7 +576,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Gets or sets a large step size (actual distance) of increment or decrement step.
         /// This value should be greater than 1 but at least 1.
         /// </summary>
-        public abstract T LargeStepSize { get; set; }
+        public abstract T LargeChange { get; set; }
 
         /// <summary>
         /// Gets/sets the number of characters to display in the textbox portion of the
@@ -659,8 +642,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Gets/sets the accelerator key of type <see cref="ModifierKeys"/> that can be pressed
         /// on the keyboard during mouse wheel scrolling over the control. Pressing the mousewheel
-        /// accelerator key results in using <see cref="LargeStepSize"/> as base of increment/decrement
-        /// steps, while otherwise the <see cref="StepSize"/> property is applied as base of
+        /// accelerator key results in using <see cref="LargeChange"/> as base of increment/decrement
+        /// steps, while otherwise the <see cref="SmallChange"/> property is applied as base of
         /// increments/decrement steps.
         /// </summary>
         public VirtualKeyModifiers MouseWheelAccelaratorKey
@@ -702,7 +685,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Gets/sets wether enable large step Increment/Decrement
         /// </summary>
-        public bool IsLargeStepEnabled
+        public bool IsLargeChangeEnabled
         {
             get { return (bool)GetValue(IsLargeStepEnabledProperty); }
             set { SetValue(IsLargeStepEnabledProperty, value); }
@@ -1250,12 +1233,12 @@ namespace NumericUpDownLib.WinUI.Base
                 return;
             }
 
-            if (IsLargeStepEnabled)
+            if (IsLargeChangeEnabled)
             {
                 // support large value change via right cursor key
                 if (e.Key == VirtualKey.Right && IsModifierKeyDown() == false)
                 {
-                    OnIncrement(LargeStepSize);
+                    OnIncrement(LargeChange);
                     e.Handled = true;
                     return;
                 }
@@ -1263,7 +1246,7 @@ namespace NumericUpDownLib.WinUI.Base
                 // support large value change via left cursor key
                 if (e.Key == VirtualKey.Left && IsModifierKeyDown() == false)
                 {
-                    OnDecrement(LargeStepSize);
+                    OnDecrement(LargeChange);
                     e.Handled = true;
                     return;
                 }
