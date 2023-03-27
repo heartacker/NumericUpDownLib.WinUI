@@ -1,20 +1,47 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
-<!-- Licensed under the MIT License. -->
+<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
 
 <Window
     x:Class="NumericUpDownLib.WinUI.Demo.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:NumericUpDownLib.WinUI.Demo"
+    xmlns:cnv="using:NumericUpDownLib.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:NumericUpDownLib.WinUI.Demo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:nud="using:NumericUpDownLib.WinUI"
+    xmlns:nudb="using:NumericUpDownLib.WinUI.Base"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StackPanel
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal">
 
-        <Button SizeChanged="myButton_SizeChanged" x:Name="myButton" Click="myButton_Click">Click Me</Button>
-        <NumberBox ValueChanged="NumberBox_ValueChanged"></NumberBox>
-        <!--<nud:ByteUpDown></nud:ByteUpDown>-->
+            <Button
+                x:Name="myButton"
+                Click="myButton_Click"
+                SizeChanged="myButton_SizeChanged">
+                Click Me
+            </Button>
+            <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
+            <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
+            <CheckBox Name="abc" IsChecked="True" />
+            <NumberBox
+                Name="abcd"
+                SpinButtonPlacementMode="Inline"
+                Value="10" />
+            <CheckBox Content="visa" IsChecked="{Binding ElementName=bbb, Mode=TwoWay, Path=EnableValidatingIndicator}" />
+        </StackPanel>
+
+        <nud:ByteUpDown
+            Name="bbb"
+            Background="Pink"
+            BorderBrush="Yellow"
+            BorderThickness="1"
+            DisplayLength="{Binding ElementName=abcd, Path=Value, Mode=OneWay}"
+            Foreground="Blue"
+            IsIncDecButtonsVisible="{Binding ElementName=abc, Path=IsChecked, Mode=OneWay}" />
     </StackPanel>
 </Window>
