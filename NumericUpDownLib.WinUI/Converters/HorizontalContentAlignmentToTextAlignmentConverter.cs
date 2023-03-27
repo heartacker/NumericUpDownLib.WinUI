@@ -45,7 +45,7 @@
                 HorizontalAlignment.Left => TextAlignment.Left,
                 HorizontalAlignment.Center => TextAlignment.Center,
                 HorizontalAlignment.Right => TextAlignment.Right,
-                HorizontalAlignment.Stretch => TextAlignment.Start,
+                HorizontalAlignment.Stretch => TextAlignment.Right,
                 _ => TextAlignment.Right
             };
             return ta;
@@ -71,7 +71,7 @@
             if (Equals(value, TextAlignment.Center))
                 return HorizontalAlignment.Center;
 
-            return HorizontalAlignment.Stretch;
+            return HorizontalAlignment.Right;
         }
         #endregion methods
     }

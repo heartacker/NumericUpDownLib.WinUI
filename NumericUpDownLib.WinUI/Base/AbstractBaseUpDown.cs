@@ -281,6 +281,7 @@ namespace NumericUpDownLib.WinUI.Base
         {
             this.DefaultStyleKey = typeof(AbstractBaseUpDown<T>);
             UserInput = false;
+            HorizontalContentAlignment = HorizontalAlignment.Right;
         }
 
         /// <summary>
