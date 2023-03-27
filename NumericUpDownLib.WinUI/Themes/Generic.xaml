@@ -150,7 +150,10 @@
             </Style>
 
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ByteUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:DoubleUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:NumericUpDown" />
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:UIntegerUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ULongUpDown" />
 
             <!--  Styles a byte based numeric up down control based on the InputBaseUpDown control style  -->
 
