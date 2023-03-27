@@ -27,6 +27,7 @@ namespace NumericUpDownLib.WinUI.Base
         public InputBaseUpDown()
         {
             this.DefaultStyleKey = typeof(InputBaseUpDown);
+            InitializeCommands();
         }
 
         #region fields
@@ -142,22 +143,23 @@ namespace NumericUpDownLib.WinUI.Base
             set { SetValue(EnableValidatingIndicatorProperty, value); }
         }
 
-        protected static RelayCommand _IncreaseCommand;
-        protected static RelayCommand _DecreaseCommand;
-        #endregion fields
+        protected RelayCommand _IncreaseCommand;
 
+        protected RelayCommand _DecreaseCommand;
+
+        #endregion fields
 
 
         #region properties
         /// <summary>
         /// Expose the increase value command via <seealso cref="RoutedCommand"/> property.
         /// </summary>
-        public RelayCommand IncreaseCommand => _IncreaseCommand;
+        public ICommand IncreaseCommand => _IncreaseCommand;
 
         /// <summary>
         /// Expose the decrease value command via <seealso cref="RoutedCommand"/> property.
         /// </summary>
-        public RelayCommand DecreaseCommand => _DecreaseCommand;
+        public ICommand DecreaseCommand => _DecreaseCommand;
 
         /// <summary>
         /// Determines whether the textbox portion of the control is editable
@@ -185,42 +187,35 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Increase the displayed integer value
         /// </summary>
-        protected virtual void OnIncrease() { }
+        protected abstract void OnIncrease();
 
         /// <summary>
         /// Determines whether the increase command is available or not.
         /// </summary>
-        protected virtual bool CanIncreaseCommand()
-        {
-            return true;
-        }
+        protected abstract bool CanIncreaseCommand();
 
         /// <summary>
         /// Decrease the displayed integer value
         /// </summary>
-        protected virtual void OnDecrease()
-        {
-        }
+        protected abstract void OnDecrease();
+
 
         /// <summary>
         /// Determines whether the decrease command is available or not.
         /// </summary>
-        protected virtual bool CanDecreaseCommand()
-        {
-            return true;
-        }
+        protected abstract bool CanDecreaseCommand();
 
         /// <summary>
         /// Initialize up down/button commands and key gestures for up/down cursor keys
         /// </summary>
         private void InitializeCommands()
         {
-            InputBaseUpDown._IncreaseCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(
-                OnIncrease, canExecute: CanIncreaseCommand
+            _IncreaseCommand = new RelayCommand(OnIncrease
+                //, canExecute: CanIncreaseCommand
                 );
 
-            InputBaseUpDown._DecreaseCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(
-                OnDecrease, canExecute: CanDecreaseCommand
+            _DecreaseCommand = new RelayCommand(OnDecrease
+                //, canExecute: CanDecreaseCommand
                 );
         }
         #endregion
