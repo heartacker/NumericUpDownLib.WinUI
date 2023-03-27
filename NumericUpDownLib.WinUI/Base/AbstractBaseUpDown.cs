@@ -11,6 +11,7 @@ namespace NumericUpDownLib.WinUI.Base
     using NumericUpDownLib.Models;
     using System;
     using System.ComponentModel;
+    using System.Diagnostics;
     //using System.Diagnostics;
     using System.Globalization;
     using System.Reflection;
@@ -345,14 +346,13 @@ namespace NumericUpDownLib.WinUI.Base
             if (_PART_Measuring_Element != null)
             {
                 _PART_Measuring_Element.TextChanged += _PART_Measuring_Element_TextChanged;
+                _PART_Measuring_Element.LayoutUpdated += _PART_Measuring_Element_LayoutUpdated; ;
             }
 
 #if WPF
             this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(this_IsVisibleChanged);
 #endif
         }
-
-
 
         #endregion constructor
 
@@ -1052,11 +1052,21 @@ namespace NumericUpDownLib.WinUI.Base
 #endif
         }
 
-        private void _PART_Measuring_Element_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void _PART_Measuring_Element_LayoutUpdated(object sender, object e)
         {
             _PART_TextBox.MinWidth = _PART_Measuring_Element.ActualWidth;
             _PART_TextBox.Width = _PART_Measuring_Element.ActualWidth;
+            _PART_TextBox.MaxWidth = _PART_Measuring_Element.ActualWidth;
             _PART_TextBox.UpdateLayout();
+            //Debug.WriteLine(_PART_Measuring_Element.Shadow);
+        }
+
+        private void _PART_Measuring_Element_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //_PART_TextBox.MinWidth = _PART_Measuring_Element.ActualWidth;
+            //_PART_TextBox.Width = _PART_Measuring_Element.ActualWidth;
+            //_PART_TextBox.UpdateLayout();
         }
 
         private void _PART_TextBox_SelectionChanging(TextBox sender, TextBoxSelectionChangingEventArgs args)

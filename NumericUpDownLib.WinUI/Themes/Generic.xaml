@@ -66,12 +66,13 @@
                                             Foreground="#00000000"
                                             IsColorFontEnabled="False"
                                             IsEnabled="False"
-                                            PlaceholderText="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
+                                            IsReadOnly="True"
                                             Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
                                             TextAlignment="Right"
                                             TextWrapping="NoWrap"
                                             Visibility="Visible" />
 
+                                        <!--  Width="{Binding ElementName=PART_Measuring_Element, Path=ActualWidth, UpdateSourceTrigger=Default, Mode=OneWay}"  -->
                                         <TextBox
                                             x:Name="PART_TextBox"
                                             Margin="0,0,0,0"
