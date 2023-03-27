@@ -58,7 +58,7 @@ namespace NumericUpDownLib.WinUI.Base
             nameof(EnableValidatingIndicator),
             typeof(bool),
             typeof(InputBaseUpDown),
-            new PropertyMetadata(false));
+            new PropertyMetadata(true));
 
         /// <summary>
         /// Backing store of <see cref="EditingVisibility"/> dependency property.
@@ -78,6 +78,7 @@ namespace NumericUpDownLib.WinUI.Base
             typeof(InputBaseUpDown),
             new PropertyMetadata(new SolidColorBrush(Colors.Green)));
 
+
         /// <summary>
         /// Backing store of <see cref="SpinButtonPlacementMode"/> dependency property.
         /// </summary>
@@ -85,14 +86,8 @@ namespace NumericUpDownLib.WinUI.Base
             nameof(SpinButtonPlacementMode),
             typeof(NumberBoxSpinButtonPlacementMode),
             typeof(InputBaseUpDown),
-            new PropertyMetadata(NumberBoxSpinButtonPlacementMode.Compact));
-
-        public NumberBoxSpinButtonPlacementMode SpinButtonPlacementMode
-        {
-            get { return (NumberBoxSpinButtonPlacementMode)GetValue(SpinButtonPlacementModeProperty); }
-            set { SetValue(SpinButtonPlacementModeProperty, value); }
-        }
-
+            new PropertyMetadata(NumberBoxSpinButtonPlacementMode.Compact,
+                new PropertyChangedCallback(SpinButtonPlacementModeChanged)));
 #if false
         /// <summary>
         /// Dependency property backing store for the <see cref="IsIncDecButtonsVisible"/> property.
@@ -143,6 +138,12 @@ namespace NumericUpDownLib.WinUI.Base
             set { SetValue(EnableValidatingIndicatorProperty, value); }
         }
 
+        public NumberBoxSpinButtonPlacementMode SpinButtonPlacementMode
+        {
+            get { return (NumberBoxSpinButtonPlacementMode)GetValue(SpinButtonPlacementModeProperty); }
+            set { SetValue(SpinButtonPlacementModeProperty, value); }
+        }
+
         protected RelayCommand _IncreaseCommand;
 
         protected RelayCommand _DecreaseCommand;
@@ -180,9 +181,19 @@ namespace NumericUpDownLib.WinUI.Base
             set { SetValue(NumberStyleProperty, value); }
         }
 
+        #region methods
+
+        private static void SpinButtonPlacementModeChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
         #endregion properties
 
         #region methods
+
         #region Commands
         /// <summary>
         /// Increase the displayed integer value
@@ -219,6 +230,7 @@ namespace NumericUpDownLib.WinUI.Base
                 );
         }
         #endregion
+
         #endregion methods
     }
 

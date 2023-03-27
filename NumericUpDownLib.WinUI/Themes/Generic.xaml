@@ -31,11 +31,12 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="base:InputBaseUpDown">
                             <Border MinHeight="34" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                <Grid Height="{TemplateBinding Height}" VerticalAlignment="Top" Margin="0,0,2,0">
+                                <Grid Height="{TemplateBinding Height}" Margin="0,0,2,0" VerticalAlignment="Top">
                                     <Grid.Resources>
                                         <conv:ByteToPlaceHolderStringConverter x:Key="ByteToPlaceHolderStringConverter" />
                                         <conv:BoolToVisibilityPropConverter x:Key="BoolToVisibilityConverter" />
-                                        <conv:SpinButtonPlacementModeToVisibilityPropConverter x:Key="SpPM2Visibility" />
+                                        <conv:SpinButtonPlacementModeToVisibilityPropConverter x:Key="SPBM2Visibility" />
+                                        <conv:SpinButtonPlacementModeToOrientationConverter x:Key="SPBM2Orientation" />
                                     </Grid.Resources>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -97,42 +98,48 @@
                                             Text="*"
                                             Visibility="{TemplateBinding EditingVisibility}" />
                                     </Grid>
-                                    <!--  ArrowUp Increase value button  -->
-                                    <RepeatButton
-                                        x:Name="PART_IncrementButton"
-                                        Grid.Row="0"
+
+                                    <StackPanel
+                                        x:Name="PART_IncDecStackPanel"
+                                        Grid.RowSpan="2"
                                         Grid.Column="1"
-                                        Height="15"
+                                        MaxHeight="32"
                                         Margin="0"
                                         Padding="0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Bottom"
-                                        HorizontalContentAlignment="Left"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="0,1,1,1"
-                                        Command="{Binding Path=IncreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Visibility="{Binding Path=SpinButtonPlacementMode, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SpPM2Visibility}}">
-                                        <FontIcon Glyph="&#xE971;" />
-                                    </RepeatButton>
+                                        BorderBrush="#8c8c8c"
+                                        BorderThickness="0,1,0,1"
+                                        CornerRadius="2"
+                                        Orientation="{Binding Path=SpinButtonPlacementMode, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SPBM2Orientation}}"
+                                        Visibility="{Binding Path=SpinButtonPlacementMode, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SPBM2Visibility}}">
 
-                                    <!--  ArrowDown Decrease value button  -->
-                                    <RepeatButton
-                                        x:Name="PART_DecrementButton"
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Height="16"
-                                        Margin="0"
-                                        Padding="0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        HorizontalContentAlignment="Left"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="0,1,1,1"
-                                        Command="{Binding Path=DecreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Visibility="{Binding Path=SpinButtonPlacementMode, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SpPM2Visibility}}">
-                                        <FontIcon Glyph="&#xE972;" />
-                                    </RepeatButton>
+                                        <!--  ArrowUp Increase value button  -->
+                                        <RepeatButton
+                                            x:Name="PART_IncrementButton"
+                                            Height="15"
+                                            Margin="0"
+                                            Padding="0"
+                                            HorizontalAlignment="Left"
+                                            HorizontalContentAlignment="Left"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="0"
+                                            Command="{Binding Path=IncreaseCommand, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <FontIcon Glyph="&#xE971;" />
+                                        </RepeatButton>
 
+                                        <!--  ArrowDown Decrease value button  -->
+                                        <RepeatButton
+                                            x:Name="PART_DecrementButton"
+                                            Height="15"
+                                            Margin="0"
+                                            Padding="0"
+                                            HorizontalAlignment="Left"
+                                            HorizontalContentAlignment="Left"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="0"
+                                            Command="{Binding Path=DecreaseCommand, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <FontIcon Glyph="&#xE972;" />
+                                        </RepeatButton>
+                                    </StackPanel>
                                 </Grid>
                             </Border>
                         </ControlTemplate>

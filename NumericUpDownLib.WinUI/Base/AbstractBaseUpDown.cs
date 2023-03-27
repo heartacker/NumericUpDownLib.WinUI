@@ -32,6 +32,7 @@ namespace NumericUpDownLib.WinUI.Base
     [TemplatePart(Name = PART_MeasuringElement, Type = typeof(FrameworkElement))]
     [TemplatePart(Name = PART_IncrementButton, Type = typeof(RepeatButton))]
     [TemplatePart(Name = PART_DecrementButton, Type = typeof(RepeatButton))]
+    [TemplatePart(Name = PART_IncDecStackPanel, Type = typeof(StackPanel))]
     public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, ICommandSource*/
     {
         #region fields
@@ -44,6 +45,11 @@ namespace NumericUpDownLib.WinUI.Base
         /// Gets the required template name of the textbox portion of this control.
         /// </summary>
         public const string PART_MeasuringElement = "PART_Measuring_Element";
+
+        /// <summary>
+        /// Gets the required template name of the textbox portion of this control.
+        /// </summary>
+        public const string PART_IncDecStackPanel = "PART_IncDecStackPanel";
 
         /// <summary>
         /// Gets the required template name of the increment button for this control.
@@ -247,6 +253,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         private TextBox _PART_Measuring_Element;
 
+        private StackPanel _PART_IncDecStackPanel;
+
         private RepeatButton _PART_DecrementButton;
         private RepeatButton _PART_IncrementButton;
 
@@ -288,6 +296,8 @@ namespace NumericUpDownLib.WinUI.Base
             {
                 _PART_Measuring_Element.TextChanged += _PART_Measuring_Element_TextChanged;
             }
+
+            _PART_IncDecStackPanel = this.GetTemplateChild(PART_IncDecStackPanel) as StackPanel;
 
             _PART_DecrementButton = this.GetTemplateChild(PART_DecrementButton) as RepeatButton;
             _PART_IncrementButton = this.GetTemplateChild(PART_IncrementButton) as RepeatButton;
@@ -713,8 +723,7 @@ namespace NumericUpDownLib.WinUI.Base
                 {
                     _IsDataValid = value;
 
-                    EditingColorBrush = _IsDataValid ?
-                        new SolidColorBrush(Colors.Green) :
+                    EditingColorBrush = _IsDataValid ? new SolidColorBrush(Colors.Green) :
                         new SolidColorBrush(Colors.Red);
 
                     // FIX THE behavior when user input unsupported char like ghijk
@@ -882,7 +891,6 @@ namespace NumericUpDownLib.WinUI.Base
 #endif
         private void IncDecButton_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
-
             // Remove focus when escape was hit to go back to Cursors.ScrollAll mode
             // and edit value increment/decrement via mouse drag gesture
             if (e.Key == VirtualKey.Escape)
@@ -1080,8 +1088,8 @@ namespace NumericUpDownLib.WinUI.Base
         private void _PART_TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
-            spMode = SpinButtonPlacementMode;
-            doubleActualWidth = _PART_IncrementButton.Visibility == Visibility.Visible ? _PART_IncrementButton.ActualWidth : 0;
+            spMode = SpinButtonPlacementMode;            
+            doubleActualWidth = _PART_IncDecStackPanel.Visibility == Visibility.Visible ? _PART_IncDecStackPanel.ActualWidth : 0;
             SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden;
             _PART_TextBox.Width = _PART_TextBox.ActualWidth + doubleActualWidth;
             System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
