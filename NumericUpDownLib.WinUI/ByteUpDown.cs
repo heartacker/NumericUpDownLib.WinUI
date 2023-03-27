@@ -340,7 +340,7 @@ namespace NumericUpDownLib.WinUI
         /// <returns></returns>
         private static bool IsValidStepSizeReading(object value)
         {
-            byte v = (byte)value;
+            var v = (byte)value;
             return (v > 0);
         }
         #endregion methods

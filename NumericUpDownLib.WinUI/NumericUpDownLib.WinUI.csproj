@@ -17,7 +17,6 @@
     <Compile Remove="NumericUpDown.cs" />
     <Compile Remove="SByteUpDown.cs" />
     <Compile Remove="ShortUpDown.cs" />
-    <Compile Remove="UIntegerUpDown.cs" />
     <Compile Remove="ULongUpDown.cs" />
     <Compile Remove="UShortUpDown.cs" />
   </ItemGroup>

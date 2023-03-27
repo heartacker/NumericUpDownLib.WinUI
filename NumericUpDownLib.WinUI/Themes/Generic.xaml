@@ -148,6 +148,7 @@
             </Style>
 
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ByteUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:UIntegerUpDown" />
 
             <!--  Styles a byte based numeric up down control based on the InputBaseUpDown control style  -->
 
