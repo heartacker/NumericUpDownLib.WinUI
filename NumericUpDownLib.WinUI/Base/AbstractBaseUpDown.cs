@@ -1088,10 +1088,15 @@ namespace NumericUpDownLib.WinUI.Base
         private void _PART_TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
-            spMode = SpinButtonPlacementMode;            
-            doubleActualWidth = _PART_IncDecStackPanel.Visibility == Visibility.Visible ? _PART_IncDecStackPanel.ActualWidth : 0;
-            SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden;
-            _PART_TextBox.Width = _PART_TextBox.ActualWidth + doubleActualWidth;
+            LastfocusState = tb.FocusState;
+            if (tb.FocusState == FocusState.Keyboard)
+            {
+                spMode = SpinButtonPlacementMode;
+                doubleActualWidth = _PART_IncDecStackPanel.Visibility == Visibility.Visible ? _PART_IncDecStackPanel.ActualWidth : 0;
+                SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden;
+                _PART_TextBox.Width = _PART_TextBox.ActualWidth + doubleActualWidth;
+            }
+
             System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
 
             _objMouseIncr = null;
@@ -1104,11 +1109,17 @@ namespace NumericUpDownLib.WinUI.Base
 
         NumberBoxSpinButtonPlacementMode spMode = NumberBoxSpinButtonPlacementMode.Compact;
         double doubleActualWidth = 0;
+
+        FocusState LastfocusState = FocusState.Pointer;
         private void _PART_TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
             SpinButtonPlacementMode = spMode;
-            _PART_TextBox.Width = _PART_TextBox.ActualWidth - doubleActualWidth;
+            if (LastfocusState == FocusState.Keyboard)
+            {
+                _PART_TextBox.Width = _PART_TextBox.ActualWidth - doubleActualWidth;
+            }
+
 
             System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
             if (IsMouseDragEnabled == true)
