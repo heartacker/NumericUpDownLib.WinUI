@@ -312,6 +312,7 @@ namespace NumericUpDownLib.WinUI.Base
                 _PART_TextBox.TextChanged += _PART_TextBox_TextChanged;
 
                 _PART_TextBox.PointerEntered += _PART_TextBox_MouseEnter;
+                _PART_TextBox.PointerWheelChanged += _PART_TextBox_PointerWheelChanged; ;
 
 #if WPF
                 _PART_TextBox.GotKeyboardFocus += _PART_TextBox_GotKeyboardFocus;
@@ -904,6 +905,54 @@ namespace NumericUpDownLib.WinUI.Base
             }
         }
 
+        private void _PART_TextBox_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
+#if false
+        protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
+        {
+            base.OnPointerWheelChanged(e);
+
+
+            if (!MouseWheelEnabled)
+                return;
+            if (e.Handled == false)
+            {
+                if (e.Delta != 0)
+                {
+                    if (e.Delta < 0 && CanDecreaseCommand() == true)
+                    {
+                        if (System.Windows.Input.Keyboard.Modifiers == this.MouseWheelAccelaratorKey)
+                        {
+                            if (IsLargeStepEnabled)
+                                OnDecrement(LargeStepSize);
+                        }
+                        else
+                            OnDecrease();
+
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        if (e.Delta > 0 && CanIncreaseCommand() == true)
+                        {
+                            if (System.Windows.Input.Keyboard.Modifiers == this.MouseWheelAccelaratorKey)
+                            {
+                                if (IsLargeStepEnabled)
+                                    OnIncrement(LargeStepSize);
+                            }
+                            else
+                                OnIncrease();
+
+                            e.Handled = true;
+                        }
+                    }
+                }
+            }
+        }
+
+#endif
 #if WPF
         /// <summary>
         /// This is called if we are losing the mouse capture without going through
