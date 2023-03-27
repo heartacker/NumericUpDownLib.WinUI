@@ -70,6 +70,7 @@ namespace NumericUpDownLib.WinUI
         {
             this.DefaultStyleKey = typeof(ByteUpDown);
             this.MaxValue = byte.MaxValue;
+            this.MinValue = byte.MinValue;
         }
         #endregion constructor
 

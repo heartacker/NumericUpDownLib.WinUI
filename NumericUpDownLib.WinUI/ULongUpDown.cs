@@ -143,7 +143,7 @@ namespace NumericUpDownLib.WinUI
         protected override void OnDecrease()
         {
             // Decrement if possible
-            if (this.Value - this.SmallChange > this.MinValue)
+            if ((this.Value >= this.SmallChange) && this.Value - this.SmallChange > this.MinValue)
             {
                 this.Value = (ulong)(this.Value - this.SmallChange);
             }
