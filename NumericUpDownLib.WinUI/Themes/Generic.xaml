@@ -31,7 +31,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="base:InputBaseUpDown">
                             <Border MinHeight="34" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                <Grid Height="{TemplateBinding Height}" VerticalAlignment="Top">
+                                <Grid Height="{TemplateBinding Height}" VerticalAlignment="Top" Margin="0,0,2,0">
                                     <Grid.Resources>
                                         <conv:ByteToPlaceHolderStringConverter x:Key="ByteToPlaceHolderStringConverter" />
                                         <conv:BoolToVisibilityPropConverter x:Key="BoolToVisibilityConverter" />
