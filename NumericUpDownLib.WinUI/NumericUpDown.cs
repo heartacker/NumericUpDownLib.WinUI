@@ -7,7 +7,7 @@ namespace NumericUpDownLib.WinUI
     using System.Windows;
 
     /// <summary>
-    /// Implements a Byte based Numeric Up/Down control.
+    /// Implements a int based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
@@ -22,7 +22,7 @@ namespace NumericUpDownLib.WinUI
         protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
             nameof(SmallChange),
             typeof(int),
-            typeof(ByteUpDown),
+            typeof(NumericUpDown),
             new PropertyMetadata((int)1)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
 
@@ -33,7 +33,7 @@ namespace NumericUpDownLib.WinUI
         protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
             nameof(LargeChange),
             typeof(int),
-            typeof(ByteUpDown),
+            typeof(NumericUpDown),
             new PropertyMetadata((int)10)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
@@ -45,22 +45,22 @@ namespace NumericUpDownLib.WinUI
         static NumericUpDown()
         {
 #if false
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ByteUpDown),
-               new FrameworkPropertyMetadata(typeof(ByteUpDown)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDown),
+               new FrameworkPropertyMetadata(typeof(NumericUpDown)));
 
-            MaxValueProperty.OverrideMetadata(typeof(ByteUpDown),
-                                                  new PropertyMetadata(byte.MaxValue));
+            MaxValueProperty.OverrideMetadata(typeof(NumericUpDown),
+                                                  new PropertyMetadata(int.MaxValue));
 
-            MinValueProperty.OverrideMetadata(typeof(ByteUpDown),
-                                                  new PropertyMetadata(byte.MinValue)); 
+            MinValueProperty.OverrideMetadata(typeof(NumericUpDown),
+                                                  new PropertyMetadata(int.MinValue)); 
 #endif
 
             // Override Min/Max default values
             ////		AbstractBaseUpDown<int>.MinValueProperty.OverrideMetadata(
-            ////		    typeof(ByteUpDown), new PropertyMetadata(int.MinValue));
+            ////		    typeof(NumericUpDown), new PropertyMetadata(int.MinValue));
             ////
             ////		AbstractBaseUpDown<int>.MaxValueProperty.OverrideMetadata(
-            ////		    typeof(ByteUpDown), new PropertyMetadata(int.MaxValue));
+            ////		    typeof(NumericUpDown), new PropertyMetadata(int.MaxValue));
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace NumericUpDownLib.WinUI
             // Increment if possible
             if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = (byte)(this.Value + this.SmallChange);
+                this.Value = (int)(this.Value + this.SmallChange);
             }
             else
             {
@@ -145,7 +145,7 @@ namespace NumericUpDownLib.WinUI
             // Decrement if possible
             if (this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = (byte)(this.Value - this.SmallChange);
+                this.Value = (int)(this.Value - this.SmallChange);
             }
             else
             {
@@ -176,7 +176,7 @@ namespace NumericUpDownLib.WinUI
                     if (Value == MaxValue)
                         return false;
 
-                    var result = (byte)(Value + stepValue);
+                    var result = (int)(Value + stepValue);
 
                     if (result >= MaxValue)
                     {
@@ -217,7 +217,7 @@ namespace NumericUpDownLib.WinUI
                     if (Value == MinValue)
                         return false;
 
-                    var result = (byte)(Value - stepValue);
+                    var result = (int)(Value - stepValue);
 
                     if (result <= MinValue)
                     {

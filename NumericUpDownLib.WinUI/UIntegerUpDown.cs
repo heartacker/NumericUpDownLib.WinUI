@@ -7,7 +7,7 @@ namespace NumericUpDownLib.WinUI
     using System.Windows;
 
     /// <summary>
-    /// Implements a Byte based Numeric Up/Down control.
+    /// Implements a uint based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
@@ -22,7 +22,7 @@ namespace NumericUpDownLib.WinUI
         protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
             nameof(SmallChange),
             typeof(uint),
-            typeof(ByteUpDown),
+            typeof(UIntegerUpDown),
             new PropertyMetadata((uint)1)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
 
@@ -33,7 +33,7 @@ namespace NumericUpDownLib.WinUI
         protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
             nameof(LargeChange),
             typeof(uint),
-            typeof(ByteUpDown),
+            typeof(UIntegerUpDown),
             new PropertyMetadata((uint)10)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
@@ -45,22 +45,22 @@ namespace NumericUpDownLib.WinUI
         static UIntegerUpDown()
         {
 #if false
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ByteUpDown),
-               new FrameworkPropertyMetadata(typeof(ByteUpDown)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(UIntegerUpDown),
+               new FrameworkPropertyMetadata(typeof(UIntegerUpDown)));
 
-            MaxValueProperty.OverrideMetadata(typeof(ByteUpDown),
-                                                  new PropertyMetadata(byte.MaxValue));
+            MaxValueProperty.OverrideMetadata(typeof(UIntegerUpDown),
+                                                  new PropertyMetadata(uint.MaxValue));
 
-            MinValueProperty.OverrideMetadata(typeof(ByteUpDown),
-                                                  new PropertyMetadata(byte.MinValue)); 
+            MinValueProperty.OverrideMetadata(typeof(UIntegerUpDown),
+                                                  new PropertyMetadata(uint.MinValue)); 
 #endif
 
             // Override Min/Max default values
             ////		AbstractBaseUpDown<uint>.MinValueProperty.OverrideMetadata(
-            ////		    typeof(ByteUpDown), new PropertyMetadata(uint.MinValue));
+            ////		    typeof(UIntegerUpDown), new PropertyMetadata(uint.MinValue));
             ////
             ////		AbstractBaseUpDown<uint>.MaxValueProperty.OverrideMetadata(
-            ////		    typeof(ByteUpDown), new PropertyMetadata(uint.MaxValue));
+            ////		    typeof(UIntegerUpDown), new PropertyMetadata(uint.MaxValue));
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace NumericUpDownLib.WinUI
             // Increment if possible
             if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = (byte)(this.Value + this.SmallChange);
+                this.Value = (uint)(this.Value + this.SmallChange);
             }
             else
             {
@@ -145,7 +145,7 @@ namespace NumericUpDownLib.WinUI
             // Decrement if possible
             if (this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = (byte)(this.Value - this.SmallChange);
+                this.Value = (uint)(this.Value - this.SmallChange);
             }
             else
             {
@@ -176,7 +176,7 @@ namespace NumericUpDownLib.WinUI
                     if (Value == MaxValue)
                         return false;
 
-                    var result = (byte)(Value + stepValue);
+                    var result = (uint)(Value + stepValue);
 
                     if (result >= MaxValue)
                     {
@@ -217,7 +217,7 @@ namespace NumericUpDownLib.WinUI
                     if (Value == MinValue)
                         return false;
 
-                    var result = (byte)(Value - stepValue);
+                    var result = (uint)(Value - stepValue);
 
                     if (result <= MinValue)
                     {

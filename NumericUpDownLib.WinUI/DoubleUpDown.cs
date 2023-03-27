@@ -122,7 +122,7 @@ namespace NumericUpDownLib.WinUI
             // Increment if possible
             if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = (byte)(this.Value + this.SmallChange);
+                this.Value = (double)(this.Value + this.SmallChange);
             }
             else
             {
@@ -145,7 +145,7 @@ namespace NumericUpDownLib.WinUI
             // Decrement if possible
             if (this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = (byte)(this.Value - this.SmallChange);
+                this.Value = (double)(this.Value - this.SmallChange);
             }
             else
             {
