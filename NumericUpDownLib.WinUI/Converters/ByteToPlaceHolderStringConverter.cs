@@ -20,11 +20,13 @@
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if ((value is double) == false)
+            byte byteVal = 1;
+            if (value is double)
+                byteVal = (byte)(double)value;
+            else if (value is byte)
+                byteVal = (byte)value;
+            else
                 return null;
-
-            byte byteVal = (byte)(double)value;
-
             string retString = string.Empty;
             for (int i = 0; i < byteVal; i++)
                 retString += "X";
