@@ -79,7 +79,7 @@ namespace NumericUpDownLib.WinUI.Base
             typeof(T),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(
-                _MinValue, new PropertyChangedCallback(OnValueChanged)
+                _MinValue, new PropertyChangedCallback(OnValuePropertyChanged)
                 //, new CoerceValueCallback(CoerceValue)
                 )
             );
@@ -92,7 +92,7 @@ namespace NumericUpDownLib.WinUI.Base
                 typeof(T), typeof(AbstractBaseUpDown<T>),
                 new PropertyMetadata(
                     _MinValue,
-                    new PropertyChangedCallback(OnMinValueChanged)
+                    new PropertyChangedCallback(OnMinValuePropertyChanged)
                     //, new CoerceValueCallback(CoerceMinValue)
                     )
                 );
@@ -105,7 +105,7 @@ namespace NumericUpDownLib.WinUI.Base
             typeof(T), typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(
                 _MaxValue,
-                new PropertyChangedCallback(OnMaxValueChanged)
+                new PropertyChangedCallback(OnMaxValuePropertyChanged)
                 //, new CoerceValueCallback(CoerceMaxValue)
                 )
             );
@@ -173,7 +173,7 @@ namespace NumericUpDownLib.WinUI.Base
             nameof(SelectAllTextOnFocus),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
-            new PropertyMetadata(true));
+            new PropertyMetadata(false));
 
         /// <summary>
         /// Backing store for dependency property for .Net FormatString that is
@@ -183,7 +183,7 @@ namespace NumericUpDownLib.WinUI.Base
             nameof(FormatString),
             typeof(string),
             typeof(AbstractBaseUpDown<T>),
-            new PropertyMetadata("G", OnIsFormatStringChanged));
+            new PropertyMetadata("G", OnFormatStringChanged));
 
         /// <summary>
         /// Backing store of <see cref="MouseWheelAccelaratorKey"/> dependency property.
@@ -225,7 +225,7 @@ namespace NumericUpDownLib.WinUI.Base
             nameof(IsLargeChangeEnabled),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
-            new PropertyMetadata(true));
+            new PropertyMetadata(false));
 
         /// <summary>
         /// Backing store of <see cref="IsUpdateValueWhenLostFocus"/> dependency property.
@@ -1081,7 +1081,7 @@ namespace NumericUpDownLib.WinUI.Base
         {
             var tb = sender as TextBox;
             spMode = SpinButtonPlacementMode;
-            doubleActualWidth = _PART_IncrementButton.ActualWidth;
+            doubleActualWidth = _PART_IncrementButton.Visibility == Visibility.Visible ? _PART_IncrementButton.ActualWidth : 0;
             SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden;
             _PART_TextBox.Width = _PART_TextBox.ActualWidth + doubleActualWidth;
             System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
@@ -1208,15 +1208,17 @@ namespace NumericUpDownLib.WinUI.Base
         private void _PART_TextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
             UserInput = true;
+            var SelectionStart = _PART_TextBox.SelectionStart;
 
             // Remove focus when escape was hit to go back to Cursors.ScrollAll mode
             // and edit value increment/decrement via mouse drag gesture
-            if (e.Key == Windows.System.VirtualKey.Escape)
+            if (e.Key == VirtualKey.Escape)
             {
                 // SUPPORT RESUME TO THE LAST VALUE WHEN USER DECIDE TO Exit editing
+
                 _PART_TextBox.Text = FormatNumber(Value);
-                _PART_TextBox.SelectionStart = 0;
-                //Keyboard.ClearFocus();
+                _PART_TextBox.SelectionStart = SelectionStart;
+                // Keyboard.ClearFocus();
                 e.Handled = true;
                 return;
             }
@@ -1225,7 +1227,9 @@ namespace NumericUpDownLib.WinUI.Base
             if (e.Key == VirtualKey.Up && IsModifierKeyDown() == false)
             {
                 if (CanIncreaseCommand() == true)
+                {
                     IncreaseCommand.Execute(this);
+                }
 
                 e.Handled = true;
                 return;
@@ -1277,6 +1281,7 @@ namespace NumericUpDownLib.WinUI.Base
                     }
                     T OldValue = Value;
                     Value = FormatText(_PART_TextBox.Text, true);
+                    _PART_TextBox.SelectionStart = SelectionStart;
 
                     // force to raise value changed event to tigger re write /re-set for application
                     if (OldValue.Equals(Value) && isCtrlDown)
@@ -1363,6 +1368,8 @@ namespace NumericUpDownLib.WinUI.Base
             if (_PART_TextBox == null)
                 return Value;
 
+            var SelectionStart = _PART_TextBox.SelectionStart;
+
             T number = default;
             // Does this text represent a valid number ?
             if (ParseText(text, out number))
@@ -1370,14 +1377,14 @@ namespace NumericUpDownLib.WinUI.Base
                 number = CoerceValue(number);
 
                 _PART_TextBox.Text = FormatNumber(number);
-                _PART_TextBox.SelectionStart = 0;
+                _PART_TextBox.SelectionStart = SelectionStart;
 
                 return number;
             }
 
             // Reset to last value since string does not appear to represent a number
-            _PART_TextBox.SelectionStart = 0;
             _PART_TextBox.Text = FormatNumber(Value);
+            _PART_TextBox.SelectionStart = SelectionStart;
             return LastEditingNumericValue;
         }
 
@@ -1423,21 +1430,34 @@ namespace NumericUpDownLib.WinUI.Base
 
         #region Value dependency property helper methods
         /// <summary>
-        /// Raises the ValueChanged event.
+        /// CHANGE the display of value;
+        /// <see cref="InputBaseUpDown.NumberStyle"/>: before change the formatstring, please set Numberstyle is match the FormatString
         /// </summary>
-        /// <param name="args">Arguments associated with the ValueChanged event.</param>
-        protected virtual void OnValueChanged(ValueChangedEventArgs<T> args)
+        /// <param name="obj"></param>
+        /// <param name="e"></param>
+        private static void OnFormatStringChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            if (_PART_TextBox != null)
+            if (obj is AbstractBaseUpDown<T> control && control._PART_TextBox != null && e.NewValue is string)
             {
-                _PART_TextBox.Text = FormatNumber(Value);
-                //ValueText = _PART_TextBox.Text;
-                LastEditingNumericValue = Value;
+                var SelectionStart = control._PART_TextBox.SelectionStart;
+
+                control._PART_TextBox.Text = control.FormatNumber(control.Value);
+                control._PART_TextBox.SelectionStart = SelectionStart;
             }
-            CommandExecute(Command);
-            // TODO  ValueChangeds.InvocationList?.Invoke(this, args);
         }
 
+
+        private static void OnValuePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            var control = obj as AbstractBaseUpDown<T>;
+
+            if (control != null && args != null)
+            {
+                ValueChangedEventArgs<T> e = new((T)args.OldValue, (T)args.NewValue);
+                AbstractBaseUpDown<T>.CoerceValue(obj, args.NewValue);
+                control.OnValueChanged(e);
+            }
+        }
         private static object CoerceValue(DependencyObject element, object value)
         {
             var control = element as AbstractBaseUpDown<T>;
@@ -1457,42 +1477,28 @@ namespace NumericUpDownLib.WinUI.Base
         }
 
         /// <summary>
-        /// CHANGE the display of value;
-        /// <see cref="InputBaseUpDown.NumberStyle"/>: before change the formatstring, please set Numberstyle is match the FormatString
+        /// Raises the ValueChanged event.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="e"></param>
-        private static void OnIsFormatStringChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        /// <param name="args">Arguments associated with the ValueChanged event.</param>
+        protected virtual void OnValueChanged(ValueChangedEventArgs<T> args)
         {
-            if (obj is AbstractBaseUpDown<T> control && control._PART_TextBox != null && e.NewValue is string)
-                control._PART_TextBox.Text = control.FormatNumber(control.Value);
-        }
-
-        private static void OnValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
-            var control = obj as AbstractBaseUpDown<T>;
-
-            if (control != null && args != null)
+            if (_PART_TextBox != null)
             {
-                ValueChangedEventArgs<T> e = new((T)args.OldValue, (T)args.NewValue);
-                AbstractBaseUpDown<T>.CoerceValue(obj, args.NewValue);
-                control.OnValueChanged(e);
+                var SelectionStart = _PART_TextBox.SelectionStart;
+                _PART_TextBox.Text = FormatNumber(Value);
+                _PART_TextBox.SelectionStart = SelectionStart;
 
+                LastEditingNumericValue = Value;
             }
+            CommandExecute(Command);
+            // TODO  ValueChangeds.InvocationList?.Invoke(this, args);
         }
+
+
         #endregion Value dependency property helper methods
 
         #region MinValue dependency property helper methods
-        /// <summary>
-        /// Raises the MinValueChanged event.
-        /// </summary>
-        /// <param name="args">Arguments associated with the ValueChanged event.</param>
-        protected virtual void OnMinValueChanged(MinValueChangedEventArgs<T> args)
-        {
-            // TODO MinValueChangeds.InvocationList?.Invoke(this, args);
-        }
-
-        private static void OnMinValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        private static void OnMinValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             var control = d as AbstractBaseUpDown<T>;
 
@@ -1524,19 +1530,21 @@ namespace NumericUpDownLib.WinUI.Base
 
             return control.MinValue;
         }
-        #endregion Value dependency property helper methods
 
-        #region MaxValue dependency property helper methods
         /// <summary>
         /// Raises the MinValueChanged event.
         /// </summary>
         /// <param name="args">Arguments associated with the ValueChanged event.</param>
-        protected virtual void OnMaxValueChanged(MaxValueChangedEventArgs<T> args)
+        protected virtual void OnMinValueChanged(MinValueChangedEventArgs<T> args)
         {
-            // TODO MaxValueChangeds.InvocationList?.Invoke(this, args);
+            // TODO MinValueChangeds.InvocationList?.Invoke(this, args);
         }
 
-        private static void OnMaxValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        #endregion Value dependency property helper methods
+
+        #region MaxValue dependency property helper methods
+
+        private static void OnMaxValuePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             var control = obj as AbstractBaseUpDown<T>;
 
@@ -1568,6 +1576,16 @@ namespace NumericUpDownLib.WinUI.Base
 
             return control.MaxValue;
         }
+
+        /// <summary>
+        /// Raises the MinValueChanged event.
+        /// </summary>
+        /// <param name="args">Arguments associated with the ValueChanged event.</param>
+        protected virtual void OnMaxValueChanged(MaxValueChangedEventArgs<T> args)
+        {
+            // TODO MaxValueChangeds.InvocationList?.Invoke(this, args);
+        }
+
         #endregion Value dependency property helper methods
 
         #region DisplayLength IsDisplayLengthFixed
