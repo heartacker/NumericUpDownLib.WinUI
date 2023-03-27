@@ -30,11 +30,8 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="base:InputBaseUpDown">
-                            <Border
-                                Height="32"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                                <Grid MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinWidth}" VerticalAlignment="Center">
+                            <Border MinHeight="34" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                <Grid VerticalAlignment="Center">
                                     <Grid.Resources>
                                         <conv:ByteToPlaceHolderStringConverter x:Key="ByteToPlaceHolderStringConverter" />
                                         <conv:BoolToVisibilityPropConverter x:Key="BoolToVisibilityConverter" />
@@ -48,41 +45,76 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
+                                    <!--  ArrowUp Increase value button  -->
+                                    <RepeatButton
+                                        x:Name="PART_IncrementButton"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Height="15"
+                                        Margin="0"
+                                        Padding="0"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalContentAlignment="Left"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="0,1,1,1"
+                                        Command="{Binding Path=IncreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <FontIcon Glyph="&#xE971;" />
+                                    </RepeatButton>
+
+                                    <!--  ArrowDown Decrease value button  -->
+                                    <RepeatButton
+                                        x:Name="PART_DecrementButton"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Height="16"
+                                        Margin="0"
+                                        Padding="0"
+                                        VerticalAlignment="Top"
+                                        HorizontalContentAlignment="Left"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="0,1,1,1"
+                                        Command="{Binding Path=DecreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <FontIcon Glyph="&#xE972;" />
+                                    </RepeatButton>
+
                                     <Grid Grid.RowSpan="2" Grid.Column="0">
                                         <!--
                                             Hidden measuring textbox ensure reservation of enough UI space
                                             according to DisplayLength dependency property
                                         -->
-
-                                        <!--<TextBox
+                                        <TextBox
                                             x:Name="PART_Measuring_Element"
-                                            Margin="0,0,1,0"
+                                            MinWidth="0"
+                                            Margin="0"
+                                            Visibility="Visible"
                                             HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch"
-                                            HorizontalContentAlignment="Right"
+                                            HorizontalContentAlignment="Left"
                                             VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
                                             AcceptsReturn="False"
-                                            Background="Transparent"
-                                            Foreground="Transparent"
+                                            Background="#00000000"
+                                            Foreground="#00000000"
+                                            IsColorFontEnabled="False"
                                             IsEnabled="False"
+                                            PlaceholderText="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
                                             Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
                                             TextAlignment="Left"
-                                            Visibility="Collapsed" />-->
+                                            TextWrapping="NoWrap" />
 
                                         <TextBox
                                             x:Name="PART_TextBox"
-                                            Margin="0,4,0,0"
+                                            Margin="0"
                                             HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch"
-                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
                                             AcceptsReturn="False"
                                             Background="{TemplateBinding Background}"
-                                            BorderThickness="0"
-                                            FontFamily="Consolas"
                                             Foreground="{TemplateBinding Foreground}"
                                             IsReadOnly="{TemplateBinding IsReadOnly}"
-                                            PlaceholderText="1234567988"
-                                            TextAlignment="Right" />
+                                            TextAlignment="Left"
+                                            TextWrapping="NoWrap" />
+                                        <!--  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"  -->
                                         <!--  Background="{TemplateBinding Background}"  -->
                                         <!--  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value,Mode=OneWay}"  -->
 
@@ -96,45 +128,6 @@
                                             Visibility="{TemplateBinding EditingVisibility}" />
                                     </Grid>
 
-                                    <!--  ArrowUp Increase value button  -->
-                                    <RepeatButton
-                                        x:Name="PART_IncrementButton"
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        Width="20"
-                                        Height="14"
-                                        Margin="0"
-                                        Padding="0"
-                                        HorizontalAlignment="Right"
-                                        Command="{Binding Path=IncreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Content="¡ü"
-                                        FontSize="7"
-                                        Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <!--<RepeatButton.Content>
-                                            <Path Data="M 0 4 L 6 4 L 3 0 Z" />
-                                        </RepeatButton.Content>-->
-                                    </RepeatButton>
-
-                                    <!--  ArrowDown Decrease value button  -->
-
-                                    <RepeatButton
-                                        x:Name="PART_DecrementButton"
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Width="20"
-                                        Height="14"
-                                        Margin="0"
-                                        Padding="0"
-                                        HorizontalAlignment="Right"
-                                        Command="{Binding Path=DecreaseCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Content="¡ý"
-                                        FontSize="7"
-                                        Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
-
-                                        <!--<TextBlock Margin="0" Padding="0" Text="¡ý" Height="10"></TextBlock>-->
-                                        <!--<Path Height="10" Width="10" Data="M 0 0 L 3 4 L 6 0 Z" />-->
-
-                                    </RepeatButton>
                                 </Grid>
                             </Border>
                         </ControlTemplate>
