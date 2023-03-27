@@ -14,18 +14,28 @@
     mc:Ignorable="d">
 
     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-        <StackPanel Width="500" Orientation="Horizontal">
+        <StackPanel Width="200" Orientation="Vertical">
 
             <nud:ByteUpDown
                 Name="bbb"
                 BorderThickness="1"
                 DisplayLength="{Binding ElementName=abcd, Path=Value, Mode=OneWay}"
                 FontWeight="Bold"
-                NumberStyle="HexNumber"
-                FormatString="X8"
+                FormatString="X2"
                 IsDisplayLengthFixed="False"
-                IsIncDecButtonsVisible="{Binding ElementName=abc, Path=IsChecked, Mode=OneWay}" />
-            <TextBox Text="abcdd" />
+                IsLargeChangeEnabled="False"
+                NumberStyle="HexNumber"
+                SpinButtonPlacementMode="Compact" />
+            <TextBox Text="{Binding ElementName=bbb, Path=FocusState}" />
+            <nud:UIntegerUpDown
+                HorizontalContentAlignment="Center"
+                DisplayLength="10"
+                FormatString="X8"
+                NumberStyle="HexNumber"
+                SpinButtonPlacementMode="Compact" />
+            <nud:ULongUpDown HorizontalContentAlignment="Center" DisplayLength="10" SpinButtonPlacementMode="Compact" />
+            <nud:NumericUpDown DisplayLength="15" />
+            <nud:DoubleUpDown DisplayLength="15" FormatString="f3" SmallChange="0.1" />
         </StackPanel>
         <Button x:Name="myButton" Click="myButton_Click" SizeChanged="myButton_SizeChanged">
             Click Me
