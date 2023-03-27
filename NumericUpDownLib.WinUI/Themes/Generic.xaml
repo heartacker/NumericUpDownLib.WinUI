@@ -180,6 +180,7 @@
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:NumericUpDown" />
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:UIntegerUpDown" />
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ULongUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:Hex32UpDown" />
 
             <!--  Styles a byte based numeric up down control based on the InputBaseUpDown control style  -->
 
