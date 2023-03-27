@@ -14,6 +14,7 @@ namespace NumericUpDownLib.WinUI.Base
     //using System.Diagnostics;
     using System.Globalization;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices.WindowsRuntime;
     using System.Windows;
 
@@ -156,7 +157,8 @@ namespace NumericUpDownLib.WinUI.Base
             nameof(DisplayLength),
             typeof(double),
             typeof(AbstractBaseUpDown<T>),
-            new PropertyMetadata((double)3));
+            new PropertyMetadata((double)3, new PropertyChangedCallback(DisplayLengthPropertyChanged)
+                ));
 
 
         /// <summary>
@@ -292,10 +294,6 @@ namespace NumericUpDownLib.WinUI.Base
 
             _PART_TextBox = this.GetTemplateChild(Part_TextBoxName) as TextBox;
             _PART_Measuring_Element = this.GetTemplateChild(PART_MeasuringElement) as TextBox;
-            if (_PART_Measuring_Element != null)
-            {
-                _PART_Measuring_Element.TextChanged += _PART_Measuring_Element_TextChanged;
-            }
 
             _PART_IncDecStackPanel = this.GetTemplateChild(PART_IncDecStackPanel) as StackPanel;
 
@@ -343,6 +341,11 @@ namespace NumericUpDownLib.WinUI.Base
 
             if (_PART_IncrementButton != null)
                 _PART_IncrementButton.PreviewKeyDown += IncDecButton_PreviewKeyDown;
+
+            if (_PART_Measuring_Element != null)
+            {
+                _PART_Measuring_Element.TextChanged += _PART_Measuring_Element_TextChanged;
+            }
 
 #if WPF
             this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(this_IsVisibleChanged);
@@ -1036,6 +1039,18 @@ namespace NumericUpDownLib.WinUI.Base
             (sender as TextBox).Cursor = Cursors.ScrollAll;
         }
 #endif
+
+        private static void DisplayLengthPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+#if false
+            if (obj is AbstractBaseUpDown<T> control && control._PART_TextBox != null)
+            {
+                control._PART_TextBox.MinWidth = control._PART_Measuring_Element.ActualWidth;
+                control._PART_TextBox.Width = control._PART_Measuring_Element.ActualWidth;
+                control._PART_TextBox.UpdateLayout();
+            } 
+#endif
+        }
 
         private void _PART_Measuring_Element_TextChanged(object sender, TextChangedEventArgs e)
         {
