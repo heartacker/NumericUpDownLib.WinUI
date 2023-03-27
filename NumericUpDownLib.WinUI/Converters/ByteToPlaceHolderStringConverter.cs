@@ -21,8 +21,8 @@
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             byte byteVal = 1;
-            if (value is double)
-                byteVal = (byte)(double)value;
+            if (value is int)
+                byteVal = (byte)(int)value;
             else if (value is byte)
                 byteVal = (byte)value;
             else
