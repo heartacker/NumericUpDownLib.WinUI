@@ -343,6 +343,15 @@ namespace NumericUpDownLib.WinUI.Base
                 new PropertyMetadata(false));
 
         /// <summary>
+        /// Backing store of <see cref="Orientation"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ViewOrientationProperty = DependencyProperty.Register(
+                nameof(Orientation),
+                typeof(Orientation),
+                typeof(AbstractBaseUpDown<T>),
+                new PropertyMetadata(Orientation.Horizontal));
+
+        /// <summary>
         /// Holds the REQUIRED textbox instance part for this control.
         /// </summary>
         protected TextBox _PART_TextBox;
@@ -716,6 +725,15 @@ namespace NumericUpDownLib.WinUI.Base
         {
             get { return (bool)GetValue(IsUpdateValueWhenLostFocusProperty); }
             set { SetValue(IsUpdateValueWhenLostFocusProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets/sets wether enable updata Value when Lost Focus
+        /// </summary>
+        public Orientation Orientation
+        {
+            get { return (Orientation)GetValue(ViewOrientationProperty); }
+            set { SetValue(ViewOrientationProperty, value); }
         }
 
         private bool _IsDataValid = true;

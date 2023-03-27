@@ -88,6 +88,25 @@ namespace NumericUpDownLib.WinUI.Base
             typeof(InputBaseUpDown),
             new PropertyMetadata(NumberBoxSpinButtonPlacementMode.Compact,
                 new PropertyChangedCallback(SpinButtonPlacementModeChanged)));
+
+
+        /// <summary>
+        /// Backing store of <see cref="SpinButtonPlacementMode"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
+            nameof(Header),
+            typeof(string),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(""));
+
+        public string Header
+        {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+
+
 #if false
         /// <summary>
         /// Dependency property backing store for the <see cref="IsIncDecButtonsVisible"/> property.
@@ -117,6 +136,7 @@ namespace NumericUpDownLib.WinUI.Base
             get { return (SolidColorBrush)GetValue(EditingColorBrushProperty); }
             set { SetValue(EditingColorBrushProperty, value); }
         }
+
 
         /// <summary>
         /// identify that the editing Visibility
