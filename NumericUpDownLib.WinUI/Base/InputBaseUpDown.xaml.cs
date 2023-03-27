@@ -26,7 +26,7 @@ namespace NumericUpDownLib.WinUI.Base
     {
         public InputBaseUpDown()
         {
-            this.DefaultStyleKey = "InputBaseUpDownStyle";
+            this.DefaultStyleKey = typeof(InputBaseUpDown);
         }
 
         #region fields
@@ -35,38 +35,47 @@ namespace NumericUpDownLib.WinUI.Base
         /// Determines whether the textbox portion of the control is editable
         /// (requires additional check of bounds) or not.
         /// </summary>
-        public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(InputBaseUpDown),
-                new PropertyMetadata(false));
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+            nameof(IsReadOnly),
+            typeof(bool),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(false));
 
         /// <summary>
         /// Determines the allowed style of a number entered and displayed in the textbox.
         /// </summary>
-        public static readonly DependencyProperty NumberStyleProperty =
-            DependencyProperty.Register("NumberStyle", typeof(NumberStyles),
-                typeof(InputBaseUpDown), new PropertyMetadata(NumberStyles.Any));
+        public static readonly DependencyProperty NumberStyleProperty = DependencyProperty.Register(
+            nameof(NumberStyle),
+            typeof(NumberStyles),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(NumberStyles.Any));
 
         /// <summary>
         /// Backing store of <see cref="EnableValidatingIndicator"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EnableValidatingIndicatorProperty =
-            DependencyProperty.Register("EnableValidatingIndicator", typeof(bool), typeof(InputBaseUpDown),
-                new PropertyMetadata(false));
+        public static readonly DependencyProperty EnableValidatingIndicatorProperty = DependencyProperty.Register(
+            nameof(EnableValidatingIndicator),
+            typeof(bool),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(false));
 
         /// <summary>
         /// Backing store of <see cref="EditingVisibility"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EditingVisibilityProperty =
-            DependencyProperty.Register("EditingVisibility", typeof(Visibility), typeof(InputBaseUpDown),
-                new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty EditingVisibilityProperty = DependencyProperty.Register(
+            nameof(EditingVisibility),
+            typeof(Visibility),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(Visibility.Collapsed));
 
         /// <summary>
         /// Backing store of <see cref="EditingColorBrush"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EditingColorBrushProperty =
-            DependencyProperty.Register("EditingColorBrush", typeof(SolidColorBrush),
-                typeof(InputBaseUpDown), new PropertyMetadata(new SolidColorBrush(Colors.Green)));
-
+        public static readonly DependencyProperty EditingColorBrushProperty = DependencyProperty.Register(
+            nameof(EditingColorBrush),
+            typeof(SolidColorBrush),
+            typeof(InputBaseUpDown),
+            new PropertyMetadata(new SolidColorBrush(Colors.Green)));
 
         /// <summary>
         /// identify that the inputing data is valid or not.,
@@ -108,12 +117,12 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Expose the increase value command via <seealso cref="RoutedCommand"/> property.
         /// </summary>
-        public static RelayCommand IncreaseCommand => _IncreaseCommand;
+        public RelayCommand IncreaseCommand => _IncreaseCommand;
 
         /// <summary>
         /// Expose the decrease value command via <seealso cref="RoutedCommand"/> property.
         /// </summary>
-        public static RelayCommand DecreaseCommand => _DecreaseCommand;
+        public RelayCommand DecreaseCommand => _DecreaseCommand;
 
         /// <summary>
         /// Determines whether the textbox portion of the control is editable
@@ -141,22 +150,30 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Increase the displayed integer value
         /// </summary>
-        protected abstract void OnIncrease();
+        protected virtual void OnIncrease() { }
 
         /// <summary>
         /// Determines whether the increase command is available or not.
         /// </summary>
-        protected abstract bool CanIncreaseCommand();
+        protected virtual bool CanIncreaseCommand()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Decrease the displayed integer value
         /// </summary>
-        protected abstract void OnDecrease();
+        protected virtual void OnDecrease()
+        {
+        }
 
         /// <summary>
         /// Determines whether the decrease command is available or not.
         /// </summary>
-        protected abstract bool CanDecreaseCommand();
+        protected virtual bool CanDecreaseCommand()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Initialize up down/button commands and key gestures for up/down cursor keys

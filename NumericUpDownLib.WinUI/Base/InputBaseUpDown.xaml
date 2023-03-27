@@ -1,30 +1,20 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
-<!-- Licensed under the MIT License. -->
+<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
 
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:NumericUpDownLib.WinUI.Base"
     xmlns:controls="using:NumericUpDownLib.WinUI"
-    xmlns:local="using:NumericUpDownLib.WinUI.Base" xmlns:conv="using:NumericUpDownLib.WinUI.Converters">
+    xmlns:conv="using:NumericUpDownLib.WinUI.Converters"
+    xmlns:local="using:NumericUpDownLib.WinUI.Base">
 
-    <Style x:Key="InputBaseUpDownStyle1" TargetType="local:InputBaseUpDown">
+    <Style x:Key="InputBaseUpDownStyle" TargetType="base:InputBaseUpDown">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="local:InputBaseUpDown">
-                    <TextBox Text="{TemplateBinding Value}"></TextBox>
-
-                </ControlTemplate>
-
-            </Setter.Value>
-        </Setter>
-
-    </Style>
-    <Style x:Key="InputBaseUpDownStyle" TargetType="local:InputBaseUpDown">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local:InputBaseUpDown">
+                <ControlTemplate TargetType="base:InputBaseUpDown">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinWidth}" VerticalAlignment="Top">
+                        <Grid MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinWidth}" VerticalAlignment="Center">
                             <Grid.Resources>
                                 <conv:ByteToPlaceHolderStringConverter x:Key="ByteToPlaceHolderStringConverter" />
                                 <conv:BoolToVisibilityPropConverter x:Key="BoolToVisibilityConverter" />
@@ -43,6 +33,7 @@
                                     Hidden measuring textbox ensure reservation of enough UI space
                                     according to DisplayLength dependency property
                                 -->
+
                                 <TextBox
                                     x:Name="PART_Measuring_Element"
                                     Margin="0,0,1,0"
@@ -51,29 +42,24 @@
                                     HorizontalContentAlignment="Right"
                                     VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
                                     AcceptsReturn="False"
-                                    Background="#00000000"
-                                    Foreground="#00000000"
+                                    Background="Transparent"
+                                    Foreground="Transparent"
                                     IsEnabled="False"
-                                  
                                     Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayLength, Converter={StaticResource ByteToPlaceHolderStringConverter}}"
-                                    TextAlignment="Right" />
-                                <!--  Visibility="Hidden" />  -->
-
+                                    TextAlignment="Left"
+                                    Visibility="Collapsed" />
+                                <!--  Visibility="Collapsed"  -->
                                 <TextBox
                                     x:Name="PART_TextBox"
-                                    Margin="1,0,1,0"
                                     Padding="0"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="Center"
                                     AcceptsReturn="False"
                                     Background="{TemplateBinding Background}"
                                     BorderThickness="0"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsReadOnly="{TemplateBinding IsReadOnly}"
-                                  />
-                                <!--  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}"  -->
+                                    PlaceholderText="1234567988" />
+                                <!--  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value,Mode=OneWay}"  -->
 
                                 <TextBlock
                                     Margin="3,0"
@@ -85,53 +71,37 @@
                             </Grid>
 
                             <!--  ArrowUp Increase value button  -->
-                            <!--
                             <RepeatButton
                                 x:Name="PART_IncrementButton"
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
-                                Command="{Binding local:InputBaseUpDown.IncreaseCommand}"
-                                Content="M 0 4 L 6 4 L 3 0 Z"
-                                Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IncreaseCommand}"
+                                Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <RepeatButton.Content>
+                                    <Path Data="M 0 4 L 6 4 L 3 0 Z" />
+                                </RepeatButton.Content>
+                            </RepeatButton>
 
-                            -->
                             <!--  ArrowDown Decrease value button  -->
-                            <!--
+
                             <RepeatButton
                                 x:Name="PART_DecrementButton"
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
-                                Command="{Binding local:InputBaseUpDown.DecreaseCommand}"
-                                Content="M 0 0 L 3 4 L 6 0 Z"
-                                Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            -->
+                                Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DecreaseCommand}"
+                                Visibility="{Binding Path=IsIncDecButtonsVisible, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <RepeatButton.Content>
+                                    <Path Data="M 0 0 L 3 4 L 6 0 Z" />
+                                </RepeatButton.Content>
+                            </RepeatButton>
                         </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ByteUpDown" />
-    <!--  Styles a byte based numeric up down control based on the InputBaseUpDown control style  -->
-    <!--
-
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:DecimalUpDown}" />
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:DoubleUpDown}" />
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:LongUpDown}" />
-
-    -->
-    <!--  Styles an Integer based numeric up down control based on the InputBaseUpDown control style  -->
-    <!--
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:NumericUpDown}" />
-
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:SByteUpDown}" />
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:ShortUpDown}" />
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:FloatUpDown}" />
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:UIntegerUpDown}" />
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:UShortUpDown}" />
-    <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="{x:Bind controls:ULongUpDown}" />
-    -->
-
 </ResourceDictionary>

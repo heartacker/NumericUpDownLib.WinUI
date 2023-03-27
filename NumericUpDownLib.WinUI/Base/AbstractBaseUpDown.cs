@@ -26,13 +26,11 @@ namespace NumericUpDownLib.WinUI.Base
     /// Implements an up/down abstract base control.
     /// Source: http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
     /// </summary>
-
-    //[TemplatePart(Name = Part_TextBoxName, Type = typeof(TextBox))]
-    //[TemplatePart(Name = PART_MeasuringElement, Type = typeof(FrameworkElement))]
-    //[TemplatePart(Name = PART_IncrementButton, Type = typeof(RepeatButton))]
-    //[TemplatePart(Name = PART_DecrementButton, Type = typeof(RepeatButton))]
-
+    /// 
     [TemplatePart(Name = Part_TextBoxName, Type = typeof(TextBox))]
+    [TemplatePart(Name = PART_MeasuringElement, Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = PART_IncrementButton, Type = typeof(RepeatButton))]
+    [TemplatePart(Name = PART_DecrementButton, Type = typeof(RepeatButton))]
     public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, ICommandSource*/
     {
         #region fields
@@ -76,7 +74,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Dependency property backing store for the <see cref="IsIncDecButtonsVisible"/> property.
         /// </summary>
         public static readonly DependencyProperty IsIncDecButtonsVisibleProperty = DependencyProperty.Register(
-            "IsIncDecButtonsVisible",
+            nameof(IsIncDecButtonsVisible),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(true));
@@ -85,7 +83,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Dependency property backing store for the Value property. defalut value is _MinValue
         /// </summary>
         protected static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value",
+            nameof(Value),
             typeof(T),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(
@@ -98,7 +96,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Dependency property backing store for Minimum Value property.
         /// </summary>
         protected static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue",
+            nameof(MinValue),
                 typeof(T), typeof(AbstractBaseUpDown<T>),
                 new PropertyMetadata(
                     _MinValue,
@@ -111,7 +109,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Dependency property backing store for Maximum Value property.
         /// </summary>
         protected static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue",
+            nameof(MaxValue),
             typeof(T), typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(
                 _MaxValue,
@@ -157,10 +155,10 @@ namespace NumericUpDownLib.WinUI.Base
         /// the textbox portion.
         /// </summary>
         protected static readonly DependencyProperty DisplayLengthProperty = DependencyProperty.Register(
-            "DisplayLength",
-            typeof(byte),
+            nameof(DisplayLength),
+            typeof(double),
             typeof(AbstractBaseUpDown<T>),
-            new PropertyMetadata((byte)3));
+            new PropertyMetadata((double)3));
 
         /// <summary>
         /// Backing store for dependency property to decide whether DisplayLength
@@ -169,7 +167,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// of string length and available space).
         /// </summary>
         protected static readonly DependencyProperty IsDisplayLengthFixedProperty = DependencyProperty.Register(
-            "IsDisplayLengthFixed",
+            nameof(IsDisplayLengthFixed),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(true, OnIsDisplayLengthFixedChanged));
@@ -179,7 +177,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// should be selected upon focus or not.
         /// </summary>
         protected static readonly DependencyProperty SelectAllTextOnFocusProperty = DependencyProperty.Register(
-            "SelectAllTextOnFocus",
+            nameof(SelectAllTextOnFocus),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(true));
@@ -189,7 +187,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// applied to the textbox text portion of the up down control.
         /// </summary>
         protected static readonly DependencyProperty FormatStringProperty = DependencyProperty.Register(
-            "FormatString",
+            nameof(FormatString),
             typeof(string),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata("G", OnIsFormatStringChanged));
@@ -198,7 +196,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Backing store of <see cref="MouseWheelAccelaratorKey"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MouseWheelAccelaratorKeyProperty = DependencyProperty.Register(
-            "MouseWheelAccelaratorKey",
+            nameof(MouseWheelAccelaratorKey),
             typeof(VirtualKeyModifiers),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(VirtualKeyModifiers.Control));
@@ -207,7 +205,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Backing store of <see cref="IsMouseDragEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsMouseDragEnabledProperty = DependencyProperty.Register(
-            "IsMouseDragEnabled",
+            nameof(IsMouseDragEnabled),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(true, OnIsMouseDragEnabledChanged));
@@ -216,13 +214,13 @@ namespace NumericUpDownLib.WinUI.Base
         /// Backing store of <see cref="CanIncDecMouseDrag"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanMouseDragProperty = DependencyProperty.Register(
-            "CanMouseDrag",
+            nameof(CanMouseDrag),
             typeof(CanIncDecMouseDrag),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(CanIncDecMouseDrag.VerticalHorizontal));
 
         public static readonly DependencyProperty MouseWheelEnabledProperty = DependencyProperty.Register(
-            "MouseWheelEnabled",
+            nameof(MouseWheelEnabled),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(true));
@@ -231,7 +229,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Backing store of <see cref="IsLargeStepEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsLargeStepEnabledProperty = DependencyProperty.Register(
-            "IsLargeStepEnabled",
+            nameof(IsLargeStepEnabled),
             typeof(bool),
             typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(true));
@@ -240,7 +238,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// Backing store of <see cref="IsUpdateValueWhenLostFocus"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsUpdateValueWhenLostFocusProperty = DependencyProperty.Register(
-                "IsUpdateValueWhenLostFocus",
+                nameof(IsUpdateValueWhenLostFocus),
                 typeof(bool),
                 typeof(AbstractBaseUpDown<T>),
                 new PropertyMetadata(false));
@@ -254,7 +252,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// Measures the required space for a string of a certain length
         /// with a standard control to ensure that enough digits are visible.
         /// </summary>
-        private FrameworkElement _PART_Measuring_Element;
+        private TextBox _PART_Measuring_Element;
+
         private RepeatButton _PART_DecrementButton;
         private RepeatButton _PART_IncrementButton;
 
@@ -274,9 +273,9 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Initializes a new instance of the AbstractBaseUpDown Control.
         /// </summary>
-        public AbstractBaseUpDown()
-            : base()
+        public AbstractBaseUpDown() : base()
         {
+            this.DefaultStyleKey = typeof(AbstractBaseUpDown<T>);
             UserInput = false;
         }
         #endregion constructor
@@ -295,6 +294,7 @@ namespace NumericUpDownLib.WinUI.Base
         } 
 #else
 
+#if false
         protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> ValueChangeds = new();
 
         /// <summary>
@@ -308,6 +308,7 @@ namespace NumericUpDownLib.WinUI.Base
 
 
         protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> MinValueChangeds = new();
+
 
         /// <summary>
         /// Identifies the ValueChanged routed event.
@@ -339,6 +340,7 @@ namespace NumericUpDownLib.WinUI.Base
         {
             ValueChangeds.InvocationList?.Invoke(this, args);
         }
+#endif
 
 #endif
         #endregion events
@@ -356,8 +358,10 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Dependency property backing store for Command Value property.
         /// </summary>
-        public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(XamlUICommand), typeof(AbstractBaseUpDown<T>),
+        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
+            nameof(Command),
+            typeof(XamlUICommand),
+            typeof(AbstractBaseUpDown<T>),
             new PropertyMetadata(null, new PropertyChangedCallback(CommandChangedCallBack)));
 
         private static void CommandChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -373,10 +377,11 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Dependency property backing store for CommandParameter Value property.
         /// </summary>
-        public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register("CommandParameter", typeof(object), typeof(AbstractBaseUpDown<T>)
-                , new PropertyMetadata(null)
-                );
+        public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
+            nameof(CommandParameter),
+            typeof(object),
+            typeof(AbstractBaseUpDown<T>),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Gets/Sets a Command Parameter for the Command <see cref="Command"/> binding
@@ -521,10 +526,10 @@ namespace NumericUpDownLib.WinUI.Base
         /// Gets/sets the number of characters to display in the textbox portion of the
         /// AbstractBaseUpDown control.
         /// </summary>
-        public byte DisplayLength
+        public double DisplayLength
         {
-            get { return (byte)GetValue(DisplayLengthProperty); }
-            set { SetValue(DisplayLengthProperty, value); }
+            get { return (double)GetValue(DisplayLengthProperty); }
+            set { SetValue(DisplayLengthProperty, (byte)value); }
         }
 
         /// <summary>
@@ -716,10 +721,15 @@ namespace NumericUpDownLib.WinUI.Base
             base.OnApplyTemplate();
 
             _PART_TextBox = this.GetTemplateChild(Part_TextBoxName) as TextBox;
-            _PART_Measuring_Element = this.GetTemplateChild(PART_MeasuringElement) as FrameworkElement;
+            _PART_Measuring_Element = this.GetTemplateChild(PART_MeasuringElement) as TextBox;
+            if (_PART_Measuring_Element != null)
+            {
+                _PART_Measuring_Element.TextChanged += _PART_Measuring_Element_TextChanged;
+            }
 
             _PART_DecrementButton = this.GetTemplateChild(PART_DecrementButton) as RepeatButton;
             _PART_IncrementButton = this.GetTemplateChild(PART_IncrementButton) as RepeatButton;
+
 
             if (_PART_TextBox != null)
             {
@@ -768,10 +778,17 @@ namespace NumericUpDownLib.WinUI.Base
 #endif
         }
 
+        private void _PART_Measuring_Element_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_PART_TextBox != null)
+            {
+                _PART_TextBox.Width = _PART_Measuring_Element.ActualWidth;
+            }
+        }
 
         private void _PART_TextBox_ProcessKeyboardAccelerators(UIElement sender, ProcessKeyboardAcceleratorEventArgs args)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
 #if WPF
@@ -1110,7 +1127,7 @@ namespace NumericUpDownLib.WinUI.Base
 
         private void _PART_TextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1241,9 +1258,12 @@ namespace NumericUpDownLib.WinUI.Base
                     return;
                 }
             }
+#if false
             var window = CoreWindow.GetForCurrentThread();
             var isCtrlDown = (window.GetKeyState(VirtualKey.Control) & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
-
+#else
+            var isCtrlDown = false;
+#endif
             // update value typed by the user
             if (e.Key == VirtualKey.Enter)
             {
@@ -1409,10 +1429,11 @@ namespace NumericUpDownLib.WinUI.Base
             if (_PART_TextBox != null)
             {
                 _PART_TextBox.Text = FormatNumber(Value);
+                //ValueText = _PART_TextBox.Text;
                 LastEditingNumericValue = Value;
             }
             CommandExecute(Command);
-            ValueChangeds.InvocationList?.Invoke(this, args);
+            // TODO  ValueChangeds.InvocationList?.Invoke(this, args);
         }
 
         private static object CoerceValue(DependencyObject element, object value)
@@ -1451,10 +1472,10 @@ namespace NumericUpDownLib.WinUI.Base
 
             if (control != null && args != null)
             {
-                ValueChangedEventArgs<T> e = new ValueChangedEventArgs<T>((T)args.OldValue, (T)args.NewValue);
+                ValueChangedEventArgs<T> e = new((T)args.OldValue, (T)args.NewValue);
+                AbstractBaseUpDown<T>.CoerceValue(obj, args.NewValue);
                 control.OnValueChanged(e);
 
-                AbstractBaseUpDown<T>.CoerceValue(obj, args.NewValue);
             }
         }
         #endregion Value dependency property helper methods
@@ -1466,7 +1487,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// <param name="args">Arguments associated with the ValueChanged event.</param>
         protected virtual void OnMinValueChanged(MinValueChangedEventArgs<T> args)
         {
-            MinValueChangeds.InvocationList?.Invoke(this, args);
+            // TODO MinValueChangeds.InvocationList?.Invoke(this, args);
         }
 
         private static void OnMinValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -1510,7 +1531,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// <param name="args">Arguments associated with the ValueChanged event.</param>
         protected virtual void OnMaxValueChanged(MaxValueChangedEventArgs<T> args)
         {
-            MaxValueChangeds.InvocationList?.Invoke(this, args);
+            // TODO MaxValueChangeds.InvocationList?.Invoke(this, args);
         }
 
         private static void OnMaxValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)

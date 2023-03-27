@@ -19,20 +19,22 @@ namespace NumericUpDownLib.WinUI
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize",
-                                        typeof(byte), typeof(ByteUpDown),
-                                        new PropertyMetadata((byte)1)/*,
+        protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
+            nameof(StepSize),
+            typeof(byte),
+            typeof(ByteUpDown),
+            new PropertyMetadata((byte)1)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
 
         /// <summary>
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty LargeStepSizeProperty =
-            DependencyProperty.Register("LargeStepSize",
-                                        typeof(byte), typeof(ByteUpDown),
-                                        new PropertyMetadata((byte)10)/*,
+        protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
+            nameof(LargeStepSize),
+            typeof(byte),
+            typeof(ByteUpDown),
+            new PropertyMetadata((byte)10)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
 
@@ -66,6 +68,8 @@ namespace NumericUpDownLib.WinUI
         /// </summary>
         public ByteUpDown() : base()
         {
+            this.DefaultStyleKey = typeof(ByteUpDown);
+            this.MaxValue = byte.MaxValue;
         }
         #endregion constructor
 
