@@ -775,6 +775,8 @@ namespace NumericUpDownLib.WinUI.Base
                 lastEditingNumericValue = value;
                 if (EnableValidatingIndicator)
                     EditingVisibility = lastEditingNumericValue.Equals(Value) ? Visibility.Collapsed : Visibility.Visible;
+                else
+                    EditingVisibility = Visibility.Collapsed;
             }
         }
 
@@ -1214,6 +1216,7 @@ namespace NumericUpDownLib.WinUI.Base
         byte lastDisplayLens = 1;
         private void _PART_TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
+            UserInput = false;
             var tb = sender as TextBox;
             SpinButtonPlacementMode = spMode;
             if (LastfocusState == FocusState.Keyboard)
@@ -1230,18 +1233,18 @@ namespace NumericUpDownLib.WinUI.Base
                 // TODO (sender as TextBox).Cursor = Cursors.ScrollAll;
             }
 
-            if (_PART_TextBox != null)
-            {
-                // format the value string if value is no changed
-                if (Value.Equals(LastEditingNumericValue))
-                    FormatText(_PART_TextBox.Text);
 
-                // trigger the change event if IsUpdateValueWhenLostFocus=true and value is valid
-                if (IsUpdateValueWhenLostFocus && IsValueValid)
-                {
-                    Value = FormatText(_PART_TextBox.Text, true);
-                }
+            // format the value string if value is no changed
+            if (Value.Equals(LastEditingNumericValue))
+                Value = FormatText(_PART_TextBox.Text);
+
+
+            // trigger the change event if IsUpdateValueWhenLostFocus=true and value is valid
+            if (IsUpdateValueWhenLostFocus && IsValueValid)
+            {
+                Value = FormatText(_PART_TextBox.Text, true);
             }
+
         }
         #endregion textbox mouse and focus handlers
 
@@ -1264,16 +1267,14 @@ namespace NumericUpDownLib.WinUI.Base
         /// <param name="e"></param>
         protected void _PART_TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_PART_TextBox != null)
+            T temp = LastEditingNumericValue;
+            if (UserInput == true)
             {
-                if (UserInput == true)
+                IsValueValid = VerifyText(_PART_TextBox.Text, ref temp);
+                if (!LastEditingNumericValue.Equals(temp))
                 {
-                    T temp = LastEditingNumericValue;
-                    IsValueValid = VerifyText(_PART_TextBox.Text, ref temp);
-                    if (!LastEditingNumericValue.Equals(temp))
-                    {
-                        LastEditingNumericValue = temp;
-                    }
+                    LastEditingNumericValue = temp;
+                }
 #if false
                     int pos = _PART_TextBox.CaretIndex;
 
@@ -1284,12 +1285,12 @@ namespace NumericUpDownLib.WinUI.Base
 
                     _PART_TextBox.CaretIndex = pos;
 #endif
-                }
-                else
-                {
-                    FormatText(_PART_TextBox.Text);
-                }
             }
+            else
+            {
+                IsValueValid = VerifyText(_PART_TextBox.Text, ref temp);
+            }
+
         }
 
         /// <summary>
@@ -1410,7 +1411,7 @@ namespace NumericUpDownLib.WinUI.Base
                         System.Diagnostics.Debug.WriteLine("ValueChanged forced by user");
                         this.OnValueChanged(new ValueChangedEventArgs<T>(Value, Value));
                     }
-
+                    LastEditingNumericValue = Value;
                     e.Handled = true;
                 }
                 return;
