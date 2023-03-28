@@ -37,7 +37,7 @@
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Left"
                             BorderThickness="1"
-                            DisplayLength="4"
+                            DisplayLength="8"
                             FontWeight="SemiBold"
                             FormatString="X2"
                             Header="Byte"
@@ -46,8 +46,6 @@
                             Orientation="Horizontal"
                             SpinButtonPlacementMode="Inline" />
                     </Grid>
-
-
 
                     <ListView
                         Grid.Row="0"
@@ -66,7 +64,7 @@
                             IsLargeChangeEnabled="False"
                             Orientation="Horizontal"
                             SpinButtonPlacementMode="Compact"
-                            Value="{Binding ElementName=byteUpDown, Path=DisplayLength, Mode=TwoWay}" />
+                            Value="{Binding ElementName=byteUpDown, UpdateSourceTrigger=PropertyChanged, Path=DisplayLength, Mode=TwoWay}" />
                         <CheckBox Content="abc" />
                     </ListView>
 
