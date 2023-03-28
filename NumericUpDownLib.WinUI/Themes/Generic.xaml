@@ -57,7 +57,7 @@
                                     <TextBlock
                                         Grid.Row="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Path=Orientation, Converter={StaticResource Ori21}}"
                                         Grid.Column="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Path=Orientation, Converter={StaticResource Ori20}}"
-                                        Padding="1,3,0,0"
+                                        Padding="1,5,10,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Stretch"
                                         FontWeight="Bold"
