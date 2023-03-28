@@ -1196,7 +1196,7 @@ namespace NumericUpDownLib.WinUI.Base
 
                 //_PART_TextBox.Width = _PART_TextBox.ActualWidth + doubleActualWidth;
                 lastDisplayLens = (byte)DisplayLength;
-                DisplayLength += 3;
+                DisplayLength += (spMode == NumberBoxSpinButtonPlacementMode.Inline ? 6 : 3);
             }
 
             System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
