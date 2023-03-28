@@ -5,24 +5,144 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:nud="using:NumericUpDownLib.WinUI"
+    xmlns:vmns="using:NumericUpDownLib.WinUI.Demo.ViewModels"
     mc:Ignorable="d">
+    <d:Page.DataContext>
+        <vmns:MainViewModel />
+    </d:Page.DataContext>
 
-    <Grid x:Name="ContentArea">
-        <Pivot Title="Welcom to NumericUpDownLib.WinUI">
-            <PivotItem Header="NumericUpDown" />
+    <Grid
+        x:Name="ContentArea"
+        Margin="0,0,0,10"
+        BorderBrush="Yellow"
+        BorderThickness="0">
+        <TabView VerticalAlignment="Stretch">
+            <TabViewItem Header="Byte">
+                <Grid BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid
+                        BorderBrush="#20808080"
+                        BorderThickness="2"
+                        CornerRadius="4">
+                        <nud:ByteUpDown
+                            Name="byteUpDown"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Left"
+                            BorderThickness="1"
+                            DisplayLength="4"
+                            FontWeight="SemiBold"
+                            FormatString="X2"
+                            Header="Byte"
+                            IsDisplayLengthFixed="False"
+                            IsLargeChangeEnabled="False"
+                            Orientation="Horizontal"
+                            SpinButtonPlacementMode="Inline" />
+                    </Grid>
 
-            <PivotItem Header="DoubleUpDown" />
 
-            <PivotItem Header="PercentUpDown" />
 
-            <PivotItem Header="Hex32UpDown">
+                    <ListView
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        BorderBrush="#20808080"
+                        BorderThickness="2"
+                        CornerRadius="4">
+                        <nud:ByteUpDown
+                            HorizontalAlignment="Center"
+                            HorizontalContentAlignment="Stretch"
+                            BorderThickness="1"
+                            DisplayLength="4"
+                            FontWeight="SemiBold"
+                            Header="DisplayLength:"
+                            IsDisplayLengthFixed="False"
+                            IsLargeChangeEnabled="False"
+                            Orientation="Horizontal"
+                            SpinButtonPlacementMode="Compact"
+                            Value="{Binding ElementName=byteUpDown, Path=DisplayLength, Mode=TwoWay}" />
+                        <CheckBox Content="abc" />
+                    </ListView>
 
-              
-                    <nud:ByteUpDown />
-         
-            </PivotItem>
+                </Grid>
+            </TabViewItem>
+            <TabViewItem Header="Double">
+                <StackPanel
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <StackPanel Width="auto" Orientation="Vertical">
 
-        </Pivot>
+                        <nud:ByteUpDown
+                            Name="bbb"
+                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Right"
+                            BorderThickness="1"
+                            DisplayLength="4"
+                            FontWeight="SemiBold"
+                            FormatString="X2"
+                            Header="Byte"
+                            IsDisplayLengthFixed="False"
+                            IsLargeChangeEnabled="False"
+                            NumberStyle="HexNumber"
+                            Orientation="Vertical"
+                            SpinButtonPlacementMode="Compact" />
+                        <nud:UIntegerUpDown
+                            HorizontalContentAlignment="Center"
+                            DisplayLength="10"
+                            FormatString="X8"
+                            Header="Center"
+                            NumberStyle="HexNumber"
+                            SpinButtonPlacementMode="Compact" />
+                        <nud:ULongUpDown
+                            HorizontalContentAlignment="Center"
+                            DisplayLength="10"
+                            Header="Inline ULongUpDown"
+                            SpinButtonPlacementMode="Inline" />
+                        <nud:NumericUpDown DisplayLength="15" />
+                        <nud:UIntegerUpDown DisplayLength="15" Header="Uint" />
+                        <nud:DoubleUpDown
+                            HorizontalContentAlignment="Left"
+                            DisplayLength="15"
+                            FormatString="f4"
+                            SmallChange="0.1" />
+                        <TextBox Text="{Binding ElementName=bbb, Path=FocusState}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <Button
+                            x:Name="myButton"
+                            Click="myButton_Click"
+                            Content=" Click Me"
+                            SizeChanged="myButton_SizeChanged" />
+                        <NumberBox
+                            AcceptsExpression="True"
+                            Header="ByteUpDown"
+                            Value="{Binding Lens}" />
+                        <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
+                        <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
+                        <CheckBox
+                            Name="abc"
+                            Content="{Binding Lens}"
+                            IsChecked="True" />
+                        <NumberBox
+                            Name="abcd"
+                            Minimum="1"
+                            SpinButtonPlacementMode="Inline"
+                            Value="{Binding ElementName=bbb, Path=DisplayLength, Mode=TwoWay}" />
+                        <CheckBox Content="visa" IsChecked="{Binding ElementName=bbb, Mode=TwoWay, Path=EnableValidatingIndicator}" />
 
+
+                        <TextBox Text="{Binding ElementName=bbb, Path=Value, Mode=OneWay}" />
+                    </StackPanel>
+
+                </StackPanel>
+            </TabViewItem>
+        </TabView>
     </Grid>
 </Page>

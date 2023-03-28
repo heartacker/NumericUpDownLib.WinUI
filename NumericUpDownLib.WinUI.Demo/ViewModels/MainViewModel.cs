@@ -2,9 +2,12 @@
 
 namespace NumericUpDownLib.WinUI.Demo.ViewModels;
 
-public class MainViewModel : ObservableRecipient
+public partial class MainViewModel : ObservableRecipient
 {
     public MainViewModel()
     {
     }
+
+    [ObservableProperty]
+    public byte lens = 5;
 }
