@@ -11,11 +11,7 @@
         <vmns:MainViewModel />
     </d:Page.DataContext>
 
-    <Grid
-        x:Name="ContentArea"
-        Margin="0,0,0,10"
-        BorderBrush="Yellow"
-        BorderThickness="0">
+    <Grid x:Name="ContentArea" Margin="0,0,0,10" BorderBrush="Yellow" BorderThickness="0">
         <TabView VerticalAlignment="Stretch">
             <TabViewItem Header="Byte">
                 <Grid BorderThickness="1">
@@ -27,21 +23,18 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <Grid
-                        BorderBrush="#20808080"
-                        BorderThickness="2"
-                        CornerRadius="4">
+                    <Grid BorderBrush="#20808080" BorderThickness="2" CornerRadius="4">
                         <nud:ByteUpDown
                             Name="byteUpDown"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Left"
                             BorderThickness="1"
-                            DisplayLength="8"
+                            DisplayLength="{Binding DisplayLength}"
                             FontWeight="SemiBold"
                             FormatString="X2"
                             Header="Byte"
-                            IsDisplayLengthFixed="False"
+                            IsDisplayLengthFixed="{Binding IsDisplayLengthFixed}"
                             IsLargeChangeEnabled="False"
                             Orientation="Horizontal"
                             SpinButtonPlacementMode="Inline" />
@@ -60,21 +53,20 @@
                             DisplayLength="4"
                             FontWeight="SemiBold"
                             Header="DisplayLength:"
-                            IsDisplayLengthFixed="False"
+                            IsDisplayLengthFixed="{Binding IsDisplayLengthFixed}"
                             IsLargeChangeEnabled="False"
                             Orientation="Horizontal"
                             SpinButtonPlacementMode="Compact"
-                            Value="{Binding ElementName=byteUpDown, UpdateSourceTrigger=PropertyChanged, Path=DisplayLength, Mode=TwoWay}" />
-                        <CheckBox Content="abc" />
+                            Value="{Binding DisplayLength, Mode=TwoWay}" />
+                        <CheckBox IsChecked="{Binding IsDisplayLengthFixed,Mode=TwoWay}" Content="IsDisplayLengthFixed" />
+                        <ComboBox Header="Orientation" ItemsSource="{Binding OrientationS}"></ComboBox>
+                        
                     </ListView>
 
                 </Grid>
             </TabViewItem>
             <TabViewItem Header="Double">
-                <StackPanel
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
                     <StackPanel Width="auto" Orientation="Vertical">
 
                         <nud:ByteUpDown
@@ -98,41 +90,19 @@
                             Header="Center"
                             NumberStyle="HexNumber"
                             SpinButtonPlacementMode="Compact" />
-                        <nud:ULongUpDown
-                            HorizontalContentAlignment="Center"
-                            DisplayLength="10"
-                            Header="Inline ULongUpDown"
-                            SpinButtonPlacementMode="Inline" />
+                        <nud:ULongUpDown HorizontalContentAlignment="Center" DisplayLength="10" Header="Inline ULongUpDown" SpinButtonPlacementMode="Inline" />
                         <nud:NumericUpDown DisplayLength="15" />
                         <nud:UIntegerUpDown DisplayLength="15" Header="Uint" />
-                        <nud:DoubleUpDown
-                            HorizontalContentAlignment="Left"
-                            DisplayLength="15"
-                            FormatString="f4"
-                            SmallChange="0.1" />
+                        <nud:DoubleUpDown HorizontalContentAlignment="Left" DisplayLength="15" FormatString="f4" SmallChange="0.1" />
                         <TextBox Text="{Binding ElementName=bbb, Path=FocusState}" />
                     </StackPanel>
                     <StackPanel>
-                        <Button
-                            x:Name="myButton"
-                            Click="myButton_Click"
-                            Content=" Click Me"
-                            SizeChanged="myButton_SizeChanged" />
-                        <NumberBox
-                            AcceptsExpression="True"
-                            Header="ByteUpDown"
-                            Value="{Binding Lens}" />
+                        <Button x:Name="myButton" Click="myButton_Click" Content=" Click Me" SizeChanged="myButton_SizeChanged" />
+                        <NumberBox AcceptsExpression="True" Header="ByteUpDown" Value="{Binding Lens}" />
                         <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
                         <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
-                        <CheckBox
-                            Name="abc"
-                            Content="{Binding Lens}"
-                            IsChecked="True" />
-                        <NumberBox
-                            Name="abcd"
-                            Minimum="1"
-                            SpinButtonPlacementMode="Inline"
-                            Value="{Binding ElementName=bbb, Path=DisplayLength, Mode=TwoWay}" />
+                        <CheckBox Name="abc" Content="{Binding Lens}" IsChecked="True" />
+                        <NumberBox Name="abcd" Minimum="1" SpinButtonPlacementMode="Inline" Value="{Binding ElementName=bbb, Path=DisplayLength, Mode=TwoWay}" />
                         <CheckBox Content="visa" IsChecked="{Binding ElementName=bbb, Mode=TwoWay, Path=EnableValidatingIndicator}" />
 
 
