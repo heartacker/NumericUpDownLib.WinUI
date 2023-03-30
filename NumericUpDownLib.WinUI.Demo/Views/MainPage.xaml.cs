@@ -6,7 +6,6 @@ using NumericUpDownLib.WinUI.Demo.ViewModels;
 
 namespace NumericUpDownLib.WinUI.Demo.Views;
 
-[INotifyPropertyChanged]
 public sealed partial class MainPage : Page
 {
     public MainViewModel ViewModel
@@ -18,6 +17,7 @@ public sealed partial class MainPage : Page
     {
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
+        DataContext = ViewModel;
     }
 
     private void myButton_Click(object sender, RoutedEventArgs e)
@@ -36,5 +36,10 @@ public sealed partial class MainPage : Page
     private void myButton_SizeChanged(object sender, SizeChangedEventArgs e)
     {
 
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.DisplayLength += 1;
     }
 }

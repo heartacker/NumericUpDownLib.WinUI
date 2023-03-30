@@ -14,10 +14,20 @@ public partial class MainViewModel : ObservableRecipient
     public byte lens = 5;
 
     [ObservableProperty]
-    public byte displayLength = 4;
+    public int displayLength = 4;
 
     [ObservableProperty]
     public bool isDisplayLengthFixed = false;
 
-    public ObservableCollection<Orientation> OrientationS;
+    [ObservableProperty]
+    public Array orientationS = Enum.GetValues(typeof(Orientation));
+
+    [ObservableProperty]
+    public Orientation bOorientation;
+
+    [ObservableProperty]
+    public Array spinButtonPlacementModeS = Enum.GetValues(typeof(NumberBoxSpinButtonPlacementMode));
+
+    [ObservableProperty]
+    public NumberBoxSpinButtonPlacementMode bSpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact;
 }
