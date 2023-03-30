@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace NumericUpDownLib.WinUI.Demo.ViewModels;
@@ -23,11 +24,29 @@ public partial class MainViewModel : ObservableRecipient
     public Array orientationS = Enum.GetValues(typeof(Orientation));
 
     [ObservableProperty]
-    public Orientation bOorientation;
+    public Orientation bOorientation = Orientation.Horizontal;
+
+    [ObservableProperty]
+    public Array verticalAlignments = Enum.GetValues(typeof(VerticalAlignment));
+
+    [ObservableProperty]
+    public VerticalAlignment vVerticalAlignment = VerticalAlignment.Center;
+
+    [ObservableProperty]
+    public Array horizontalAlignments = Enum.GetValues(typeof(HorizontalAlignment));
+
+    [ObservableProperty]
+    public HorizontalAlignment hHorizontalAlignment = HorizontalAlignment.Center;
+
+    [ObservableProperty]
+    public NumberBoxSpinButtonPlacementMode bSpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact;
 
     [ObservableProperty]
     public Array spinButtonPlacementModeS = Enum.GetValues(typeof(NumberBoxSpinButtonPlacementMode));
 
     [ObservableProperty]
-    public NumberBoxSpinButtonPlacementMode bSpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact;
+    public string b = NumberBoxSpinButtonPlacementMode.Compact.ToString();
+
+    [ObservableProperty]
+    public string a = Orientation.Horizontal.ToString();
 }
