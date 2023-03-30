@@ -11,6 +11,23 @@ public partial class MainViewModel : ObservableRecipient
     {
     }
 
+    public enum MyEnum
+    {
+        ENUM0,
+        ENUM1,
+        ENUM2,
+        ENUM3
+    }
+
+    public MyEnum Types
+    {
+        get; set;
+    } = MyEnum.ENUM1;
+
+
+    public Array MyEnumS { get; set; } = Enum.GetValues(typeof(MyEnum));
+
+
     [ObservableProperty]
     public byte lens = 5;
 

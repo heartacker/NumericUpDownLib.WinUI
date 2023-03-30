@@ -17,7 +17,6 @@ public sealed partial class MainPage : Page
     {
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
-        DataContext = ViewModel;
     }
 
     private void myButton_Click(object sender, RoutedEventArgs e)
