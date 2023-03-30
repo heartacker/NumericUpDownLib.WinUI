@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
 
 namespace NumericUpDownLib.WinUI.Demo.ViewModels;
 
@@ -65,5 +66,5 @@ public partial class MainViewModel : ObservableRecipient
     public string b = NumberBoxSpinButtonPlacementMode.Compact.ToString();
 
     [ObservableProperty]
-    public string a = Orientation.Horizontal.ToString();
+    public string a = default(BindingMode).ToString();
 }
