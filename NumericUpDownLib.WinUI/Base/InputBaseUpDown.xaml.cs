@@ -101,8 +101,8 @@ namespace NumericUpDownLib.WinUI.Base
 
         public string Header
         {
-            get { return (string)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get => (string)GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
         }
 
 
@@ -133,8 +133,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// <value></value>
         internal SolidColorBrush EditingColorBrush
         {
-            get { return (SolidColorBrush)GetValue(EditingColorBrushProperty); }
-            set { SetValue(EditingColorBrushProperty, value); }
+            get => (SolidColorBrush)GetValue(EditingColorBrushProperty);
+            set => SetValue(EditingColorBrushProperty, value);
         }
 
 
@@ -144,8 +144,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// <value></value>
         internal Visibility EditingVisibility
         {
-            get { return (Visibility)GetValue(EditingVisibilityProperty); }
-            set { SetValue(EditingVisibilityProperty, value); }
+            get => (Visibility)GetValue(EditingVisibilityProperty);
+            set => SetValue(EditingVisibilityProperty, value);
         }
 
         /// <summary>
@@ -154,14 +154,14 @@ namespace NumericUpDownLib.WinUI.Base
         /// <value></value>
         public bool EnableValidatingIndicator
         {
-            get { return (bool)GetValue(EnableValidatingIndicatorProperty); }
-            set { SetValue(EnableValidatingIndicatorProperty, value); }
+            get => (bool)GetValue(EnableValidatingIndicatorProperty);
+            set => SetValue(EnableValidatingIndicatorProperty, value);
         }
 
         public NumberBoxSpinButtonPlacementMode SpinButtonPlacementMode
         {
-            get { return (NumberBoxSpinButtonPlacementMode)GetValue(SpinButtonPlacementModeProperty); }
-            set { SetValue(SpinButtonPlacementModeProperty, value); }
+            get => (NumberBoxSpinButtonPlacementMode)GetValue(SpinButtonPlacementModeProperty);
+            set => SetValue(SpinButtonPlacementModeProperty, value);
         }
 
         protected RelayCommand _IncreaseCommand;
@@ -188,8 +188,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public bool IsReadOnly
         {
-            get { return (bool)GetValue(IsReadOnlyProperty); }
-            set { SetValue(IsReadOnlyProperty, value); }
+            get => (bool)GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
         }
 
         /// <summary>
@@ -197,9 +197,13 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public NumberStyles NumberStyle
         {
-            get { return (NumberStyles)GetValue(NumberStyleProperty); }
-            set { SetValue(NumberStyleProperty, value); }
+            get => (NumberStyles)GetValue(NumberStyleProperty);
+            set => SetValue(NumberStyleProperty, value);
         }
+
+        #endregion properties
+
+        #region methods
 
         #region methods
 
@@ -209,10 +213,6 @@ namespace NumericUpDownLib.WinUI.Base
         }
 
         #endregion
-
-        #endregion properties
-
-        #region methods
 
         #region Commands
         /// <summary>
