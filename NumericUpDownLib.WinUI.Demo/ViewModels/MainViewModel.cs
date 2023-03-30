@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -56,15 +57,32 @@ public partial class MainViewModel : ObservableRecipient
     [ObservableProperty]
     public HorizontalAlignment hHorizontalAlignment = HorizontalAlignment.Center;
 
+
+    [ObservableProperty]
+    public HorizontalAlignment hHorizontalContentAlignment = HorizontalAlignment.Right;
+
     [ObservableProperty]
     public NumberBoxSpinButtonPlacementMode bSpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact;
 
     [ObservableProperty]
     public Array spinButtonPlacementModeS = Enum.GetValues(typeof(NumberBoxSpinButtonPlacementMode));
 
+
+    [ObservableProperty]
+    public Array numberStyless = Enum.GetValues(typeof(NumberStyles));
+
+    [ObservableProperty]
+    public NumberStyles nNumberStyles = NumberStyles.HexNumber | NumberStyles.AllowHexSpecifier;
+
+    [ObservableProperty]
+    public string formatString = "X2";
+
+
     [ObservableProperty]
     public string b = NumberBoxSpinButtonPlacementMode.Compact.ToString();
 
+
     [ObservableProperty]
     public string a = default(BindingMode).ToString();
+
 }
