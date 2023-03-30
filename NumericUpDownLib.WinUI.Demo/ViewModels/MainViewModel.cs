@@ -34,10 +34,16 @@ public partial class MainViewModel : ObservableRecipient
     public byte lens = 5;
 
     [ObservableProperty]
+    public string header = "Byte Header";
+
+    [ObservableProperty]
     public int displayLength = 4;
 
     [ObservableProperty]
     public bool isDisplayLengthFixed = false;
+    
+    [ObservableProperty]
+    public bool isUpdateValueWhenLostFocus = false;    
 
     [ObservableProperty]
     public Array orientationS = Enum.GetValues(typeof(Orientation));

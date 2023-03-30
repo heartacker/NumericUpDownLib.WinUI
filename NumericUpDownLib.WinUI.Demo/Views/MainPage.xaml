@@ -19,8 +19,8 @@
             <TabViewItem Header="Byte">
                 <Grid BorderThickness="1">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -33,15 +33,15 @@
                         <nud:ByteUpDown
                             Name="byteUpDown"
                             HorizontalAlignment="{x:Bind ViewModel.HHorizontalAlignment, Mode=OneWay}"
-                            VerticalAlignment="Center"
+                            VerticalAlignment="{x:Bind ViewModel.VVerticalAlignment, Mode=OneWay}"
                             HorizontalContentAlignment="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=OneWay}"
                             BorderThickness="1"
                             DisplayLength="{x:Bind ViewModel.DisplayLength, Mode=OneWay}"
-                            FontWeight="SemiBold"
                             FormatString="{x:Bind ViewModel.FormatString, Mode=OneWay}"
-                            Header="Byte"
+                            Header="{x:Bind ViewModel.Header, Mode=OneWay}"
                             IsDisplayLengthFixed="{x:Bind ViewModel.IsDisplayLengthFixed, Mode=OneWay}"
-                            IsLargeChangeEnabled="False"
+                            IsLargeChangeEnabled="True"
+                            IsUpdateValueWhenLostFocus="{x:Bind ViewModel.IsUpdateValueWhenLostFocus, Mode=OneWay}"
                             NumberStyle="{x:Bind ViewModel.NNumberStyles, Mode=OneWay}"
                             Orientation="{x:Bind ViewModel.BOorientation, Mode=OneWay}"
                             SpinButtonPlacementMode="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=OneWay}" />
@@ -57,19 +57,31 @@
                         HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Visible">
                         <StackPanel Orientation="Vertical" Spacing="10">
-                            <nud:NumericUpDown
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Stretch"
-                                BorderThickness="1"
-                                DisplayLength="4"
-                                FontWeight="SemiBold"
-                                Header="DisplayLength:"
-                                IsLargeChangeEnabled="False"
-                                Orientation="Horizontal"
-                                Value="{x:Bind ViewModel.DisplayLength, Mode=TwoWay}" />
-                            <NumberBox />
-                            <Button Click="Button_Click" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    VerticalAlignment="Bottom"
+                                    FontSize="28"
+                                    FontWeight="Bold"
+                                    Text="{Binding ElementName=byteUpDown, Path=Value, Mode=OneWay}" />
+                                <nud:NumericUpDown
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Right"
+                                    HorizontalContentAlignment="Stretch"
+                                    BorderThickness="1"
+                                    DisplayLength="4"
+                                    FontWeight="SemiBold"
+                                    Header="DisplayLength:"
+                                    IsLargeChangeEnabled="False"
+                                    Orientation="Horizontal"
+                                    Value="{x:Bind ViewModel.DisplayLength, Mode=TwoWay}" />
+                            </Grid>
+                            <TextBox Header="Header" Text="{x:Bind ViewModel.Header, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                             <CheckBox Content="IsDisplayLengthFixed" IsChecked="{x:Bind ViewModel.IsDisplayLengthFixed, Mode=TwoWay}" />
+                            <CheckBox Content="IsUpdateValueWhenLostFocus" IsChecked="{x:Bind ViewModel.IsUpdateValueWhenLostFocus, Mode=TwoWay}" />
                             <ComboBox
                                 Header="HorizontalAlignment"
                                 ItemsSource="{x:Bind ViewModel.HorizontalAlignments}"
