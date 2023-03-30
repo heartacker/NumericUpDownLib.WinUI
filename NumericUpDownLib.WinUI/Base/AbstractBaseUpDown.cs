@@ -79,6 +79,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         protected static T _MaxValue = default(T);
 
+        #endregion
+
 
         #region constructor
         /// <summary>
@@ -176,6 +178,7 @@ namespace NumericUpDownLib.WinUI.Base
         #endregion constructor
 
 
+        #region DependencyProperty
         /// <summary>
         /// Dependency property backing store for the Value property. defalut value is _MinValue
         /// </summary>
@@ -350,6 +353,9 @@ namespace NumericUpDownLib.WinUI.Base
                 typeof(Orientation),
                 typeof(AbstractBaseUpDown<T>),
                 new PropertyMetadata(Orientation.Horizontal));
+        #endregion
+
+        #region field
 
         /// <summary>
         /// Holds the REQUIRED textbox instance part for this control.
@@ -442,8 +448,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public ICommand Command
         {
-            get { return (ICommand)GetValue(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
         }
 
         /// <summary>
@@ -480,8 +486,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public object CommandParameter
         {
-            get { return (object)GetValue(CommandParameterProperty); }
-            set { SetValue(CommandParameterProperty, value); }
+            get => (object)GetValue(CommandParameterProperty);
+            set => SetValue(CommandParameterProperty, value);
         }
 
         /// <summary>
@@ -495,8 +501,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public UIElement CommandTarget
         {
-            get { return (UIElement)GetValue(InputElementProperty); }
-            set { SetValue(InputElementProperty, value); }
+            get => (UIElement)GetValue(InputElementProperty);
+            set => SetValue(InputElementProperty, value);
         }
 
         #region CommandHelper
@@ -563,8 +569,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public T Value
         {
-            get { return (T)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => (T)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
         /// <summary>
@@ -572,8 +578,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public T MinValue
         {
-            get { return (T)GetValue(MinValueProperty); }
-            set { SetValue(MinValueProperty, value); }
+            get => (T)GetValue(MinValueProperty);
+            set => SetValue(MinValueProperty, value);
         }
 
         /// <summary>
@@ -581,8 +587,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public T MaxValue
         {
-            get { return (T)GetValue(MaxValueProperty); }
-            set { SetValue(MaxValueProperty, value); }
+            get => (T)GetValue(MaxValueProperty);
+            set => SetValue(MaxValueProperty, value);
         }
 
         /// <summary>
@@ -593,7 +599,10 @@ namespace NumericUpDownLib.WinUI.Base
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public abstract T SmallChange { get; set; }
+        public abstract T SmallChange
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Implements an abstract place holder for a dependency property that should
@@ -603,7 +612,10 @@ namespace NumericUpDownLib.WinUI.Base
         /// Gets or sets a large step size (actual distance) of increment or decrement step.
         /// This value should be greater than 1 but at least 1.
         /// </summary>
-        public abstract T LargeChange { get; set; }
+        public abstract T LargeChange
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets/sets the number of characters to display in the textbox portion of the
@@ -611,8 +623,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public int DisplayLength
         {
-            get { return (int)GetValue(DisplayLengthProperty); }
-            set { SetValue(DisplayLengthProperty, (int)value); }
+            get => (int)GetValue(DisplayLengthProperty);
+            set => SetValue(DisplayLengthProperty, (int)value);
         }
 
         /// <summary>
@@ -622,8 +634,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public virtual double MinWidth
         {
-            get { return (double)GetValue(MinWidthProperty); }
-            set { SetValue(MinWidthProperty, value); }
+            get => (double)GetValue(MinWidthProperty);
+            set => SetValue(MinWidthProperty, value);
         }
 
         /// <summary>
@@ -633,8 +645,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public bool IsDisplayLengthFixed
         {
-            get { return (bool)GetValue(IsDisplayLengthFixedProperty); }
-            set { SetValue(IsDisplayLengthFixedProperty, value); }
+            get => (bool)GetValue(IsDisplayLengthFixedProperty); 
+            set => SetValue(IsDisplayLengthFixedProperty, value);
         }
 
         /// <summary>
@@ -645,7 +657,7 @@ namespace NumericUpDownLib.WinUI.Base
         {
             get
             {
-                string fsp = (string)GetValue(FormatStringProperty);
+                var fsp = (string)GetValue(FormatStringProperty);
                 if (fsp == "G" && (NumberStyle == System.Globalization.NumberStyles.HexNumber) ||
                     (NumberStyle == System.Globalization.NumberStyles.AllowHexSpecifier))
                 {
@@ -653,7 +665,7 @@ namespace NumericUpDownLib.WinUI.Base
                 }
                 return fsp;
             }
-            set { SetValue(FormatStringProperty, value); }
+            set => SetValue(FormatStringProperty, value);
         }
 
         /// <summary>
@@ -662,8 +674,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public bool SelectAllTextOnFocus
         {
-            get { return (bool)GetValue(SelectAllTextOnFocusProperty); }
-            set { SetValue(SelectAllTextOnFocusProperty, value); }
+            get => (bool)GetValue(SelectAllTextOnFocusProperty);
+            set => SetValue(SelectAllTextOnFocusProperty, value);
         }
 
         /// <summary>
@@ -675,8 +687,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public VirtualKeyModifiers MouseWheelAccelaratorKey
         {
-            get { return (VirtualKeyModifiers)GetValue(MouseWheelAccelaratorKeyProperty); }
-            set { SetValue(MouseWheelAccelaratorKeyProperty, value); }
+            get => (VirtualKeyModifiers)GetValue(MouseWheelAccelaratorKeyProperty);
+            set => SetValue(MouseWheelAccelaratorKeyProperty, value);
         }
 
         /// <summary>
@@ -687,8 +699,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public bool IsMouseDragEnabled
         {
-            get { return (bool)GetValue(IsMouseDragEnabledProperty); }
-            set { SetValue(IsMouseDragEnabledProperty, value); }
+            get => (bool)GetValue(IsMouseDragEnabledProperty);
+            set => SetValue(IsMouseDragEnabledProperty, value);
         }
 
         /// <summary>
@@ -699,14 +711,14 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public CanIncDecMouseDrag CanMouseDrag
         {
-            get { return (CanIncDecMouseDrag)GetValue(CanMouseDragProperty); }
-            set { SetValue(CanMouseDragProperty, value); }
+            get => (CanIncDecMouseDrag)GetValue(CanMouseDragProperty);
+            set => SetValue(CanMouseDragProperty, value);
         }
 
         public bool MouseWheelEnabled
         {
-            get { return (bool)GetValue(MouseWheelEnabledProperty); }
-            set { SetValue(MouseWheelEnabledProperty, value); }
+            get => (bool)GetValue(MouseWheelEnabledProperty); 
+            set => SetValue(MouseWheelEnabledProperty, value);
         }
 
         /// <summary>
@@ -714,8 +726,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public bool IsLargeChangeEnabled
         {
-            get { return (bool)GetValue(IsLargeStepEnabledProperty); }
-            set { SetValue(IsLargeStepEnabledProperty, value); }
+            get => (bool)GetValue(IsLargeStepEnabledProperty); 
+            set => SetValue(IsLargeStepEnabledProperty, value);
         }
 
         /// <summary>
@@ -723,8 +735,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public bool IsUpdateValueWhenLostFocus
         {
-            get { return (bool)GetValue(IsUpdateValueWhenLostFocusProperty); }
-            set { SetValue(IsUpdateValueWhenLostFocusProperty, value); }
+            get => (bool)GetValue(IsUpdateValueWhenLostFocusProperty); 
+            set => SetValue(IsUpdateValueWhenLostFocusProperty, value);
         }
 
         /// <summary>
@@ -732,8 +744,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public Orientation Orientation
         {
-            get { return (Orientation)GetValue(ViewOrientationProperty); }
-            set { SetValue(ViewOrientationProperty, value); }
+            get => (Orientation)GetValue(ViewOrientationProperty); 
+            set => SetValue(ViewOrientationProperty, value);
         }
 
         private bool _IsDataValid = true;
@@ -743,7 +755,8 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public bool IsValueValid
         {
-            get { return _IsDataValid; }
+            get => _IsDataValid;
+
             protected set
             {
                 if (_IsDataValid != value)
@@ -769,7 +782,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// </summary>
         public T LastEditingNumericValue
         {
-            get { return lastEditingNumericValue; }
+            get => lastEditingNumericValue;
             protected set
             {
                 lastEditingNumericValue = value;
@@ -783,7 +796,10 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Determines whether last text input was from a user (key was down) or not.
         /// </summary>
-        protected bool UserInput { get; set; }
+        protected bool UserInput
+        {
+            get; set;
+        }
         #endregion properties
 
         #region methods
@@ -1460,7 +1476,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// dependency property</returns>
         protected string FormatNumber(T number)
         {
-            string format = "{0}";
+            var format = "{0}";
             var form = (string)GetValue(FormatStringProperty);
             if (string.IsNullOrEmpty(this.FormatString) == false)
             {
