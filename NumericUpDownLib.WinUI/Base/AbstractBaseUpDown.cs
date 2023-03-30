@@ -179,7 +179,7 @@ namespace NumericUpDownLib.WinUI.Base
         /// <summary>
         /// Dependency property backing store for the Value property. defalut value is _MinValue
         /// </summary>
-        protected static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             nameof(Value),
             typeof(T),
             typeof(AbstractBaseUpDown<T>),
