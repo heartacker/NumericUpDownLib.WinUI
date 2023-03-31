@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using NumericUpDownLib.Enums;
 using NumericUpDownLib.Models;
+using NumericUpDownLib.WinUI.Helper;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -101,13 +102,44 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
         UserInput = false;
         HorizontalContentAlignment = HorizontalAlignment.Right;
         HorizontalAlignment = HorizontalAlignment.Stretch;
+        this.Loaded += AbstractBaseUpDown_Loaded;
+        this.Unloaded += AbstractBaseUpDown_Unloaded;
     }
+
+    private void AbstractBaseUpDown_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (_PART_TextBox != null && DependencyPropertyHelper.FindChildrenOfType<Button>(_PART_TextBox).Where(x => x.Name == nameof(DeleteButton))
+            .FirstOrDefault() is Button deleteButton)
+        {
+            DeleteButton = deleteButton;
+            OnDeleteButtonVisibilityPropertyChanged(null, null);
+            DeleteButtonPropertyChangedCallbackToken = DeleteButton.RegisterPropertyChangedCallback(
+                VisibilityProperty,
+                OnDeleteButtonVisibilityPropertyChanged);
+        }
+    }
+
+    private void AbstractBaseUpDown_Unloaded(object sender, RoutedEventArgs e)
+    {
+        UnregisterPropertyChangedCallback(VisibilityProperty, DeleteButtonPropertyChangedCallbackToken);
+    }
+
+
+
 
     /// <summary>
     /// Is invoked whenever application code or internal processes call
     /// System.Windows.FrameworkElement.ApplyTemplate.
     /// </summary>
 
+    private Button? DeleteButton
+    {
+        get; set;
+    }
+    private long DeleteButtonPropertyChangedCallbackToken
+    {
+        get; set;
+    }
 
     protected override void OnApplyTemplate()
     {
@@ -217,6 +249,12 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
             //, new CoerceValueCallback(CoerceMaxValue)
             )
         );
+
+    public static readonly DependencyProperty IsDeleteButtonVisibleProperty = DependencyProperty.Register(
+        nameof(IsDeleteButtonVisible),
+        typeof(bool),
+        typeof(AbstractBaseUpDown<T>),
+        new PropertyMetadata(false));
 
 
 #if WPF 
@@ -638,6 +676,12 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
         set => SetValue(MinWidthProperty, value);
     }
 
+    public bool IsDeleteButtonVisible
+    {
+        get => (bool)GetValue(IsDeleteButtonVisibleProperty);
+        set => SetValue(IsDeleteButtonVisibleProperty, value);
+    }
+
     /// <summary>
     /// Gets/sets whether the textbox portion of the numeric up down control
     /// can go grow and shrink with its input or whether it should stay with
@@ -875,6 +919,16 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
     }
 
 #endif
+
+
+    private void OnDeleteButtonVisibilityPropertyChanged(DependencyObject sender, DependencyProperty dp)
+    {
+        if (DeleteButton is not null && IsDeleteButtonVisible is false)
+        {
+            DeleteButton.Visibility = Visibility.Collapsed;
+        }
+    }
+
 
     #region IsMouseDragEnabled
     /// <summary>
