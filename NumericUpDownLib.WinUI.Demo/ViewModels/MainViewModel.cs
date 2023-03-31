@@ -41,7 +41,10 @@ public partial class MainViewModel : ObservableRecipient
 
     [ObservableProperty]
     public bool isDisplayLengthFixed = false;
-    
+
+    [ObservableProperty]
+    public bool isDeleteButtonVisible = false;
+
     [ObservableProperty]
     public bool isUpdateValueWhenLostFocus = false;    
 
