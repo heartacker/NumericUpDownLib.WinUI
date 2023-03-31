@@ -1258,14 +1258,14 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
     {
         var tb = sender as TextBox;
         LastfocusState = tb.FocusState;
-        if (tb.FocusState == FocusState.Keyboard)
+        lastDisplayLens = (byte)DisplayLength;
+        if (tb.FocusState == FocusState.Keyboard && IsDeleteButtonVisible)
         {
             spMode = SpinButtonPlacementMode;
             doubleActualWidth = _PART_IncDecStackPanel.Visibility == Visibility.Visible ? _PART_IncDecStackPanel.ActualWidth : 0;
             SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden;
 
             //_PART_TextBox.Width = _PART_TextBox.ActualWidth + doubleActualWidth;
-            lastDisplayLens = (byte)DisplayLength;
             DisplayLength += (spMode == NumberBoxSpinButtonPlacementMode.Inline ? 6 : 3);
         }
 
