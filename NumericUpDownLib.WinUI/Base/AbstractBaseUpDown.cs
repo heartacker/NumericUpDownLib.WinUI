@@ -30,7 +30,7 @@ using Windows.UI.Popups;
 /// Implements an up/down abstract base control.
 /// Source: http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
 /// </summary>
-/// 
+///
 [TemplatePart(Name = Part_TextBoxName, Type = typeof(TextBox))]
 [TemplatePart(Name = PART_MeasuringElement, Type = typeof(FrameworkElement))]
 [TemplatePart(Name = PART_IncrementButton, Type = typeof(RepeatButton))]
@@ -257,7 +257,7 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
         new PropertyMetadata(false));
 
 
-#if WPF 
+#if WPF
     /// <summary>
     /// Identifies the ValueChanged routed event.
     /// </summary>
@@ -426,7 +426,7 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
     {
         add { AddHandler(ValueChangedEvent, value); }
         remove { RemoveHandler(ValueChangedEvent, value); }
-    } 
+    }
 #else
 
 #if false
@@ -871,55 +871,68 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
         //throw new NotImplementedException();
     }
 
-#if WPF
-    /// <summary>
-    /// User can mouse over the control and spin the mousewheel up or down
-    /// to increment or decrement the value in the up/down control.
-    /// </summary>
-    /// <param name="e"></param>
-    protected override void OnMouseWheel(MouseWheelEventArgs e)
+    protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
     {
-        base.OnMouseWheel(e);
+
+        base.OnPointerWheelChanged(e);
+
+        // 获取指针属性
+        Microsoft.UI.Input.PointerPointProperties properties = e.GetCurrentPoint(this).Properties;
+
+        var pointer = e.Pointer;
 
         if (!MouseWheelEnabled)
             return;
         if (e.Handled == false)
         {
-            if (e.Delta != 0)
+            var Delta = properties.MouseWheelDelta;
+            if (Delta != 0)
             {
-                if (e.Delta < 0 && CanDecreaseCommand() == true)
+                if (Delta < 0 && CanDecreaseCommand() == true)
                 {
-                    if (System.Windows.Input.Keyboard.Modifiers == this.MouseWheelAccelaratorKey)
-                    {
-                        if (IsLargeStepEnabled)
-                            OnDecrement(LargeStepSize);
-                    }
-                    else
-                        OnDecrease();
+                    //if (VirtualKeyModifiers== this.MouseWheelAccelaratorKey)
+                    //{
+                    //    if (IsLargeStepEnabled)
+                    //        OnDecrement(LargeStepSize);
+                    //}
+                    //else
+                    OnDecrease();
 
                     e.Handled = true;
                 }
                 else
                 {
-                    if (e.Delta > 0 && CanIncreaseCommand() == true)
+                    if (Delta > 0 && CanIncreaseCommand() == true)
                     {
-                        if (System.Windows.Input.Keyboard.Modifiers == this.MouseWheelAccelaratorKey)
-                        {
-                            if (IsLargeStepEnabled)
-                                OnIncrement(LargeStepSize);
-                        }
-                        else
-                            OnIncrease();
+                        //if (System.Windows.Input.Keyboard.Modifiers == this.MouseWheelAccelaratorKey)
+                        //{
+                        //    if (IsLargeStepEnabled)
+                        //        OnIncrement(LargeStepSize);
+                        //}
+                        //else
+                        OnIncrease();
 
                         e.Handled = true;
                     }
                 }
             }
         }
+        //if (pointer.PointerDeviceType == Microsoft.UI.Input.PointerDeviceType.Mouse)
+        //{
+        //    //var pointer = e.GetCurrentPoint((UIElement)sender);
+        //    if (properties.IsHorizontalMouseWheel)
+        //    {
+        //        // 如果是水平滚轮，则获取水平 delta 值
+        //        var horizontalDelta = properties.MouseWheelDelta;
+        //    }
+        //    else
+        //    {
+        //        // 否则获取垂直 delta 值
+        //        var verticalDelta = properties.MouseWheelDelta;
+        //        Value += (T)verticalDelta;
+        //    }
+        //}
     }
-
-#endif
-
 
     private void OnDeleteButtonVisibilityPropertyChanged(DependencyObject sender, DependencyProperty dp)
     {
@@ -1192,7 +1205,7 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
             control._PART_TextBox.MinWidth = control._PART_Measuring_Element.ActualWidth;
             control._PART_TextBox.Width = control._PART_Measuring_Element.ActualWidth;
             control._PART_TextBox.UpdateLayout();
-        } 
+        }
 #endif
     }
 
@@ -1519,6 +1532,9 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
         return csaDown;
     }
 
+    #endregion
+
+    #region string format and value changed
 
     /// <summary>
     /// Gets a formatted string for the value of the number passed in
@@ -1650,6 +1666,8 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
             control.OnValueChanged(e);
         }
     }
+
+
     private static object CoerceValue(DependencyObject element, object value)
     {
         var control = element as AbstractBaseUpDown<T>;
@@ -1837,5 +1855,6 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
             control.BindMeasuringObject((bool)e.NewValue);
     }
     #endregion DisplayLength IsDisplayLengthFixed
+
     #endregion methods DisplayLength IsDisplayLengthFixed
 }
