@@ -25,6 +25,7 @@
                     <Grid BorderBrush="#20808080" BorderThickness="2" CornerRadius="4">
                         <nud:ByteUpDown
                             Name="byteUpDown"
+                            ValueChanged="ByteUpDownValueChanged"
                             HorizontalAlignment="{x:Bind ViewModel.HHorizontalAlignment, Mode=OneWay}"
                             VerticalAlignment="{x:Bind ViewModel.VVerticalAlignment, Mode=OneWay}"
                             HorizontalContentAlignment="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=OneWay}"

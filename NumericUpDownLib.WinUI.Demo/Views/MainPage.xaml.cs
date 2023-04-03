@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -17,6 +18,12 @@ public sealed partial class MainPage : Page
     {
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
+        byteUpDown.ValueChanged += ByteUpDown_ValueChanged;
+    }
+
+    private void ByteUpDown_ValueChanged(object? sender, ValueChangedEventArgs<byte> e)
+    {
+        Trace.WriteLine("aaaa");
     }
 
     private void myButton_Click(object sender, RoutedEventArgs e)
@@ -40,5 +47,10 @@ public sealed partial class MainPage : Page
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.DisplayLength += 1;
+    }
+
+    private void ByteUpDownValueChanged(object sender, ValueChangedEventArgs<byte> e)
+    {
+        Trace.WriteLine($"old:{e.OldValue}\tnew:{e.NewValue}");
     }
 }
