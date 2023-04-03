@@ -46,7 +46,10 @@ public partial class MainViewModel : ObservableRecipient
     public bool isDeleteButtonVisible = false;
 
     [ObservableProperty]
-    public bool isUpdateValueWhenLostFocus = false;    
+    public bool isUpdateValueWhenLostFocus = false;
+
+    [ObservableProperty]
+    public bool mouseWheelEnabled = true;
 
     [ObservableProperty]
     public Array orientationS = Enum.GetValues(typeof(Orientation));

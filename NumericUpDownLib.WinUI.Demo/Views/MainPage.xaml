@@ -34,8 +34,9 @@
                             Header="{x:Bind ViewModel.Header, Mode=OneWay}"
                             IsDeleteButtonVisible="{x:Bind ViewModel.IsDeleteButtonVisible, Mode=OneWay}"
                             IsDisplayLengthFixed="{x:Bind ViewModel.IsDisplayLengthFixed, Mode=OneWay}"
-                            IsLargeChangeEnabled="True"
+                            IsLargeChangeEnabled="False"
                             IsUpdateValueWhenLostFocus="{x:Bind ViewModel.IsUpdateValueWhenLostFocus, Mode=OneWay}"
+                            MouseWheelEnabled="{x:Bind ViewModel.MouseWheelEnabled, Mode=OneWay}"
                             NumberStyle="{x:Bind ViewModel.NNumberStyles, Mode=OneWay}"
                             Orientation="{x:Bind ViewModel.BOorientation, Mode=OneWay}"
                             SpinButtonPlacementMode="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=OneWay}" />
@@ -73,6 +74,7 @@
                             <CheckBox Content="IsDisplayLengthFixed" IsChecked="{x:Bind ViewModel.IsDisplayLengthFixed, Mode=TwoWay}" />
                             <CheckBox Content="IsDeleteButtonVisible" IsChecked="{x:Bind ViewModel.IsDeleteButtonVisible, Mode=TwoWay}" />
                             <CheckBox Content="IsUpdateValueWhenLostFocus" IsChecked="{x:Bind ViewModel.IsUpdateValueWhenLostFocus, Mode=TwoWay}" />
+                            <CheckBox Content="MouseWheelEnabled" IsChecked="{x:Bind ViewModel.MouseWheelEnabled, Mode=TwoWay}" />
                             <ComboBox Header="HorizontalAlignment" ItemsSource="{x:Bind ViewModel.HorizontalAlignments}" SelectedItem="{x:Bind ViewModel.HHorizontalAlignment, Mode=TwoWay}" />
                             <ComboBox Header="VerticalAlignment" ItemsSource="{x:Bind ViewModel.VerticalAlignments}" SelectedItem="{x:Bind ViewModel.VVerticalAlignment, Mode=TwoWay}" />
 
