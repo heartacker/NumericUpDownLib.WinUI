@@ -417,67 +417,21 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
 
     #region events
 
-
-#if WPF
     /// <summary>
-    /// Occurs when the Value property changes.
+    /// Identifies the ValueChanged routed event.
     /// </summary>
-    public event RoutedPropertyChangedEventHandler<T> ValueChanged
-    {
-        add { AddHandler(ValueChangedEvent, value); }
-        remove { RemoveHandler(ValueChangedEvent, value); }
-    }
-#else
-
-#if false
-    protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> ValueChangeds = new();
+    public event EventHandler<ValueChangedEventArgs<T>> ValueChanged;
 
     /// <summary>
     /// Identifies the ValueChanged routed event.
     /// </summary>
-    public event EventHandler<ValueChangedEventArgs<T>> ValueChanged
-    {
-        add { ValueChangeds.AddEventHandler(value); }
-        remove { ValueChangeds.RemoveEventHandler(value); }
-    }
-
-
-    protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> MinValueChangeds = new();
-
+    public event EventHandler<ValueChangedEventArgs<T>> MinValueChanged;
 
     /// <summary>
     /// Identifies the ValueChanged routed event.
     /// </summary>
-    public event EventHandler<ValueChangedEventArgs<T>> MinValueChanged
-    {
-        add { MinValueChangeds.AddEventHandler(value); }
-        remove { MinValueChangeds.RemoveEventHandler(value); }
-    }
+    public event EventHandler<ValueChangedEventArgs<T>> MaxValueChanged;
 
-    private void OnMinValueChanged(ValueChangedEventArgs<T> args)
-    {
-        ValueChangeds.InvocationList?.Invoke(this, args);
-    }
-
-
-    protected static readonly EventRegistrationTokenTable<EventHandler<ValueChangedEventArgs<T>>> MaxValueChangeds = new();
-
-    /// <summary>
-    /// Identifies the ValueChanged routed event.
-    /// </summary>
-    public event EventHandler<ValueChangedEventArgs<T>> MaxValueChanged
-    {
-        add { MaxValueChangeds.AddEventHandler(value); }
-        remove { MaxValueChangeds.RemoveEventHandler(value); }
-    }
-
-    private void OnMaxValueChanged(ValueChangedEventArgs<T> args)
-    {
-        ValueChangeds.InvocationList?.Invoke(this, args);
-    }
-#endif
-
-#endif
     #endregion events
 
     #region Command
@@ -1282,7 +1236,7 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
             DisplayLength += (spMode == NumberBoxSpinButtonPlacementMode.Inline ? 6 : 3);
         }
 
-        System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
+        Debug.WriteLine(tb.FocusState.ToString());
 
         _objMouseIncr = null;
         if (SelectAllTextOnFocus == true)
@@ -1309,7 +1263,7 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
         }
 
 
-        System.Diagnostics.Debug.WriteLine(tb.FocusState.ToString());
+        Debug.WriteLine(tb.FocusState.ToString());
         if (IsMouseDragEnabled == true)
         {
             _objMouseIncr = null;
@@ -1701,7 +1655,7 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
             LastEditingNumericValue = Value;
         }
         CommandExecute(Command);
-        // TODO  ValueChangeds.InvocationList?.Invoke(this, args);
+        ValueChanged?.Invoke(this, args);
     }
 
 
