@@ -457,8 +457,8 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
     {
         if (d is AbstractBaseUpDown<T> nud)
         {
-            XamlUICommand oldCommand = e.OldValue as XamlUICommand;
-            XamlUICommand newCommand = e.NewValue as XamlUICommand;
+            var oldCommand = e.OldValue as XamlUICommand;
+            var newCommand = e.NewValue as XamlUICommand;
             nud.HookUpCommand(oldCommand, newCommand);
         }
     }
@@ -485,8 +485,11 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
     /// <summary>
     /// Identifies the InputElement Dependency Property.
     /// </summary>
-    public static readonly DependencyProperty InputElementProperty = DependencyProperty.Register("CommandTarget",
-        typeof(UIElement), typeof(AbstractBaseUpDown<T>), null);
+    public static readonly DependencyProperty InputElementProperty = DependencyProperty.Register(
+        nameof(CommandTarget),
+        typeof(UIElement),
+        typeof(AbstractBaseUpDown<T>),
+        null);
 
     /// <summary>
     /// Gets or sets the InputElement assigned to the control.
@@ -507,9 +510,13 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
     private void CommandExecute(ICommand cmd)
     {
         if (cmd is XamlUICommand command)
+        {
             command.Execute(CommandParameter/*TODO, CommandTarget*/);
-        else if (cmd != null)
-            cmd.Execute(CommandParameter);
+        }
+        else
+        {
+            cmd?.Execute(CommandParameter);
+        }
     }
 
     /// <summary>
@@ -540,13 +547,13 @@ public abstract partial class AbstractBaseUpDown<T> : InputBaseUpDown/* TODO, IC
     /// <param name="e"></param>
     private void CanExecuteChanged(object sender, EventArgs e)
     {
-        if (this.Command is XamlUICommand command)
+        if (Command is XamlUICommand command)
         {
-            this.IsEnabled = command.CanExecute(CommandParameter/*, CommandTarget*/);
+            IsEnabled = command.CanExecute(CommandParameter/*, CommandTarget*/);
         }
-        else if (this.Command != null)
+        else if (Command != null)
         {
-            this.IsEnabled = this.Command.CanExecute(CommandParameter);
+            IsEnabled = Command.CanExecute(CommandParameter);
         }
     }
 
