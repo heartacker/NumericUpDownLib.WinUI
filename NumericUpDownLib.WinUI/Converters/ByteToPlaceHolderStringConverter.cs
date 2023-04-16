@@ -28,7 +28,7 @@
             else
                 return null;
             string retString = string.Empty;
-            for (int i = 0; i < byteVal + 2; i++)
+            for (int i = 0; i < byteVal; i++)
                 retString += " ";
             return retString;
         }
