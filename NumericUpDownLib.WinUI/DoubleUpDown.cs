@@ -7,7 +7,7 @@ namespace NumericUpDownLib.WinUI
     using System.Windows;
 
     /// <summary>
-    /// Implements a Byte based Numeric Up/Down control.
+    /// Implements a double based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
@@ -22,7 +22,7 @@ namespace NumericUpDownLib.WinUI
         protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
             nameof(SmallChange),
             typeof(double),
-            typeof(ByteUpDown),
+            typeof(DoubleUpDown),
             new PropertyMetadata((double)1)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
 
@@ -33,7 +33,7 @@ namespace NumericUpDownLib.WinUI
         protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
             nameof(LargeChange),
             typeof(double),
-            typeof(ByteUpDown),
+            typeof(DoubleUpDown),
             new PropertyMetadata((double)10)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
@@ -45,22 +45,22 @@ namespace NumericUpDownLib.WinUI
         static DoubleUpDown()
         {
 #if false
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ByteUpDown),
-               new FrameworkPropertyMetadata(typeof(ByteUpDown)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleUpDown),
+               new FrameworkPropertyMetadata(typeof(DoubleUpDown)));
 
-            MaxValueProperty.OverrideMetadata(typeof(ByteUpDown),
-                                                  new PropertyMetadata(byte.MaxValue));
+            MaxValueProperty.OverrideMetadata(typeof(DoubleUpDown),
+                                                  new PropertyMetadata(double.MaxValue));
 
-            MinValueProperty.OverrideMetadata(typeof(ByteUpDown),
-                                                  new PropertyMetadata(byte.MinValue)); 
+            MinValueProperty.OverrideMetadata(typeof(DoubleUpDown),
+                                                  new PropertyMetadata(double.MinValue)); 
 #endif
 
             // Override Min/Max default values
             ////		AbstractBaseUpDown<double>.MinValueProperty.OverrideMetadata(
-            ////		    typeof(ByteUpDown), new PropertyMetadata(double.MinValue));
+            ////		    typeof(DoubleUpDown), new PropertyMetadata(double.MinValue));
             ////
             ////		AbstractBaseUpDown<double>.MaxValueProperty.OverrideMetadata(
-            ////		    typeof(ByteUpDown), new PropertyMetadata(double.MaxValue));
+            ////		    typeof(DoubleUpDown), new PropertyMetadata(double.MaxValue));
         }
 
         /// <summary>
@@ -81,8 +81,14 @@ namespace NumericUpDownLib.WinUI
         /// </summary>
         public override double SmallChange
         {
-            get { return (double)GetValue(StepSizeProperty); }
-            set { SetValue(StepSizeProperty, value); }
+            get
+            {
+                return (double)GetValue(StepSizeProperty);
+            }
+            set
+            {
+                SetValue(StepSizeProperty, value);
+            }
         }
 
         /// <summary>
@@ -91,8 +97,14 @@ namespace NumericUpDownLib.WinUI
         /// </summary>
         public override double LargeChange
         {
-            get { return (double)GetValue(LargeStepSizeProperty); }
-            set { SetValue(LargeStepSizeProperty, value); }
+            get
+            {
+                return (double)GetValue(LargeStepSizeProperty);
+            }
+            set
+            {
+                SetValue(LargeStepSizeProperty, value);
+            }
         }
         #endregion properties
 
@@ -177,7 +189,7 @@ namespace NumericUpDownLib.WinUI
                     if (Value == MaxValue)
                         return false;
 
-                    var result = (byte)(Value + stepValue);
+                    var result = (double)(Value + stepValue);
 
                     if (result >= MaxValue)
                     {
@@ -218,7 +230,7 @@ namespace NumericUpDownLib.WinUI
                     if (Value == MinValue)
                         return false;
 
-                    var result = (byte)(Value - stepValue);
+                    var result = (double)(Value - stepValue);
 
                     if (result <= MinValue)
                     {

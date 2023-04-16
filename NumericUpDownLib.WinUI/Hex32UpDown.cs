@@ -7,7 +7,7 @@ namespace NumericUpDownLib.WinUI
     using System.Windows;
 
     /// <summary>
-    /// Implements a uint based Numeric Up/Down control.
+    /// Implements a hex uint based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
