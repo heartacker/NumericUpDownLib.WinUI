@@ -65,8 +65,44 @@
                             ValueChanged="ByteUpDownValueChanged" />
                     </Grid>
 
+                    <GridView Grid.Row="1" Grid.ColumnSpan="1">
+                        <GridViewItem>
+                            <ComboBox
+                                HorizontalContentAlignment="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=OneWay}"
+                                Header="HorizontalContentAlignment"
+                                ItemsSource="{x:Bind ViewModel.HorizontalAlignments}"
+                                SelectedItem="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=TwoWay}" />
+                        </GridViewItem>
+                        <GridViewItem>
+                            <ComboBox
+                                Header="HorizontalAlignment"
+                                ItemsSource="{x:Bind ViewModel.HorizontalAlignments}"
+                                SelectedItem="{x:Bind ViewModel.HHorizontalAlignment, Mode=TwoWay}" />
+                        </GridViewItem>
+                        <GridViewItem>
+                            <ComboBox
+                                Header="VerticalAlignment"
+                                ItemsSource="{x:Bind ViewModel.VerticalAlignments}"
+                                SelectedItem="{x:Bind ViewModel.VVerticalAlignment, Mode=TwoWay}" />
+                        </GridViewItem>
+
+                        <GridViewItem>
+                            <ComboBox
+                                Header="Orientation"
+                                ItemsSource="{x:Bind ViewModel.OrientationS}"
+                                SelectedItem="{x:Bind ViewModel.BOorientation, Mode=TwoWay}" />
+                        </GridViewItem>
+                        <GridViewItem>
+                            <ComboBox
+                                Header="SpinButtonPlacementMode"
+                                ItemsSource="{x:Bind ViewModel.SpinButtonPlacementModeS}"
+                                SelectedItem="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=TwoWay}" />
+                        </GridViewItem>
+                    </GridView>
+
                     <ScrollViewer
                         Grid.Row="0"
+                        Grid.RowSpan="2"
                         Grid.Column="1"
                         Padding="10"
                         BorderBrush="#20808080"
@@ -106,37 +142,19 @@
                             <CheckBox Content="IsDeleteButtonVisible" IsChecked="{x:Bind ViewModel.IsDeleteButtonVisible, Mode=TwoWay}" />
                             <CheckBox Content="IsUpdateValueWhenLostFocus" IsChecked="{x:Bind ViewModel.IsUpdateValueWhenLostFocus, Mode=TwoWay}" />
                             <CheckBox Content="MouseWheelEnabled" IsChecked="{x:Bind ViewModel.MouseWheelEnabled, Mode=TwoWay}" />
-                            <ComboBox
-                                Header="HorizontalAlignment"
-                                ItemsSource="{x:Bind ViewModel.HorizontalAlignments}"
-                                SelectedItem="{x:Bind ViewModel.HHorizontalAlignment, Mode=TwoWay}" />
-                            <ComboBox
-                                Header="VerticalAlignment"
-                                ItemsSource="{x:Bind ViewModel.VerticalAlignments}"
-                                SelectedItem="{x:Bind ViewModel.VVerticalAlignment, Mode=TwoWay}" />
+
+                            <StackPanel Orientation="Horizontal" Spacing="20">
+                                <TextBox Header="FormatString" Text="{x:Bind ViewModel.FormatString, Mode=TwoWay}" />
+                                <ComboBox
+                                    Header="NumberStyles"
+                                    ItemsSource="{x:Bind ViewModel.NumberStyless}"
+                                    SelectedItem="{x:Bind ViewModel.NNumberStyles, Mode=TwoWay}" />
+                            </StackPanel>
 
                             <ComboBox
-                                Header="HorizontalContentAlignment"
-                                ItemsSource="{x:Bind ViewModel.HorizontalAlignments}"
-                                SelectedItem="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=TwoWay}" />
-                            <ComboBox
-                                Header="Orientation"
-                                ItemsSource="{x:Bind ViewModel.OrientationS}"
-                                SelectedItem="{x:Bind ViewModel.BOorientation, Mode=TwoWay}" />
-                            <ComboBox
-                                Header="SpinButtonPlacementMode"
-                                ItemsSource="{x:Bind ViewModel.SpinButtonPlacementModeS}"
-                                SelectedItem="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=TwoWay}" />
-
-                            <ComboBox
-                                Header="NumberStyles"
-                                ItemsSource="{x:Bind ViewModel.NumberStyless}"
-                                SelectedItem="{x:Bind ViewModel.NNumberStyles, Mode=TwoWay}" />
-
-
-                            <TextBox Header="FormatString" Text="{x:Bind ViewModel.FormatString, Mode=TwoWay}" />
-
-                            <ComboBox Header="MyEmun" ItemsSource="{x:Bind ViewModel.MyEnumS}" />
+                                Header="MyEmun"
+                                ItemsSource="{x:Bind ViewModel.MyEnumS}"
+                                SelectedItem="0" />
                             <TextBox Text="{x:Bind ViewModel.A}" />
                             <TextBox Text="{x:Bind ViewModel.B}" />
                         </StackPanel>
