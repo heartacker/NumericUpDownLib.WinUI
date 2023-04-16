@@ -1,12 +1,13 @@
-namespace NumericUpDownLib
+namespace NumericUpDownLib.WinUI
 {
+    using Microsoft.UI.Xaml;
     using NumericUpDownLib.WinUI.Base;
     using System;
     using System.Globalization;
     using System.Windows;
 
     /// <summary>
-    /// Implements a <see cref="short"/> based Numeric Up/Down control.
+    /// Implements a short based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
@@ -18,52 +19,57 @@ namespace NumericUpDownLib
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize",
-                                        typeof(short), typeof(ShortUpDown),
-                                        new FrameworkPropertyMetadata((short)1),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
+            nameof(SmallChange),
+            typeof(short),
+            typeof(ShortUpDown),
+            new PropertyMetadata((short)1)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
 
         /// <summary>
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty LargeStepSizeProperty =
-            DependencyProperty.Register("LargeStepSize",
-                                        typeof(short), typeof(ShortUpDown),
-                                        new FrameworkPropertyMetadata((short)10),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
+            nameof(LargeChange),
+            typeof(short),
+            typeof(ShortUpDown),
+            new PropertyMetadata((short)10)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
 
         #region constructor
         /// <summary>
-        /// Static class constructor
+        /// TODO Static class constructor
         /// </summary>
         static ShortUpDown()
         {
+#if false
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ShortUpDown),
-                       new FrameworkPropertyMetadata(typeof(ShortUpDown)));
+               new FrameworkPropertyMetadata(typeof(ShortUpDown)));
 
             MaxValueProperty.OverrideMetadata(typeof(ShortUpDown),
                                                   new PropertyMetadata(short.MaxValue));
 
             MinValueProperty.OverrideMetadata(typeof(ShortUpDown),
-                                                  new PropertyMetadata(short.MinValue));
+                                                  new PropertyMetadata(short.MinValue)); 
+#endif
 
             // Override Min/Max default values
-            ////            AbstractBaseUpDown<short>.MinValueProperty.OverrideMetadata(
-            ////                typeof(ShortUpDown), new PropertyMetadata(short.MinValue));
+            ////		AbstractBaseUpDown<short>.MinValueProperty.OverrideMetadata(
+            ////		    typeof(ShortUpDown), new PropertyMetadata(short.MinValue));
             ////
-            ////            AbstractBaseUpDown<short>.MaxValueProperty.OverrideMetadata(
-            ////                typeof(ShortUpDown), new PropertyMetadata(short.MaxValue));
+            ////		AbstractBaseUpDown<short>.MaxValueProperty.OverrideMetadata(
+            ////		    typeof(ShortUpDown), new PropertyMetadata(short.MaxValue));
         }
 
         /// <summary>
         /// Initializes a new instance of the AbstractBaseUpDown Control.
         /// </summary>
-        public ShortUpDown()
-            : base()
+        public ShortUpDown() : base()
         {
+            this.DefaultStyleKey = typeof(ShortUpDown);
+            this.MaxValue = short.MaxValue;
         }
         #endregion constructor
 
@@ -72,20 +78,32 @@ namespace NumericUpDownLib
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override short StepSize
+        public override short SmallChange
         {
-            get { return (short)GetValue(StepSizeProperty); }
-            set { SetValue(StepSizeProperty, value); }
+            get
+            {
+                return (short)GetValue(StepSizeProperty);
+            }
+            set
+            {
+                SetValue(StepSizeProperty, value);
+            }
         }
 
         /// <summary>
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override short LargeStepSize
+        public override short LargeChange
         {
-            get { return (short)GetValue(LargeStepSizeProperty); }
-            set { SetValue(LargeStepSizeProperty, value); }
+            get
+            {
+                return (short)GetValue(LargeStepSizeProperty);
+            }
+            set
+            {
+                SetValue(LargeStepSizeProperty, value);
+            }
         }
         #endregion properties
 
@@ -114,9 +132,9 @@ namespace NumericUpDownLib
         protected override void OnIncrease()
         {
             // Increment if possible
-            if (this.Value + this.StepSize <= this.MaxValue)
+            if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = (short)(this.Value + this.StepSize);
+                this.Value = (short)(this.Value + this.SmallChange);
             }
             else
             {
@@ -137,9 +155,9 @@ namespace NumericUpDownLib
         protected override void OnDecrease()
         {
             // Decrement if possible
-            if (this.Value - this.StepSize > this.MinValue)
+            if ((this.Value >= this.SmallChange) && this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = (short)(this.Value - this.StepSize);
+                this.Value = (short)(this.Value - this.SmallChange);
             }
             else
             {

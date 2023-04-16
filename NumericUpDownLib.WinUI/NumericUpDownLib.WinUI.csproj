@@ -25,7 +25,6 @@
     <Compile Remove="FloatUpDown.cs" />
     <Compile Remove="LongUpDown.cs" />
     <Compile Remove="SByteUpDown.cs" />
-    <Compile Remove="ShortUpDown.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Base\InputBaseUpDown.xaml" />
