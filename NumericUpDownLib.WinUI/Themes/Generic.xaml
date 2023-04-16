@@ -176,11 +176,17 @@
             </Style>
 
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ByteUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:DecimalUpDown" />
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:DoubleUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:FloatUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:Hex32UpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:LongUpDown" />
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:NumericUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:SByteUpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ShortUpDown" />
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:UIntegerUpDown" />
             <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:ULongUpDown" />
-            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:Hex32UpDown" />
+            <Style BasedOn="{StaticResource InputBaseUpDownStyle}" TargetType="controls:UShortUpDown" />
 
             <!--  Styles a byte based numeric up down control based on the InputBaseUpDown control style  -->
 
