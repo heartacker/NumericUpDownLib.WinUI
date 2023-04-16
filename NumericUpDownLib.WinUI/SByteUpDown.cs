@@ -1,14 +1,16 @@
-namespace NumericUpDownLib
+namespace NumericUpDownLib.WinUI
 {
+    using Microsoft.UI.Xaml;
     using NumericUpDownLib.WinUI.Base;
     using System;
     using System.Globalization;
     using System.Windows;
 
     /// <summary>
-    /// Implements a <see cref="sbyte"/> based Numeric Up/Down control.
+    /// Implements a sbyte based Numeric Up/Down control.
     ///
-    /// Source: http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
+    /// Original Source:
+    /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
     /// </summary>
     public partial class SByteUpDown : AbstractBaseUpDown<sbyte>
     {
@@ -17,76 +19,93 @@ namespace NumericUpDownLib
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize",
-                                        typeof(sbyte), typeof(SByteUpDown),
-                                        new FrameworkPropertyMetadata((sbyte)1),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
+            nameof(SmallChange),
+            typeof(sbyte),
+            typeof(SByteUpDown),
+            new PropertyMetadata((sbyte)1)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
 
         /// <summary>
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty LargeStepSizeProperty =
-            DependencyProperty.Register("LargeStepSize",
-                                        typeof(sbyte), typeof(SByteUpDown),
-                                        new FrameworkPropertyMetadata((sbyte)10),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
+            nameof(LargeChange),
+            typeof(sbyte),
+            typeof(SByteUpDown),
+            new PropertyMetadata((sbyte)10)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
+
+        #region constructor
+        /// <summary>
+        /// TODO Static class constructor
+        /// </summary>
+        static SByteUpDown()
+        {
+#if false
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SByteUpDown),
+               new FrameworkPropertyMetadata(typeof(SByteUpDown)));
+
+            MaxValueProperty.OverrideMetadata(typeof(SByteUpDown),
+                                                  new PropertyMetadata(sbyte.MaxValue));
+
+            MinValueProperty.OverrideMetadata(typeof(SByteUpDown),
+                                                  new PropertyMetadata(sbyte.MinValue)); 
+#endif
+
+            // Override Min/Max default values
+            ////		AbstractBaseUpDown<sbyte>.MinValueProperty.OverrideMetadata(
+            ////		    typeof(SByteUpDown), new PropertyMetadata(sbyte.MinValue));
+            ////
+            ////		AbstractBaseUpDown<sbyte>.MaxValueProperty.OverrideMetadata(
+            ////		    typeof(SByteUpDown), new PropertyMetadata(sbyte.MaxValue));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the AbstractBaseUpDown Control.
+        /// </summary>
+        public SByteUpDown() : base()
+        {
+            this.DefaultStyleKey = typeof(SByteUpDown);
+            this.MaxValue = sbyte.MaxValue;
+        }
+        #endregion constructor
 
         #region properties
         /// <summary>
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override sbyte StepSize
+        public override sbyte SmallChange
         {
-            get { return (sbyte)GetValue(StepSizeProperty); }
-            set { SetValue(StepSizeProperty, value); }
+            get
+            {
+                return (sbyte)GetValue(StepSizeProperty);
+            }
+            set
+            {
+                SetValue(StepSizeProperty, value);
+            }
         }
 
         /// <summary>
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override sbyte LargeStepSize
+        public override sbyte LargeChange
         {
-            get { return (sbyte)GetValue(LargeStepSizeProperty); }
-            set { SetValue(LargeStepSizeProperty, value); }
+            get
+            {
+                return (sbyte)GetValue(LargeStepSizeProperty);
+            }
+            set
+            {
+                SetValue(LargeStepSizeProperty, value);
+            }
         }
         #endregion properties
-
-        #region constructor
-        /// <summary>
-        /// Static class constructor
-        /// </summary>
-        static SByteUpDown()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(SByteUpDown),
-                       new FrameworkPropertyMetadata(typeof(SByteUpDown)));
-
-            MaxValueProperty.OverrideMetadata(typeof(SByteUpDown),
-                                                  new PropertyMetadata(sbyte.MaxValue));
-
-            MinValueProperty.OverrideMetadata(typeof(SByteUpDown),
-                                                  new PropertyMetadata(sbyte.MinValue));
-
-            // Override Min/Max default values
-            ////            AbstractBaseUpDown<sbyte>.MinValueProperty.OverrideMetadata(
-            ////                typeof(SByteUpDown), new PropertyMetadata(sbyte.MinValue));
-            ////
-            ////            AbstractBaseUpDown<sbyte>.MaxValueProperty.OverrideMetadata(
-            ////                typeof(SByteUpDown), new PropertyMetadata(sbyte.MaxValue));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the AbstractBaseUpDown Control.
-        /// </summary>
-        public SByteUpDown()
-            : base()
-        {
-        }
-        #endregion constructor
 
         #region methods
         /// <summary>
@@ -113,9 +132,9 @@ namespace NumericUpDownLib
         protected override void OnIncrease()
         {
             // Increment if possible
-            if (this.Value + this.StepSize <= this.MaxValue)
+            if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = (SByte)(this.Value + this.StepSize);
+                this.Value = (sbyte)(this.Value + this.SmallChange);
             }
             else
             {
@@ -136,9 +155,9 @@ namespace NumericUpDownLib
         protected override void OnDecrease()
         {
             // Decrement if possible
-            if (this.Value - this.StepSize > this.MinValue)
+            if ((this.Value >= this.SmallChange) && this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = (SByte)(this.Value - this.StepSize);
+                this.Value = (sbyte)(this.Value - this.SmallChange);
             }
             else
             {
@@ -298,7 +317,6 @@ namespace NumericUpDownLib
             return newValue;
         }
 
-
         /// <summary>
         /// Verify the text is valid or not while use is typing
         /// </summary>
@@ -321,9 +339,9 @@ namespace NumericUpDownLib
             return false;
         }
 
-        protected override bool ParseText(string text, out SByte number)
+        protected override bool ParseText(string text, out sbyte number)
         {
-            return SByte.TryParse(text, base.NumberStyle, CultureInfo.CurrentCulture, out number);
+            return sbyte.TryParse(text, base.NumberStyle, CultureInfo.CurrentCulture, out number);
         }
 
         /// <summary>

@@ -24,7 +24,6 @@
     <Compile Remove="DecimalUpDown.cs" />
     <Compile Remove="FloatUpDown.cs" />
     <Compile Remove="LongUpDown.cs" />
-    <Compile Remove="SByteUpDown.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Base\InputBaseUpDown.xaml" />
