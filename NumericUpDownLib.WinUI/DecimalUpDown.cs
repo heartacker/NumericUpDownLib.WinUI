@@ -1,4 +1,4 @@
-namespace NumericUpDownLib
+namespace NumericUpDownLib.WinUI
 {
     using Microsoft.UI.Xaml;
     using NumericUpDownLib.WinUI.Base;
@@ -7,7 +7,7 @@ namespace NumericUpDownLib
     using System.Windows;
 
     /// <summary>
-    /// Implements a Byte based Numeric Up/Down control.
+    /// Implements a decimal based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
@@ -19,53 +19,58 @@ namespace NumericUpDownLib
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize",
-                                        typeof(decimal), typeof(DecimalUpDown),
-                                        new PropertyMetadata((decimal)1)/*,
+        protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
+            nameof(SmallChange),
+            typeof(decimal),
+            typeof(DecimalUpDown),
+            new PropertyMetadata((decimal)1)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
 
         /// <summary>
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty LargeStepSizeProperty =
-            DependencyProperty.Register("LargeStepSize",
-                                        typeof(decimal), typeof(DecimalUpDown),
-                                        new PropertyMetadata((decimal)10)/*,
+        protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
+            nameof(LargeChange),
+            typeof(decimal),
+            typeof(DecimalUpDown),
+            new PropertyMetadata((decimal)10)/*,
                                         new ValidateValueCallback(IsValidStepSizeReading)*/);
-
         #endregion fields
 
         #region constructor
         /// <summary>
-        /// Static class constructor
+        /// TODO Static class constructor
         /// </summary>
         static DecimalUpDown()
         {
+#if false
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DecimalUpDown),
-                       new FrameworkPropertyMetadata(typeof(DecimalUpDown)));
+               new FrameworkPropertyMetadata(typeof(DecimalUpDown)));
 
             MaxValueProperty.OverrideMetadata(typeof(DecimalUpDown),
                                                   new PropertyMetadata(decimal.MaxValue));
 
             MinValueProperty.OverrideMetadata(typeof(DecimalUpDown),
-                                                  new PropertyMetadata(decimal.MinValue));
+                                                  new PropertyMetadata(decimal.MinValue)); 
+#endif
 
             // Override Min/Max default values
-            ////            AbstractBaseUpDown<decimal>.MinValueProperty.OverrideMetadata(
-            ////                typeof(DecimalUpDown), new PropertyMetadata(decimal.MinValue));
+            ////		AbstractBaseUpDown<decimal>.MinValueProperty.OverrideMetadata(
+            ////		    typeof(DecimalUpDown), new PropertyMetadata(decimal.MinValue));
             ////
-            ////            AbstractBaseUpDown<decimal>.MaxValueProperty.OverrideMetadata(
-            ////                typeof(DecimalUpDown), new PropertyMetadata(decimal.MaxValue));
+            ////		AbstractBaseUpDown<decimal>.MaxValueProperty.OverrideMetadata(
+            ////		    typeof(DecimalUpDown), new PropertyMetadata(decimal.MaxValue));
         }
 
         /// <summary>
         /// Initializes a new instance of the AbstractBaseUpDown Control.
         /// </summary>
-        public DecimalUpDown()
-            : base()
+        public DecimalUpDown() : base()
         {
+            this.DefaultStyleKey = typeof(DecimalUpDown);
+            this.MaxValue = decimal.MaxValue;
+            this.MinValue = decimal.MinValue;
         }
         #endregion constructor
 
@@ -74,20 +79,32 @@ namespace NumericUpDownLib
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override decimal StepSize
+        public override decimal SmallChange
         {
-            get { return (decimal)GetValue(StepSizeProperty); }
-            set { SetValue(StepSizeProperty, value); }
+            get
+            {
+                return (decimal)GetValue(StepSizeProperty);
+            }
+            set
+            {
+                SetValue(StepSizeProperty, value);
+            }
         }
 
         /// <summary>
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override decimal LargeStepSize
+        public override decimal LargeChange
         {
-            get { return (decimal)GetValue(LargeStepSizeProperty); }
-            set { SetValue(LargeStepSizeProperty, value); }
+            get
+            {
+                return (decimal)GetValue(LargeStepSizeProperty);
+            }
+            set
+            {
+                SetValue(LargeStepSizeProperty, value);
+            }
         }
         #endregion properties
 
@@ -116,9 +133,9 @@ namespace NumericUpDownLib
         protected override void OnIncrease()
         {
             // Increment if possible
-            if (this.Value + this.StepSize <= this.MaxValue)
+            if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = this.Value + this.StepSize;
+                this.Value = (decimal)(this.Value + this.SmallChange);
             }
             else
             {
@@ -139,9 +156,9 @@ namespace NumericUpDownLib
         protected override void OnDecrease()
         {
             // Decrement if possible
-            if (this.Value - this.StepSize > this.MinValue)
+            if (this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = this.Value - this.StepSize;
+                this.Value = (decimal)(this.Value - this.SmallChange);
             }
             else
             {
@@ -306,9 +323,9 @@ namespace NumericUpDownLib
         /// </summary>
         /// <param name="text"></param>
         /// <param name="tempValue">the last value</param>
-        protected override bool VerifyText(string text, ref Decimal tempValue)
+        protected override bool VerifyText(string text, ref decimal tempValue)
         {
-            if (Decimal.TryParse(text, base.NumberStyle, CultureInfo.CurrentCulture, out Decimal number))
+            if (decimal.TryParse(text, base.NumberStyle, CultureInfo.CurrentCulture, out decimal number))
             {
                 tempValue = number;
                 if (number > MaxValue || number < MinValue)
@@ -336,7 +353,7 @@ namespace NumericUpDownLib
         /// <returns></returns>
         private static bool IsValidStepSizeReading(object value)
         {
-            decimal v = (decimal)value;
+            var v = (decimal)value;
             return (v > 0);
         }
         #endregion methods

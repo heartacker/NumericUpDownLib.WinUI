@@ -21,7 +21,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Base\InputBaseUpDown1.xaml.cs" />
-    <Compile Remove="DecimalUpDown.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Base\InputBaseUpDown.xaml" />
