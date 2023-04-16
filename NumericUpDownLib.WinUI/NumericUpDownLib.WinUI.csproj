@@ -23,7 +23,6 @@
     <Compile Remove="Base\InputBaseUpDown1.xaml.cs" />
     <Compile Remove="DecimalUpDown.cs" />
     <Compile Remove="FloatUpDown.cs" />
-    <Compile Remove="LongUpDown.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Base\InputBaseUpDown.xaml" />

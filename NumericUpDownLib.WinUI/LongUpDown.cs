@@ -1,12 +1,13 @@
-namespace NumericUpDownLib
+namespace NumericUpDownLib.WinUI
 {
+    using Microsoft.UI.Xaml;
     using NumericUpDownLib.WinUI.Base;
     using System;
     using System.Globalization;
     using System.Windows;
 
     /// <summary>
-    /// Implements an <see cref="long"/> based Numeric Up/Down control.
+    /// Implements a long based Numeric Up/Down control.
     ///
     /// Original Source:
     /// http://msdn.microsoft.com/en-us/library/vstudio/ms771573%28v=vs.90%29.aspx
@@ -18,52 +19,57 @@ namespace NumericUpDownLib
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize",
-                                        typeof(long), typeof(LongUpDown),
-                                        new FrameworkPropertyMetadata(1L),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty StepSizeProperty = DependencyProperty.Register(
+            nameof(SmallChange),
+            typeof(long),
+            typeof(LongUpDown),
+            new PropertyMetadata((long)1)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
 
         /// <summary>
         /// Backing store to define the size of the increment or decrement
         /// when using the up/down of the up/down numeric control.
         /// </summary>
-        protected static readonly DependencyProperty LargeStepSizeProperty =
-            DependencyProperty.Register("LargeStepSize",
-                                        typeof(long), typeof(LongUpDown),
-                                        new FrameworkPropertyMetadata(10L),
-                                        new ValidateValueCallback(IsValidStepSizeReading));
+        protected static readonly DependencyProperty LargeStepSizeProperty = DependencyProperty.Register(
+            nameof(LargeChange),
+            typeof(long),
+            typeof(LongUpDown),
+            new PropertyMetadata((long)10)/*,
+                                        new ValidateValueCallback(IsValidStepSizeReading)*/);
         #endregion fields
 
         #region constructor
         /// <summary>
-        /// Static class constructor
+        /// TODO Static class constructor
         /// </summary>
         static LongUpDown()
         {
+#if false
             DefaultStyleKeyProperty.OverrideMetadata(typeof(LongUpDown),
-                       new FrameworkPropertyMetadata(typeof(LongUpDown)));
+               new FrameworkPropertyMetadata(typeof(LongUpDown)));
 
             MaxValueProperty.OverrideMetadata(typeof(LongUpDown),
                                                   new PropertyMetadata(long.MaxValue));
 
             MinValueProperty.OverrideMetadata(typeof(LongUpDown),
-                                                  new PropertyMetadata(long.MinValue));
+                                                  new PropertyMetadata(long.MinValue)); 
+#endif
 
             // Override Min/Max default values
-            ////            AbstractBaseUpDown<long>.MinValueProperty.OverrideMetadata(
-            ////                typeof(LongUpDown), new PropertyMetadata(long.MinValue));
+            ////		AbstractBaseUpDown<long>.MinValueProperty.OverrideMetadata(
+            ////		    typeof(LongUpDown), new PropertyMetadata(long.MinValue));
             ////
-            ////            AbstractBaseUpDown<long>.MaxValueProperty.OverrideMetadata(
-            ////                typeof(LongUpDown), new PropertyMetadata(long.MaxValue));
+            ////		AbstractBaseUpDown<long>.MaxValueProperty.OverrideMetadata(
+            ////		    typeof(LongUpDown), new PropertyMetadata(long.MaxValue));
         }
 
         /// <summary>
         /// Initializes a new instance of the AbstractBaseUpDown Control.
         /// </summary>
-        public LongUpDown()
-            : base()
+        public LongUpDown() : base()
         {
+            this.DefaultStyleKey = typeof(LongUpDown);
+            this.MaxValue = long.MaxValue;
         }
         #endregion constructor
 
@@ -72,7 +78,7 @@ namespace NumericUpDownLib
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override long StepSize
+        public override long SmallChange
         {
             get { return (long)GetValue(StepSizeProperty); }
             set { SetValue(StepSizeProperty, value); }
@@ -82,7 +88,7 @@ namespace NumericUpDownLib
         /// Gets or sets the step size (actual distance) of increment or decrement step.
         /// This value should at least be 1 or greater.
         /// </summary>
-        public override long LargeStepSize
+        public override long LargeChange
         {
             get { return (long)GetValue(LargeStepSizeProperty); }
             set { SetValue(LargeStepSizeProperty, value); }
@@ -114,9 +120,9 @@ namespace NumericUpDownLib
         protected override void OnIncrease()
         {
             // Increment if possible
-            if (this.Value + this.StepSize <= this.MaxValue)
+            if (this.Value + this.SmallChange <= this.MaxValue)
             {
-                this.Value = this.Value + this.StepSize;
+                this.Value = (long)(this.Value + this.SmallChange);
             }
             else
             {
@@ -137,9 +143,9 @@ namespace NumericUpDownLib
         protected override void OnDecrease()
         {
             // Decrement if possible
-            if (this.Value - this.StepSize > this.MinValue)
+            if ((this.Value >= this.SmallChange) && this.Value - this.SmallChange > this.MinValue)
             {
-                this.Value = this.Value - this.StepSize;
+                this.Value = (long)(this.Value - this.SmallChange);
             }
             else
             {
@@ -337,7 +343,6 @@ namespace NumericUpDownLib
             var v = (long)value;
             return (v > 0);
         }
-
         #endregion methods
     }
 }
