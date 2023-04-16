@@ -43,7 +43,19 @@ public partial class MainViewModel : ObservableRecipient
     public bool isReadOnly;
 
     [ObservableProperty]
-    public int displayLength = 4;
+    public int displayLength = 8;
+
+    [ObservableProperty]
+    public byte smallChange = 1;
+
+    [ObservableProperty]
+    public byte largeChange = 1;
+
+    [ObservableProperty]
+    public byte minValue = 0;
+
+    [ObservableProperty]
+    public byte maxValue = byte.MaxValue;
 
     [ObservableProperty]
     public bool isDisplayLengthFixed = false;

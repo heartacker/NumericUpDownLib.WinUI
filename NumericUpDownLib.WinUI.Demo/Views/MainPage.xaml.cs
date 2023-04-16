@@ -26,14 +26,6 @@ public sealed partial class MainPage : Page
         Trace.WriteLine("aaaa");
     }
 
-    private void myButton_Click(object sender, RoutedEventArgs e)
-    {
-        myButton.Content = "Clicked";
-        bbb.MaxValue = (byte)10;
-        bbb.MinValue = (byte)1;
-        bbb.Value = bbb.Value > 100 ? (byte)0 : (byte)(bbb.Value + 1);
-    }
-
     private void NumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
     {
 
