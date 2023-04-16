@@ -37,10 +37,19 @@ public partial class MainViewModel : ObservableRecipient
     public string header = "Byte Header";
 
     [ObservableProperty]
+    public bool isEnabled = true;
+
+    [ObservableProperty]
+    public bool isReadOnly;
+
+    [ObservableProperty]
     public int displayLength = 4;
 
     [ObservableProperty]
     public bool isDisplayLengthFixed = false;
+
+    [ObservableProperty]
+    public bool isLargeChangeEnabled = false;
 
     [ObservableProperty]
     public bool isDeleteButtonVisible = false;

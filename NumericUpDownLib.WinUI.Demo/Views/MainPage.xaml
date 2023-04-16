@@ -2,15 +2,15 @@
     x:Class="NumericUpDownLib.WinUI.Demo.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cv="using:NumericUpDownLib.WinUI.Demo.Contracts"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:nud="using:NumericUpDownLib.WinUI"
     xmlns:vmns="using:NumericUpDownLib.WinUI.Demo.ViewModels"
-    xmlns:cv="using:NumericUpDownLib.WinUI.Demo.Contracts"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <cv:EnumDisplayNameConverter x:Key="Enum2Str"/>
+        <cv:EnumDisplayNameConverter x:Key="Enum2Str" />
         <Style TargetType="ComboBox">
             <Setter Property="ItemTemplate">
                 <Setter.Value>
@@ -23,22 +23,28 @@
     </Page.Resources>
 
 
-    <Grid x:Name="ContentArea" Margin="0,0,0,10" BorderBrush="Yellow" BorderThickness="0">
+    <Grid
+        x:Name="ContentArea"
+        Margin="0,0,0,10"
+        BorderBrush="Yellow"
+        BorderThickness="0">
         <TabView VerticalAlignment="Stretch">
             <TabViewItem Header="Byte">
                 <Grid BorderThickness="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition MinWidth="300" Width="2*" />
+                        <ColumnDefinition Width="2*" MinWidth="300" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <Grid BorderBrush="#20808080" BorderThickness="2" CornerRadius="4">
+                    <Grid
+                        BorderBrush="#20808080"
+                        BorderThickness="2"
+                        CornerRadius="4">
                         <nud:ByteUpDown
                             Name="byteUpDown"
-                            ValueChanged="ByteUpDownValueChanged"
                             HorizontalAlignment="{x:Bind ViewModel.HHorizontalAlignment, Mode=OneWay}"
                             VerticalAlignment="{x:Bind ViewModel.VVerticalAlignment, Mode=OneWay}"
                             HorizontalContentAlignment="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=OneWay}"
@@ -48,12 +54,15 @@
                             Header="{x:Bind ViewModel.Header, Mode=OneWay}"
                             IsDeleteButtonVisible="{x:Bind ViewModel.IsDeleteButtonVisible, Mode=OneWay}"
                             IsDisplayLengthFixed="{x:Bind ViewModel.IsDisplayLengthFixed, Mode=OneWay}"
-                            IsLargeChangeEnabled="False"
+                            IsEnabled="{x:Bind ViewModel.IsEnabled, Mode=OneWay}"
+                            IsLargeChangeEnabled="{x:Bind ViewModel.IsLargeChangeEnabled, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.IsReadOnly, Mode=OneWay}"
                             IsUpdateValueWhenLostFocus="{x:Bind ViewModel.IsUpdateValueWhenLostFocus, Mode=OneWay}"
                             MouseWheelEnabled="{x:Bind ViewModel.MouseWheelEnabled, Mode=OneWay}"
                             NumberStyle="{x:Bind ViewModel.NNumberStyles, Mode=OneWay}"
                             Orientation="{x:Bind ViewModel.BOorientation, Mode=OneWay}"
-                            SpinButtonPlacementMode="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=OneWay}" />
+                            SpinButtonPlacementMode="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=OneWay}"
+                            ValueChanged="ByteUpDownValueChanged" />
                     </Grid>
 
                     <ScrollViewer
@@ -71,7 +80,11 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock VerticalAlignment="Bottom" FontSize="28" FontWeight="Bold" Text="{Binding ElementName=byteUpDown, Path=Value, Mode=OneWay}" />
+                                <TextBlock
+                                    VerticalAlignment="Bottom"
+                                    FontSize="28"
+                                    FontWeight="Bold"
+                                    Text="{Binding ElementName=byteUpDown, Path=Value, Mode=OneWay}" />
                                 <nud:NumericUpDown
                                     Grid.Row="1"
                                     HorizontalAlignment="Right"
@@ -85,18 +98,40 @@
                                     Value="{x:Bind ViewModel.DisplayLength, Mode=TwoWay}" />
                             </Grid>
                             <TextBox Header="Header" Text="{x:Bind ViewModel.Header, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            <CheckBox Content="IsEnabled" IsChecked="{x:Bind ViewModel.IsEnabled, Mode=TwoWay}" />
+                            <CheckBox Content="IsReadOnly" IsChecked="{x:Bind ViewModel.IsReadOnly, Mode=TwoWay}" />
+                            <CheckBox Content="IsLargeChangeEnabled" IsChecked="{x:Bind ViewModel.IsLargeChangeEnabled, Mode=TwoWay}" />
+
                             <CheckBox Content="IsDisplayLengthFixed" IsChecked="{x:Bind ViewModel.IsDisplayLengthFixed, Mode=TwoWay}" />
                             <CheckBox Content="IsDeleteButtonVisible" IsChecked="{x:Bind ViewModel.IsDeleteButtonVisible, Mode=TwoWay}" />
                             <CheckBox Content="IsUpdateValueWhenLostFocus" IsChecked="{x:Bind ViewModel.IsUpdateValueWhenLostFocus, Mode=TwoWay}" />
                             <CheckBox Content="MouseWheelEnabled" IsChecked="{x:Bind ViewModel.MouseWheelEnabled, Mode=TwoWay}" />
-                            <ComboBox Header="HorizontalAlignment" ItemsSource="{x:Bind ViewModel.HorizontalAlignments}" SelectedItem="{x:Bind ViewModel.HHorizontalAlignment, Mode=TwoWay}" />
-                            <ComboBox Header="VerticalAlignment" ItemsSource="{x:Bind ViewModel.VerticalAlignments}" SelectedItem="{x:Bind ViewModel.VVerticalAlignment, Mode=TwoWay}" />
+                            <ComboBox
+                                Header="HorizontalAlignment"
+                                ItemsSource="{x:Bind ViewModel.HorizontalAlignments}"
+                                SelectedItem="{x:Bind ViewModel.HHorizontalAlignment, Mode=TwoWay}" />
+                            <ComboBox
+                                Header="VerticalAlignment"
+                                ItemsSource="{x:Bind ViewModel.VerticalAlignments}"
+                                SelectedItem="{x:Bind ViewModel.VVerticalAlignment, Mode=TwoWay}" />
 
-                            <ComboBox Header="HorizontalContentAlignment" ItemsSource="{x:Bind ViewModel.HorizontalAlignments}" SelectedItem="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=TwoWay}" />
-                            <ComboBox Header="Orientation" ItemsSource="{x:Bind ViewModel.OrientationS}" SelectedItem="{x:Bind ViewModel.BOorientation, Mode=TwoWay}" />
-                            <ComboBox Header="SpinButtonPlacementMode" ItemsSource="{x:Bind ViewModel.SpinButtonPlacementModeS}" SelectedItem="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=TwoWay}" />
+                            <ComboBox
+                                Header="HorizontalContentAlignment"
+                                ItemsSource="{x:Bind ViewModel.HorizontalAlignments}"
+                                SelectedItem="{x:Bind ViewModel.HHorizontalContentAlignment, Mode=TwoWay}" />
+                            <ComboBox
+                                Header="Orientation"
+                                ItemsSource="{x:Bind ViewModel.OrientationS}"
+                                SelectedItem="{x:Bind ViewModel.BOorientation, Mode=TwoWay}" />
+                            <ComboBox
+                                Header="SpinButtonPlacementMode"
+                                ItemsSource="{x:Bind ViewModel.SpinButtonPlacementModeS}"
+                                SelectedItem="{x:Bind ViewModel.BSpinButtonPlacementMode, Mode=TwoWay}" />
 
-                            <ComboBox Header="NumberStyles" ItemsSource="{x:Bind ViewModel.NumberStyless}" SelectedItem="{x:Bind ViewModel.NNumberStyles, Mode=TwoWay}" />
+                            <ComboBox
+                                Header="NumberStyles"
+                                ItemsSource="{x:Bind ViewModel.NumberStyless}"
+                                SelectedItem="{x:Bind ViewModel.NNumberStyles, Mode=TwoWay}" />
 
 
                             <TextBox Header="FormatString" Text="{x:Bind ViewModel.FormatString, Mode=TwoWay}" />
@@ -110,7 +145,10 @@
                 </Grid>
             </TabViewItem>
             <TabViewItem Header="Double">
-                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                <StackPanel
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
                     <StackPanel Width="auto" Orientation="Vertical">
 
                         <nud:ByteUpDown
@@ -134,19 +172,41 @@
                             Header="Center"
                             NumberStyle="HexNumber"
                             SpinButtonPlacementMode="Compact" />
-                        <nud:ULongUpDown HorizontalContentAlignment="Center" DisplayLength="10" Header="Inline ULongUpDown" SpinButtonPlacementMode="Inline" />
+                        <nud:ULongUpDown
+                            HorizontalContentAlignment="Center"
+                            DisplayLength="10"
+                            Header="Inline ULongUpDown"
+                            SpinButtonPlacementMode="Inline" />
                         <nud:NumericUpDown DisplayLength="15" />
                         <nud:UIntegerUpDown DisplayLength="15" Header="Uint" />
-                        <nud:DoubleUpDown HorizontalContentAlignment="Left" DisplayLength="15" FormatString="f4" SmallChange="0.1" />
+                        <nud:DoubleUpDown
+                            HorizontalContentAlignment="Left"
+                            DisplayLength="15"
+                            FormatString="f4"
+                            SmallChange="0.1" />
                         <TextBox Text="{Binding ElementName=bbb, Path=FocusState}" />
                     </StackPanel>
                     <StackPanel>
-                        <Button x:Name="myButton" Click="myButton_Click" Content=" Click Me" SizeChanged="myButton_SizeChanged" />
-                        <NumberBox AcceptsExpression="True" Header="ByteUpDown" Value="{x:Bind ViewModel.Lens}" />
+                        <Button
+                            x:Name="myButton"
+                            Click="myButton_Click"
+                            Content=" Click Me"
+                            SizeChanged="myButton_SizeChanged" />
+                        <NumberBox
+                            AcceptsExpression="True"
+                            Header="ByteUpDown"
+                            Value="{x:Bind ViewModel.Lens}" />
                         <NumberBox Name="nb" ValueChanged="NumberBox_ValueChanged" />
                         <TextBox Text="{Binding ElementName=nb, Path=ActualHeight}" />
-                        <CheckBox Name="abc" Content="{x:Bind ViewModel.Lens}" IsChecked="True" />
-                        <NumberBox Name="abcd" Minimum="1" SpinButtonPlacementMode="Inline" Value="{Binding ElementName=bbb, Path=DisplayLength, Mode=TwoWay}" />
+                        <CheckBox
+                            Name="abc"
+                            Content="{x:Bind ViewModel.Lens}"
+                            IsChecked="True" />
+                        <NumberBox
+                            Name="abcd"
+                            Minimum="1"
+                            SpinButtonPlacementMode="Inline"
+                            Value="{Binding ElementName=bbb, Path=DisplayLength, Mode=TwoWay}" />
                         <CheckBox Content="visa" IsChecked="{Binding ElementName=bbb, Mode=TwoWay, Path=EnableValidatingIndicator}" />
 
 
