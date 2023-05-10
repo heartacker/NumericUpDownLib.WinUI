@@ -84,13 +84,14 @@
                                             <TextBox
                                                 x:Name="PART_Measuring_Element"
                                                 MinWidth="0"
-                                                Margin="0,0,0,0"
+                                                Margin="0,1,0,0"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Stretch"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
                                                 AcceptsReturn="False"
                                                 Background="#00000000"
+                                                BorderThickness="0"
                                                 FontFamily="Consolas"
                                                 Foreground="#00000000"
                                                 IsColorFontEnabled="False"
@@ -104,14 +105,12 @@
                                             <!--  Width="{Binding ElementName=PART_Measuring_Element, Path=ActualWidth, UpdateSourceTrigger=Default, Mode=OneWay}"  -->
                                             <TextBox
                                                 x:Name="PART_TextBox"
-                                                Margin="0,0,0,-2"
+                                                Margin="0,1,0,0"
                                                 HorizontalAlignment="Right"
                                                 VerticalContentAlignment="Stretch"
                                                 contract7Present:CornerRadius="{TemplateBinding CornerRadius}"
                                                 AcceptsReturn="False"
                                                 Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}"
                                                 FontFamily="Consolas"
                                                 FontSize="{TemplateBinding FontSize}"
                                                 FontWeight="{TemplateBinding FontWeight}"
@@ -121,6 +120,8 @@
                                                 PlaceholderText="{TemplateBinding PlaceholderText}"
                                                 TextAlignment="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource HCA2TA}}"
                                                 TextWrapping="NoWrap" />
+                                            <!--  BorderBrush="{TemplateBinding BorderBrush}"  -->
+                                            <!--  BorderThickness="{TemplateBinding BorderThickness}"  -->
                                             <!--  Style="{StaticResource NumberBoxTextBoxStyle}"  -->
                                             <!--  SelectionHighlightColor="{TemplateBinding SelectionHighlightColor}"  -->
                                             <!--  contract7Present:SelectionFlyout="{TemplateBinding SelectionFlyout}"  -->
