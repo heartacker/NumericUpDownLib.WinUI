@@ -54,18 +54,23 @@
 
                                     <!--  ! Header  -->
                                     <!--  Width="{Binding ElementName=PART_Measuring_Element, Path=Width, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Right"  -->
-                                    <TextBlock
+                                    <ContentPresenter
+                                        x:Name="HeaderContentPresenter"
                                         Grid.Row="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Path=Orientation, Converter={StaticResource Ori21}}"
                                         Grid.Column="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Path=Orientation, Converter={StaticResource Ori20}}"
+                                        Margin="{ThemeResource TextBoxTopHeaderMargin}"
                                         Padding="1,5,10,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Stretch"
-                                        FontWeight="Bold"
-                                        Text="{TemplateBinding Header}"
-                                        TextAlignment="Left"
+                                        Content="{TemplateBinding Header}"
+                                        FontFamily="{TemplateBinding FontFamily}"
+                                        FontSize="{TemplateBinding FontSize}"
+                                        FontWeight="Normal"
+                                        Foreground="{ThemeResource TextControlHeaderForeground}"
+                                        TextWrapping="Wrap"
                                         Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Path=Header, Converter={StaticResource String2Visual}}" />
 
-                                    <!--  �ؼ�  -->
+                                    <!--  ¿Ø¼þ  -->
                                     <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
