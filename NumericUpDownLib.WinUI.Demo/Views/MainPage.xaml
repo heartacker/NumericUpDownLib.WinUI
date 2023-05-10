@@ -224,8 +224,11 @@
                             Header="MyEmun"
                             ItemsSource="{x:Bind ViewModel.MyEnumS}"
                             SelectedItem="0" />
-                        <TextBox Text="{x:Bind ViewModel.A}" />
-                        <TextBox Text="{x:Bind ViewModel.B}" />
+                        <NumberBox
+                            HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Right"
+                            SpinButtonPlacementMode="Compact"
+                            Value="10" />
                     </StackPanel>
                 </ScrollViewer>
 
