@@ -104,18 +104,30 @@
                                             <!--  Width="{Binding ElementName=PART_Measuring_Element, Path=ActualWidth, UpdateSourceTrigger=Default, Mode=OneWay}"  -->
                                             <TextBox
                                                 x:Name="PART_TextBox"
-                                                Margin="0,0,0,0"
+                                                Margin="0,0,0,-2"
                                                 HorizontalAlignment="Right"
-                                                VerticalContentAlignment="{TemplateBinding VerticalAlignment}"
+                                                VerticalContentAlignment="Stretch"
+                                                contract7Present:CornerRadius="{TemplateBinding CornerRadius}"
                                                 AcceptsReturn="False"
                                                 Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
                                                 FontFamily="Consolas"
+                                                FontSize="{TemplateBinding FontSize}"
+                                                FontWeight="{TemplateBinding FontWeight}"
                                                 Foreground="{TemplateBinding Foreground}"
                                                 IsReadOnly="{TemplateBinding IsReadOnly}"
                                                 ManipulationMode="Scale"
+                                                PlaceholderText="{TemplateBinding PlaceholderText}"
                                                 TextAlignment="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource HCA2TA}}"
                                                 TextWrapping="NoWrap" />
-                                            <!--  Background="{TemplateBinding Background}"  -->
+                                            <!--  Style="{StaticResource NumberBoxTextBoxStyle}"  -->
+                                            <!--  SelectionHighlightColor="{TemplateBinding SelectionHighlightColor}"  -->
+                                            <!--  contract7Present:SelectionFlyout="{TemplateBinding SelectionFlyout}"  -->
+                                            <!--  InputScope="{TemplateBinding InputScope}"  -->
+                                            <!--  PreventKeyboardDisplayOnProgrammaticFocus="{TemplateBinding PreventKeyboardDisplayOnProgrammaticFocus}"  -->
+                                            <!--  TextReadingOrder="{TemplateBinding TextReadingOrder}"  -->
+
                                             <!--  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value,Mode=OneWay}"  -->
 
                                             <TextBlock

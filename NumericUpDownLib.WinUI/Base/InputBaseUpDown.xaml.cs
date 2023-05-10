@@ -105,6 +105,21 @@ public abstract partial class InputBaseUpDown : Control
         set => SetValue(HeaderProperty, value);
     }
 
+    /// <summary>
+    /// Backing store for dependency property for .Net FormatString that is
+    /// applied to the textbox text portion of the up down control.
+    /// </summary>
+    protected static readonly DependencyProperty PlaceholderTextProperty = DependencyProperty.Register(
+        nameof(PlaceholderText),
+        typeof(string),
+        typeof(InputBaseUpDown),
+        new PropertyMetadata(""));
+
+    public string PlaceholderText
+    {
+        get => (string)GetValue(PlaceholderTextProperty);
+        set => SetValue(PlaceholderTextProperty, value);
+    }
 
 
 #if false
@@ -124,7 +139,7 @@ public abstract partial class InputBaseUpDown : Control
     {
         get { return (bool)GetValue(IsIncDecButtonsVisibleProperty); }
         set { SetValue(IsIncDecButtonsVisibleProperty, value); }
-    } 
+    }
 #endif
 
     /// <summary>
@@ -253,4 +268,3 @@ public abstract partial class InputBaseUpDown : Control
 
     #endregion methods
 }
-
